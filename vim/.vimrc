@@ -1,0 +1,1 @@
+/home/la-batata101/.vimrc
