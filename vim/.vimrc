@@ -63,7 +63,8 @@ Plug 'jiangmiao/auto-pairs'
 Plug 'scrooloose/nerdcommenter'
 
 Plug 'Yggdroot/indentLine'
-
+" undo tree
+Plug 'mbbill/undotree'
 filetype plugin indent on    " required
 call plug#end()            " required
 
@@ -113,7 +114,8 @@ set sidescrolloff=5
 " highlight search results
 set hlsearch
 " clear the highlight
-nnoremap <esc> :noh<return><esc>
+" map <leader>c :noh<CR>
+
 " set incremental search, like modern browser
 set incsearch
 " enhanced command line completion
@@ -166,6 +168,10 @@ autocmd FileType * set noexpandtab
 
 " show tabs whithespaces
 nnoremap <F6> :<C-U>setlocal lcs=tab:>-,trail:-,eol:$,space:. list! list? <CR>
+
+" Split
+noremap <Leader>h :<C-u>split<CR>
+noremap <Leader>v :<C-u>vsplit<CR>
 "--------------------------------------------------------------------------"
 " Color	Scheme							      	   "
 " -------------------------------------------------------------------------"
@@ -319,3 +325,11 @@ let g:lightline.component_type   = {'buffers': 'tabsel'}
 let g:lightline#bufferline#modified = ' +'
 let g:lightline#bufferline#show_number = 2
 let g:lightline#bufferline#unnamed = '[No Name]'
+
+"---------------------------------------------------------------------------------
+"Undo Tree
+"---------------------------------------------------------------------------------
+if has("persistent_undo")
+  set undodir=~/.undodir/
+  set undofile
+endif

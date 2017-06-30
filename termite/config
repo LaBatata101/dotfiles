@@ -2,37 +2,35 @@
 allow_bold = true
 mouse_autohide = true
 icon_name = terminal
-font = Source Code Pro for Powerline Regular 10
-
+#font = Source Code Pro for Powerline Regular 10
+font = mononoki 11
 # Solarized dark color scheme
 
 [colors]
-foreground = #839496
+foreground = #ccb18b
 foreground_bold = #eee8d5
 #foreground_dim = #888888
-background = #002b36
+background = #282C34
 cursor = #93a1a1
 
 # if unset, will reverse foreground and background
 #highlight = #839496
 
 # colors from color0 to color254 can be set
-color0 = #073642
-color1 = #dc322f
-color2 = #859900
-color3 = #b58900
-color4 = #268bd2
-color5 = #d33682
-color6 = #2aa198
-color7 = #eee8d5
-color8 = #002b36
-color9 = #cb4b16
-color10 = #586e75
-color11 = #657b83
-color12 = #839496
-color13 = #6c71c4
-color14 = #93a1a1
-color15 = #fdf6e3
-
-# [hints]
-#font = 
+color0 = #1a1a1a
+color1 = #cc6666
+color2 = #66aa66
+color3 = #f0c674
+color4 = #557799
+color5 = #a374a8
+color6 = #339999
+#color7 = #a3a3a3
+color7 = #ffffff
+color8 = #4d4d4d
+color9 = #dd7777
+color10 = #77bb77
+color11 = #f2d785
+color12 = #5588bb
+color13 = #b485b9
+color14 = #2fa7a7
+color15 = #cccccc

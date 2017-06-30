@@ -34,13 +34,14 @@ padding-right = 2
 module-margin-left = 1
 module-margin-right = 2
 
-font-0 = NotoSans-Regular:size=8;-1
+;font-0 = NotoSans-Regular:size=8;-1
+font-0 = mononoki:size=9;0
 font-1 = MaterialIcons:size=10;0
 font-2 = siji:pixelsize=10;1
 font-3 = FontAwesome:size=10;0
 
 modules-left = volume cpu memory
-;modules-center = mpd
+modules-center = mpd
 modules-right = wireless-network battery date powermenu 
 
 tray-position = right
@@ -144,33 +145,33 @@ format = <label> <ramp-coreload>
 label =  %percentage%%
 
 ramp-coreload-0 = ▁
-ramp-coreload-0-font = 2
+ramp-coreload-0-font = 1
 ramp-coreload-0-foreground = #aaff77
 ramp-coreload-1 = ▂
-ramp-coreload-1-font = 2
+ramp-coreload-1-font = 1
 ramp-coreload-1-foreground = #aaff77
 ramp-coreload-2 = ▃
-ramp-coreload-2-font = 2
+ramp-coreload-2-font = 1
 ramp-coreload-2-foreground = #aaff77
 ramp-coreload-3 = ▄
-ramp-coreload-3-font = 2
+ramp-coreload-3-font = 1
 ramp-coreload-3-foreground = #aaff77
 ramp-coreload-4 = ▅
-ramp-coreload-4-font = 2
+ramp-coreload-4-font = 1
 ramp-coreload-4-foreground = #fba922
 ramp-coreload-5 = ▆
-ramp-coreload-5-font = 2
+ramp-coreload-5-font = 1
 ramp-coreload-5-foreground = #fba922
 ramp-coreload-6 = ▇
-ramp-coreload-6-font = 2
+ramp-coreload-6-font = 1
 ramp-coreload-6-foreground = #ff5555
 ramp-coreload-7 = █
-ramp-coreload-7-font = 2
+ramp-coreload-7-font = 1
 ramp-coreload-7-foreground = #ff5555
 
 [module/date]
 type = internal/date
-date =  %%{F#99}%Y-%m-%d%%{F-}  %%{F#fff}%H:%M%%{F-}
+date =  %%{F#99}%d/%m/%Y%%{F-}  %%{F#fff}%H:%M%%{F-}
 date-alt = %%{F#fff}%A, %d %B %Y  %%{F#fff}%H:%M%%{F#666}:%%{F#fba922}%S%%{F-}
 
 [module/memory]
@@ -198,10 +199,12 @@ type = internal/mpd
 host = 127.0.0.1
 port = 6600
 password = starwars
-format-online = <icon-prev> <icon-stop> <toggle> <icon-next>  <icon-repeat> <icon-random>  <bar-progress> <label-time>  <label-song>
+format-online = <icon-prev> <icon-seekb> <icon-stop> <toggle> <icon-seekf> <icon-next> <icon-random>  <label-time>  <label-song>
 
 label-song    =  %artist% - %title%
 label-offline = ---
+
+label-time = [%elapsed%/%total%]
 
 icon-play      = 
 icon-pause     = 
@@ -212,19 +215,8 @@ icon-seekb     = 
 icon-seekf     = 
 icon-random    = 
 
-toggle-on-foreground =
+toggle-on-foreground = #ff
 toggle-off-foreground = #55
-
-bar-progress-width = 45
-bar-progress-format = %{A4:mpdseek+2: A5:mpdseek-2:}%fill%%indicator%%empty%%{A A}
-bar-progress-indicator-foreground = #ff
-bar-progress-indicator-font = 3
-bar-progress-fill-foreground = #bb
-bar-progress-fill-font = 3
-bar-progress-empty-font = 3
-bar-progress-indicator = 
-bar-progress-fill = 
-bar-progress-empty = ─ar-progress-empty-foreground = #44
 
 [module/wireless-network]
 type = internal/network
@@ -232,16 +224,16 @@ interface = wlan0
 interval = 3.0
 ping-interval = 10
 
-format-connected = <ramp-signal> <label-connected>
+format-connected = <label-connected>
 label-connected =  %essid%
 label-disconnected =  not connected
 label-disconnected-foreground = #66
 
-ramp-signal-0 = 
-ramp-signal-1 = 
-ramp-signal-2 = 
-ramp-signal-3 = 
-ramp-signal-4 = 
+;ramp-signal-0 = 
+;ramp-signal-1 = 
+;ramp-signal-2 = 
+;ramp-signal-3 = 
+;ramp-signal-4 = 
 
 animation-packetloss-0 = 
 animation-packetloss-0-foreground = #ffa64c
@@ -260,30 +252,30 @@ label-disconnected-foreground = #66
 [module/volume]
 type = internal/volume
 
-format-volume = <label-volume> <bar-volume>
+format-volume = <label-volume>
 
-label-volume =  %percentage%% 
+label-volume =   %percentage%% 
 label-volume-foreground = ${root.foreground}
 
 label-muted =  sound muted
 label-muted-foreground = ${colors.gray}
 
-bar-volume-width = 8 
-bar-volume-foreground-0 = ${colors.green}
-bar-volume-foreground-1 = ${colors.green}
-bar-volume-foreground-2 = ${colors.green}
-bar-volume-foreground-3 = ${colors.green}
-bar-volume-foreground-4 = ${colors.yellow}
-bar-volume-foreground-5 = ${colors.red}
-bar-volume-gradient = false
-bar-volume-indicator = 
-bar-volume-indicator-font = 4
-bar-volume-indicator-foreground = ${colors.white}
-bar-volume-fill = 
-bar-volume-fill-font = 4
-bar-volume-empty = 
-bar-volume-empty-font = 4
-bar-volume-empty-foreground = ${colors.gray}
+;bar-volume-width = 8 
+;bar-volume-foreground-0 = ${colors.green}
+;bar-volume-foreground-1 = ${colors.green}
+;bar-volume-foreground-2 = ${colors.green}
+;bar-volume-foreground-3 = ${colors.green}
+;bar-volume-foreground-4 = ${colors.yellow}
+;bar-volume-foreground-5 = ${colors.red}
+;bar-volume-gradient = false
+;bar-volume-indicator = 
+;bar-volume-indicator-font = 4
+;bar-volume-indicator-foreground = ${colors.white}
+;bar-volume-fill = 
+;bar-volume-fill-font = 4
+;bar-volume-empty = 
+;bar-volume-empty-font = 4
+;bar-volume-empty-foreground = ${colors.gray}
 
 
 [module/powermenu]
