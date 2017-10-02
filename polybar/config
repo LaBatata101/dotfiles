@@ -40,8 +40,8 @@ font-1 = MaterialIcons:size=10;0
 font-2 = siji:pixelsize=10;1
 font-3 = FontAwesome:size=10;0
 
-modules-left = volume cpu memory
-modules-center = mpd
+modules-left = volume cpu memory 
+modules-center = mpd demo
 modules-right = wireless-network battery date powermenu 
 
 tray-position = right
@@ -172,7 +172,7 @@ ramp-coreload-7-foreground = #ff5555
 [module/date]
 type = internal/date
 date =  %%{F#99}%d/%m/%Y%%{F-}  %%{F#fff}%H:%M%%{F-}
-date-alt = %%{F#fff}%A, %d %B %Y  %%{F#fff}%H:%M%%{F#666}:%%{F#fba922}%S%%{F-}
+date-alt =  %%{F#fff}%A, %d %B %Y   %%{F#fff}%H:%M%%{F#666}:%%{F#fba922}%S%%{F-}
 
 [module/memory]
 type = internal/memory
@@ -294,6 +294,8 @@ menu-0-0 = reboot
 menu-0-0-exec = menu-open-1
 menu-0-1 = power off
 menu-0-1-exec = menu-open-2
+menu-0-2 = logout
+menu-0-2-exec = menu-open-3
 
 menu-1-0 = cancel
 menu-1-0-exec = menu-open-0
@@ -305,8 +307,7 @@ menu-2-0-exec = shutdown now
 menu-2-1 = cancel
 menu-2-1-exec = menu-open-0
 
-[module/clock]
-type = internal/date
-interval = 2
-date = %%{F#999}%Y-%m-%d%%{F-}  %%{F#fff}%H:%M%%{F-}
-
+menu-3-0 = logout
+menu-3-0-exec = pkill -KILL -u la-batata101
+menu-3-1 = cancel
+menu-3-1-exec = menu-open-0

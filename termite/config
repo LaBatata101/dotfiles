@@ -5,6 +5,7 @@ icon_name = terminal
 #font = Source Code Pro for Powerline Regular 10
 font = mononoki 11
 # Solarized dark color scheme
+scrollback_lines = 20000
 
 [colors]
 foreground = #ccb18b

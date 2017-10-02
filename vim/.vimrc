@@ -47,6 +47,7 @@ Plug 'davidhalter/jedi-vim', { 'for': 'python' }
 "Plugin 'scrooloose/syntastic'
 Plug 'nvie/vim-flake8', {'for': 'python'}
 Plug 'w0rp/ale', {'for': 'python'}
+Plug 'tell-k/vim-autopep8', {'for': 'python'}
 
 " Git on VIM
 Plug 'tpope/vim-fugitive'
@@ -65,6 +66,7 @@ Plug 'scrooloose/nerdcommenter'
 Plug 'Yggdroot/indentLine'
 " undo tree
 Plug 'mbbill/undotree'
+Plug 'editorconfig/editorconfig-vim'
 filetype plugin indent on    " required
 call plug#end()            " required
 
@@ -73,7 +75,7 @@ call plug#end()            " required
 "--------------------------------------------------------------------------"
 set backspace=indent,eol,start
 
-set noshowmode
+"set noshowmode
 " allow buffer switching without saving
 set hidden  
 " always show tabline
@@ -90,6 +92,8 @@ set clipboard=unnamed
 
 " number lines
 set number 
+" relative number line
+set rnu
 
 " set leader key
 let mapleader = "," 
@@ -124,8 +128,8 @@ set wildmenu
 set showcmd
 
 " change buffer
-nmap <C-A> :bp<CR>
-nmap <C-D> :bn<CR>
+map <leader>a :bp<CR>
+map <leader>s :bn<CR>
 
 " split navigations
 nnoremap <C-J> <C-W><C-J>
@@ -138,9 +142,12 @@ set foldmethod=indent
 set foldlevel=99
 
 " tab indentation
-setlocal sw=2
-setlocal sts=2
-setlocal autoindent
+set autoindent
+set expandtab
+set ts=4
+set sw=4
+set sts=0
+set smarttab
 
 set fileformat=unix
 
@@ -163,15 +170,14 @@ map <leader>e :!python3 %<CR>
 
 set  undolevels=1000
 
-" TABS in this shit
-autocmd FileType * set noexpandtab
-
 " show tabs whithespaces
 nnoremap <F6> :<C-U>setlocal lcs=tab:>-,trail:-,eol:$,space:. list! list? <CR>
 
 " Split
 noremap <Leader>h :<C-u>split<CR>
 noremap <Leader>v :<C-u>vsplit<CR>
+
+autocmd FileType python noremap <buffer> <leader>t :<C-u>Autopep8<CR>
 "--------------------------------------------------------------------------"
 " Color	Scheme							      	   "
 " -------------------------------------------------------------------------"
@@ -233,6 +239,12 @@ autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
 let NERDTreeIgnore=['\.pyc$', '\~$'] " ignore files in NERDTree
 map <F2> :NERDTreeToggle<CR>
 
+"--------------------------------------------------------------------------"
+" AutoPep8                                                                 "
+"--------------------------------------------------------------------------"
+let g:autopep8_indent_size=4
+let g:autopep8_max_line_length=120
+let g:autopep8_ignore="E701,W191"
 
 "--------------------------------------------------------------------------"
 "    Jedi-VIM Config                                                       "
