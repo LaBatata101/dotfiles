@@ -226,6 +226,7 @@ ping-interval = 10
 
 format-connected = <label-connected>
 label-connected =  %essid%
+label-alt = eoq
 label-disconnected =  not connected
 label-disconnected-foreground = #66
 

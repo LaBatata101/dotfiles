@@ -1,5 +1,5 @@
 " Author: LaBatata101
-" Last Update: 2017/06/24
+" Last Update: 2017/11/11
 "--------------------------------------------------------------------------"
 " Commands:
 "   <leader> = ,
@@ -33,7 +33,9 @@ Plug 'ryanoasis/vim-devicons'
 " colors for vim-devicons
 "Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
 
-Plug 'tmhedberg/SimpylFold'
+" correct folding for python
+Plug 'tmhedberg/SimpylFold', { 'for': 'python' }
+" indent when hit enter for (parentheses), [brackets], {braces}
 Plug 'vim-scripts/indentpython.vim', { 'for': 'python' }
 
 " Color Scheme
@@ -44,7 +46,6 @@ Plug 'rakr/vim-one'
 Plug 'davidhalter/jedi-vim', { 'for': 'python' }
 
 " Syntax Checker
-"Plugin 'scrooloose/syntastic'
 Plug 'nvie/vim-flake8', {'for': 'python'}
 Plug 'w0rp/ale', {'for': 'python'}
 Plug 'tell-k/vim-autopep8', {'for': 'python'}
@@ -63,10 +64,12 @@ Plug 'jiangmiao/auto-pairs'
 " <leader>cc comment | <leader>cu uncomment
 Plug 'scrooloose/nerdcommenter'
 
+" display vertical at each indentation level
 Plug 'Yggdroot/indentLine'
 " undo tree
 Plug 'mbbill/undotree'
 Plug 'editorconfig/editorconfig-vim'
+Plug 'majutsushi/tagbar'
 filetype plugin indent on    " required
 call plug#end()            " required
 
@@ -102,15 +105,13 @@ let mapleader = ","
 " ele é atualizado DENTRO do vim
 set autoread
 
-" enable switching between buffers without saving
-set hidden            
-
 " automatically change window's cwd to file's
 " dir
 set autochdir
 
 set colorcolumn=120
 
+set noshowmode
 " Start scrolling slightly before the cursor reaches an edge
 set scrolloff=5
 set sidescrolloff=5
@@ -132,10 +133,10 @@ map <leader>a :bp<CR>
 map <leader>s :bn<CR>
 
 " split navigations
-nnoremap <C-J> <C-W><C-J>
-nnoremap <C-K> <C-W><C-K>
-nnoremap <C-L> <C-W><C-L>
-nnoremap <C-H> <C-W><C-H>
+nnoremap <C-S-J> <C-W><C-J>
+nnoremap <C-S-K> <C-W><C-K>
+nnoremap <C-S-L> <C-W><C-L>
+nnoremap <C-S-H> <C-W><C-H>
 
 " Enable folding
 set foldmethod=indent
@@ -181,7 +182,7 @@ autocmd FileType python noremap <buffer> <leader>t :<C-u>Autopep8<CR>
 "--------------------------------------------------------------------------"
 " Color	Scheme							      	   "
 " -------------------------------------------------------------------------"
-set termguicolors
+"set termguicolors
 set background=dark
 let g:one_allow_italics = 1
 colorscheme one 
@@ -191,14 +192,15 @@ colorscheme one
 " indentLine                                                               "
 "--------------------------------------------------------------------------"
 let g:indentLine_enabled = 1
-let g:indentLine_char = '│'
+let g:indentLine_char = '▏'
+let g:indentLine_color_term = 239
 
 "--------------------------------------------------------------------------"
 " Powerline setup                                                          "
 "--------------------------------------------------------------------------"
 
 set laststatus=2
-if !has('gui_running')
+    if !has('gui_running')
   set t_Co=256
 endif
 
@@ -345,3 +347,9 @@ if has("persistent_undo")
   set undodir=~/.undodir/
   set undofile
 endif
+
+augroup vimrc-incsearch-highlight
+    autocmd!
+    autocmd CmdlineEnter [/\?] :set hlsearch
+    autocmd CmdlineLeave [/\?] :set nohlsearch
+augroup END
