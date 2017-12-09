@@ -133,10 +133,10 @@ map <leader>a :bp<CR>
 map <leader>s :bn<CR>
 
 " split navigations
-nnoremap <C-S-J> <C-W><C-J>
-nnoremap <C-S-K> <C-W><C-K>
-nnoremap <C-S-L> <C-W><C-L>
-nnoremap <C-S-H> <C-W><C-H>
+map <C-S-J> <C-W><C-J>
+map <C-S-K> <C-W><C-K>
+map <C-S-L> <C-W><C-L>
+map <C-S-H> <C-W><C-H>
 
 " Enable folding
 set foldmethod=indent
