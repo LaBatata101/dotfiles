@@ -1,2 +1,2 @@
-nvim/plugged/
-nvim/minimal-plug/
+nvim/.config/nvim/plugged/
+.oh-my-zsh/
