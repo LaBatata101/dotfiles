@@ -69,7 +69,7 @@ Plug 'Yggdroot/indentLine'
 " undo tree
 Plug 'mbbill/undotree'
 Plug 'editorconfig/editorconfig-vim'
-Plug 'majutsushi/tagbar'
+Plug 'majutsushi/tagbar', { 'on': 'TagBar' }
 filetype plugin indent on    " required
 call plug#end()            " required
 
