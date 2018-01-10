@@ -1,4 +1,4 @@
-" Author: LaBatata101
+"Author: LaBatata101
 " Last Update: 2017/11/11
 "--------------------------------------------------------------------------"
 " Commands:
@@ -28,7 +28,7 @@ call plug#begin('~/.vim/plugged')
 Plug 'itchyny/lightline.vim'
 Plug 'mgee/lightline-bufferline'
 
-" icons for NERDTree, status line, etc.
+    " icons for NERDTree, status line, etc.
 Plug 'ryanoasis/vim-devicons'
 " colors for vim-devicons
 "Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
@@ -41,6 +41,7 @@ Plug 'vim-scripts/indentpython.vim', { 'for': 'python' }
 " Color Scheme
 Plug 'lifepillar/vim-solarized8'
 Plug 'rakr/vim-one'
+Plug 'ajmwagar/vim-deus'
 
 " Python autocomplete
 Plug 'davidhalter/jedi-vim', { 'for': 'python' }
@@ -70,6 +71,7 @@ Plug 'Yggdroot/indentLine'
 Plug 'mbbill/undotree'
 Plug 'editorconfig/editorconfig-vim'
 Plug 'majutsushi/tagbar', { 'on': 'TagBar' }
+Plug 'KeitaNakamura/neodark.vim'
 filetype plugin indent on    " required
 call plug#end()            " required
 
@@ -99,7 +101,7 @@ set number
 set rnu
 
 " set leader key
-let mapleader = "," 
+let mapleader = " " 
 
 " Caso o arquivo seja modificado FORA do vim 
 " ele é atualizado DENTRO do vim
@@ -153,7 +155,7 @@ set smarttab
 set fileformat=unix
 
 " Enable folding with the spacebar
-nnoremap <space> za
+"nnoremap <space> za
 
 let python_highlight_all = 1
 syntax on
@@ -185,7 +187,8 @@ autocmd FileType python noremap <buffer> <leader>t :<C-u>Autopep8<CR>
 "set termguicolors
 set background=dark
 let g:one_allow_italics = 1
-colorscheme one 
+let g:neodark#use_256color = 1
+colorscheme neodark 
 
 
 "--------------------------------------------------------------------------"
@@ -348,8 +351,8 @@ if has("persistent_undo")
   set undofile
 endif
 
-augroup vimrc-incsearch-highlight
-    autocmd!
-    autocmd CmdlineEnter [/\?] :set hlsearch
-    autocmd CmdlineLeave [/\?] :set nohlsearch
-augroup END
+"augroup vimrc-incsearch-highlight
+    "autocmd!
+    "autocmd CmdlineEnter [/\?] :set hlsearch
+    "autocmd CmdlineLeave [/\?] :set nohlsearch
+"augroup END

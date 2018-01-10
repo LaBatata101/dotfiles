@@ -4,7 +4,8 @@
 set termguicolors
 "set background=dark
 let g:onedark_allow_italics = 1
-colorscheme onedark
+let g:neodark#use_256color = 1
+colorscheme neodark
 
 
 "--------------------------------------------------------------------------"
@@ -25,16 +26,19 @@ endif
 "--------------------------------------------------------------------------"
 " A.L.E Configuration							   "
 "--------------------------------------------------------------------------"
-highlight ALEErrorSign ctermfg=160
+highlight ALEErrorSign ctermfg=9
 highlight ALEWarningSign ctermfg=226
 let g:ale_sign_error = '✗'
 let g:ale_sign_warning = '⚠ '
+let g:ale_fixers = {
+    \ 'python':['autopep8']
+    \}
 let g:ale_linters = {
       \ 'python':['flake8'],
       \}
 let g:ale_python_flake8_options = '--max-line-length=120 --ignore=E701,W191'
 let g:ale_lint_on_text_changed = 'never'
-let g:ale_lint_delay = 50
+let g:ale_lint_delay = 20
 let g:ale_lint_on_enter = 1
 let g:ale_open_list = 1 
 let g:ale_set_loclist = 1
@@ -78,10 +82,9 @@ endif
 " nvim-completion-manager
 "---------------------------------------------------------------------------------
 let g:cm_completeopt = 'menu,menuone,noinsert,noselect,preview'
-" Close the prevew window automatically on InsertLeave
-    " https://github.com/davidhalter/jedi-vim/blob/eba90e615d73020365d43495fca349e5a2d4f995/ftplugin/python/jedi.vim#L44
-"augroup ncm_preview
-    "autocmd! InsertLeave <buffer> if pumvisible() == 0|pclose|endif
-"augroup END
-autocmd CompleteDone * silent! pclose!
+
+autocmd CursorMovedI * if pumvisible() == 0|pclose|endif
+autocmd InsertLeave * if pumvisible() == 0|pclose|endif
+
 inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
+inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"

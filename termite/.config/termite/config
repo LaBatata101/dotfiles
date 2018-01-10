@@ -1,8 +1,10 @@
 [options]
+dynamic_title = false
 allow_bold = true
 mouse_autohide = true
 icon_name = terminal
-font = Source Code Pro for Powerline Regular 11
+font = SauceCodePro Nerd Font Regular  11
+#font = Source Code Pro for Powerline 11
 #font = mononoki 11
 # Solarized dark color scheme
 scrollback_lines = 20000

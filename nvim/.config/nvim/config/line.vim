@@ -2,7 +2,7 @@
 " Status Line								   "
 "--------------------------------------------------------------------------"
 let g:lightline = {
-      \ 'colorscheme': 'onedark',
+      \ 'colorscheme': 'neodark',
       \ 'active': {
       \	  'left': [ [ 'mode', 'paste' ],
       \		    [ 'gitbranch', 'readonly', 'filename', 'modified' ] ],

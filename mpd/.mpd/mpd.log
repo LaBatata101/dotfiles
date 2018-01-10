@@ -690,3 +690,195 @@ Jun 28 20:59 : player: played "Metallica - Wherever I May Roam.mp3"
 Jun 28 21:00 : client: [4] opened from 127.0.0.1:38904
 Jun 28 21:00 : client: [4] closed
 Jun 28 21:06 : player: played "Metallica_-_Fade_to_Black.mp3"
+Dec 21 14:55 : exception: OutputThread could not get realtime scheduling, continuing anyway: sched_setscheduler failed: Operation not permitted
+Dec 21 14:55 : exception: Failed to decode /home/labatata101/Música/Música/Metallica_-_Fade_to_Black.mp3
+Dec 21 14:55 : exception: nested: Failed to open /home/labatata101/Música/Música/Metallica_-_Fade_to_Black.mp3: No such file or directory
+Dec 21 14:55 : player: played "Metallica_-_Fade_to_Black.mp3"
+Dec 21 14:55 : avahi: Service 'Music Player' successfully established.
+Dec 26 18:48 : exception: OutputThread could not get realtime scheduling, continuing anyway: sched_setscheduler failed: Operation not permitted
+Dec 26 18:48 : avahi: Service 'Music Player' successfully established.
+Dec 26 18:51 : client: [0] opened from 127.0.0.1:39496
+Dec 26 18:51 : exception: Failed to read mixer for 'My ALSA Device': no such mixer control: PCM
+Dec 26 18:52 : exception: Failed to open mixer for 'My ALSA Device': no such mixer control: PCM
+Dec 26 18:52 : exception: OutputThread could not get realtime scheduling, continuing anyway: sched_setscheduler failed: Operation not permitted
+Dec 26 18:53 : exception: Failed to open mixer for 'My ALSA Device': no such mixer control: PCM
+Dec 26 18:53 : client: [0] closed
+Dec 26 18:53 : client: [1] opened from 127.0.0.1:39500
+Dec 26 18:54 : exception: Failed to open mixer for 'My ALSA Device': no such mixer control: PCM
+Dec 26 18:54 : client: [1] closed
+Dec 26 18:54 : client: [2] opened from 127.0.0.1:39508
+Dec 26 18:55 : player: played "Metallica_-_One_(Full_Lyrics).mp3"
+Dec 26 18:55 : client: [2] closed
+Dec 27 17:40 : exception: OutputThread could not get realtime scheduling, continuing anyway: sched_setscheduler failed: Operation not permitted
+Dec 27 17:40 : avahi: Service 'Music Player' successfully established.
+Dec 27 17:41 : client: [0] opened from 127.0.0.1:59380
+Dec 27 17:41 : exception: Failed to read mixer for 'My ALSA Device': no such mixer control: PCM
+Dec 27 17:45 : client: [0] closed
+Dec 27 17:46 : client: [1] opened from 127.0.0.1:59404
+Dec 27 17:46 : update: removing Black Sabbath - War Pigs.mp3
+Dec 27 17:46 : update: removing Trap Queen-Fetty Wap.mp3
+Dec 27 17:46 : update: removing Come On To Me-Major Lazer.mp3
+Dec 27 17:46 : update: removing Faint.MP3
+Dec 27 17:46 : update: removing Hotline Bling-Drake.mp3
+Dec 27 17:46 : update: removing Gettin' Over You-David Guetta.mp3
+Dec 27 17:46 : update: removing Crank It Up-David Guetta.mp3
+Dec 27 17:46 : update: removing FloRida_feat_Sage_The_Gemini-GDFR_Going_Down_For_Real_-_Soundvor_ru.mp3
+Dec 27 17:46 : update: updating /2Pac - Hit Em Up.mp3
+Dec 27 17:46 : update: updating /50 Cent - Candy Shop W Lyrics.mp3
+Dec 27 17:46 : update: updating /50cent - in da club.mp3
+Dec 27 17:46 : update: updating /AC- DC - Thunder Truck.mp3
+Dec 27 17:46 : update: updating /acdc-back_in_black-.mp3
+Dec 27 17:46 : update: updating /ACDC_HIGHWAY TO HELL.MP3
+Dec 27 17:46 : update: updating /Act A Fool.mp3
+Dec 27 17:46 : update: updating /AC_DC_-_shoot_to_the_trill.mp3
+Dec 27 17:46 : update: updating /Beat It.mp3
+Dec 27 17:46 : update: updating /Berzerk.mp3
+Dec 27 17:46 : update: updating /BigSean-I Dont Fuck With You ftE40t.m4a
+Dec 27 17:46 : update: updating /Billie Jean-Michael Jackson.mp3
+Dec 27 17:46 : update: updating /black sabath - iron man.mp3
+Dec 27 17:46 : update: updating /Black Sabbath - Paranoid.mp3
+Dec 27 17:46 : update: updating /Bob Marley - Bad Boys (Original Mix).mp3
+Dec 27 17:46 : update: updating /Bodies-Drowning Pool.mp3
+Dec 27 17:46 : update: updating /Burn It Down - Link Park.mp3
+Dec 27 17:46 : update: updating /Chamillionaire_-_Ridin_Dirty__ (1).mp3
+Dec 27 17:46 : update: updating /Come as You Are-Nirvana.mp3
+Dec 27 17:46 : update: updating /Dead Memories-Slipknot.mp3
+Dec 27 17:46 : update: updating /Duality-Slipknot.mp3
+Dec 27 17:46 : update: updating /Eminem - Lose Yourself.mp3
+Dec 27 17:46 : update: updating /eminemwtp-white-trash-party.mp3
+Dec 27 17:46 : update: updating /Eminen-Not Afraid.mp3
+Dec 27 17:46 : update: updating /Energy-Drake.mp3
+Dec 27 17:46 : update: updating /Enter Sandman-Metallica.mp3
+Dec 27 17:46 : update: updating /Fear of the Dark-Iron Maiden.mp3
+Dec 27 17:46 : update: updating /Get Low.mp3
+Dec 27 17:46 : update: updating /Gold Cobra-Limp Bizkit.mp3
+Dec 27 17:46 : update: updating /Grits - My Life Be Like (Ooh Ahh) Ft. 2Pac &amp; Xzibit.MP3
+Dec 27 17:46 : update: updating /Gun N' Roses - Welcome To The Jungle.mp3
+Dec 27 17:46 : update: updating /Guns N' Roses - Sweet Child of Mine.mp3
+Dec 27 17:46 : update: updating /Ice Ice Baby.mp3
+Dec 27 17:46 : update: updating /In The End - Likin Park.mp3
+Dec 27 17:46 : update: added /Iron_Maiden_-_Speed_Of_Light_(Official_Video).mp3
+Dec 27 17:46 : update: updating /ja rule -  fast and 2 furios soundtrack - furious(1) (1).mp3
+Dec 27 17:46 : update: updating /Kansas - Carry On Wayward Son.mp3
+Dec 27 17:46 : update: updating /Kenye West - Stronger.mp3
+Dec 27 17:46 : update: updating /Killing In The Name [Remastered]-Rage Against the Machine.mp3
+Dec 27 17:46 : update: updating /Killpop-Slipknot.mp3
+Dec 27 17:46 : update: updating /Left Behind.mp3
+Dec 27 17:46 : update: updating /Linkinpark-Crawling.mp3
+Dec 27 17:46 : update: updating /Lonely Day-System of a Down.mp3
+Dec 27 17:46 : update: added /Lordi - Blood Red Sandman.mp3
+Dec 27 17:46 : update: added /Lordi - Devil Is A Loser.mp3
+Dec 27 17:46 : update: added /Lordi - Hard Rock Hallelujah.mp3
+Dec 27 17:46 : update: added /Lordi - Would You Love A Monsterman.mp3
+Dec 27 17:46 : update: updating /Massacration - Evil Papagali.mp3
+Dec 27 17:46 : update: updating /Massacration - Metal Bucetation.mp3
+Dec 27 17:46 : update: updating /Massacration - Metal is The Law.mp3
+Dec 27 17:46 : update: updating /Massacration - Sufocator Of Metal.mp3
+Dec 27 17:46 : update: updating /Massacration - The Bull.mp3
+Dec 27 17:46 : update: updating /Massacration - The Mummy.mp3
+Dec 27 17:46 : update: added /Black_Sabbath_~_War_Pigs.mp3
+Dec 27 17:46 : update: updating /Get Back-Ludacris.mp3
+Dec 27 17:46 : update: updating /Last Resort-Papa Roach.mp3
+Dec 27 17:46 : update: updating /Master of Puppets-Metallica.mp3
+Dec 27 17:46 : update: updating /Nothing Else Matters-Metallica.mp3
+Dec 27 17:46 : update: updating /Sulfur-Slipknot.mp3
+Dec 27 17:46 : update: updating /Megadeth - Symphony of Destruction.mp3
+Dec 27 17:46 : update: updating /Metallica - For Whom The Bell Tolls.mp3
+Dec 27 17:46 : update: updating /Metallica - Sad But True.mp3
+Dec 27 17:46 : update: updating /Metallica - The Unforgiven.mp3
+Dec 27 17:46 : update: updating /Metallica - Wherever I May Roam.mp3
+Dec 27 17:46 : update: updating /Metallica_-_Fade_to_Black.mp3
+Dec 27 17:46 : update: updating /Metallica_-_One_(Full_Lyrics).mp3
+Dec 27 17:46 : update: updating /Motorhead - Ace of Spades.mp3
+Dec 27 17:46 : update: updating /Motorhead - Hellraiser.mp3
+Dec 27 17:46 : update: updating /Motorhead - The Game.mp3
+Dec 27 17:46 : update: updating /Move Bitch-Ludacris.mp3
+Dec 27 17:46 : update: updating /My Way-Limp Bizkit.mp3
+Dec 27 17:46 : update: updating /Nirvana - SMEEL LIKES TIME SPIRIT.mp3
+Dec 27 17:46 : update: updating /Obie Trice feat.Eminem - Rap Name (Explicit).m4a
+Dec 27 17:46 : update: updating /Ozzy Osborne-Crazy Train (Album Version).mp3
+Dec 27 17:46 : update: updating /P.I.M.P.mp3
+Dec 27 17:46 : update: updating /Pantera_-_Walk_(Official_Video).mp3
+Dec 27 17:46 : update: updating /Psychosocial-Slipknot.mp3
+Dec 27 17:46 : update: updating /Rap God.mp3
+Dec 27 17:46 : update: updating /Red Hot Chili Peppers - Californication [Official - 128K MP3.mp3
+Dec 27 17:46 : update: updating /Red Hot Chili Peppers - Can_t Stop [Official Music - 128K MP3.mp3
+Dec 27 17:46 : update: updating /Red Hot Chili Peppers - Otherside (Lyrics) - 128K MP3.mp3
+Dec 27 17:46 : update: updating /Rock And Roll All Nite.mp3
+Dec 27 17:46 : update: updating /Sistem Of A Down - Aerials.mp3
+Dec 27 17:46 : update: updating /Sistem Of A Down - B Y O B.mp3
+Dec 27 17:46 : update: updating /Slipknot - Before I Forget.mp3
+Dec 27 17:46 : update: updating /system of the down - chop suey.mp3
+Dec 27 17:46 : update: updating /T.N.T.-ACDC.mp3
+Dec 27 17:46 : update: updating /The Devil In I-Slipknot.mp3
+Dec 27 17:46 : update: updating /The Next Episode (feat. Snoop Dog.mp3
+Dec 27 17:46 : update: updating /There It Go (The Whistle Song)-Juelz Santana.mp3
+Dec 27 17:46 : update: updating /Toxicity-System of a Down.mp3
+Dec 27 17:46 : update: updating /Trooper-Iron Maiden.mp3
+Dec 27 17:46 : update: updating /Tupac_-_Ambitionz_Az_a_Ridah.mp3
+Dec 27 17:46 : update: updating /Wait and Bleed-Slipknot.mp3
+Dec 27 17:46 : update: updating /We Made You.mp3
+Dec 27 17:46 : update: updating /What I've Done.mp3
+Dec 27 17:46 : update: updating /Without Me.mp3
+Dec 27 17:46 : update: updating /Wiz Khalifa feat. 2 Chain-We Own It.mp3
+Dec 27 17:46 : update: added [1982] - The Number Of The Beast/01 - Invaders.mp3
+Dec 27 17:46 : update: added [1982] - The Number Of The Beast/02 - Children Of The Damned.mp3
+Dec 27 17:46 : update: added [1982] - The Number Of The Beast/03 - The Prisoner.mp3
+Dec 27 17:46 : update: added [1982] - The Number Of The Beast/04 - 22 Acacia Avenue.mp3
+Dec 27 17:46 : update: added [1982] - The Number Of The Beast/05 - The Number Of The Beast.mp3
+Dec 27 17:46 : update: added [1982] - The Number Of The Beast/06 - Run To The Hills.mp3
+Dec 27 17:46 : update: added [1982] - The Number Of The Beast/07 - Gangland.mp3
+Dec 27 17:46 : update: added [1982] - The Number Of The Beast/08 - Hallowed Be Thy Name.mp3
+Dec 27 17:46 : update: added [1984] - Powerslave/01 - Aces High.mp3
+Dec 27 17:46 : update: added [1984] - Powerslave/02 - 2 Minutes To Midnight.mp3
+Dec 27 17:46 : update: added [1984] - Powerslave/03 - Losfer Words (Big 'Orra) (Instrumental).mp3
+Dec 27 17:46 : update: added [1984] - Powerslave/04 - Flash Of The Blade.mp3
+Dec 27 17:46 : update: added [1984] - Powerslave/05 - The Duellists.mp3
+Dec 27 17:46 : update: added [1984] - Powerslave/06 - Back In The Village.mp3
+Dec 27 17:46 : update: added [1984] - Powerslave/07 - Powerslave.mp3
+Dec 27 17:46 : update: added [1984] - Powerslave/08 - Rime Of The Ancient Mariner.mp3
+Dec 27 17:46 : update: added [1986] - Somewhere In Time/01 - Caught Somewhere In Time.mp3
+Dec 27 17:46 : update: added [1986] - Somewhere In Time/02 - Wasted Years.mp3
+Dec 27 17:46 : update: added [1986] - Somewhere In Time/03 - Sea Of Madness.mp3
+Dec 27 17:46 : update: added [1986] - Somewhere In Time/04 - Heaven Can Wait.mp3
+Dec 27 17:46 : update: added [1986] - Somewhere In Time/05 - The Loneliness Of The Long Distance Runner.mp3
+Dec 27 17:46 : update: added [1986] - Somewhere In Time/06 - Stranger In A Strange Land.mp3
+Dec 27 17:46 : update: added [1986] - Somewhere In Time/07 - Deja-Vu.mp3
+Dec 27 17:46 : update: added [1986] - Somewhere In Time/08 - Alexander The Great.mp3
+Dec 27 17:47 : exception: Failed to open mixer for 'My ALSA Device': no such mixer control: PCM
+Dec 27 17:47 : exception: OutputThread could not get realtime scheduling, continuing anyway: sched_setscheduler failed: Operation not permitted
+Dec 27 17:47 : exception: Failed to open mixer for 'My ALSA Device': no such mixer control: PCM
+Dec 27 17:47 : exception: Failed to open mixer for 'My ALSA Device': no such mixer control: PCM
+Dec 27 17:49 : client: [1] closed
+Dec 27 17:50 : client: [2] opened from 127.0.0.1:59438
+Dec 27 17:51 : player: played "[1982] - The Number Of The Beast/05 - The Number Of The Beast.mp3"
+Dec 27 17:51 : client: [2] closed
+Dec 28 17:18 : exception: OutputThread could not get realtime scheduling, continuing anyway: sched_setscheduler failed: Operation not permitted
+Dec 28 17:18 : avahi: Service 'Music Player' successfully established.
+Dec 28 17:18 : client: [0] opened from 127.0.0.1:59176
+Dec 28 17:18 : exception: Failed to read mixer for 'My ALSA Device': no such mixer control: PCM
+Dec 28 17:19 : exception: Failed to open mixer for 'My ALSA Device': no such mixer control: PCM
+Dec 28 17:19 : exception: OutputThread could not get realtime scheduling, continuing anyway: sched_setscheduler failed: Operation not permitted
+Dec 28 17:30 : player: played "[1982] - The Number Of The Beast/08 - Hallowed Be Thy Name.mp3"
+Dec 28 17:30 : exception: Failed to open mixer for 'My ALSA Device': no such mixer control: PCM
+Dec 28 17:31 : client: [0] closed
+Dec 28 17:31 : client: [1] opened from 127.0.0.1:59180
+Dec 28 17:31 : client: [1] closed
+Dec 28 17:31 : client: [2] opened from 127.0.0.1:59184
+Dec 28 17:31 : client: [2] closed
+Dec 28 17:31 : client: [3] opened from 127.0.0.1:59188
+Dec 28 17:31 : client: [3] closed
+Dec 28 17:31 : client: [4] opened from 127.0.0.1:59192
+Dec 28 17:31 : client: [4] closed
+Dec 28 17:31 : client: [5] opened from 127.0.0.1:59196
+Dec 28 17:31 : client: [6] opened from 127.0.0.1:59200
+Dec 28 17:31 : client: [5] closed
+Dec 28 17:31 : client: [6] closed
+Dec 28 17:31 : client: [7] opened from 127.0.0.1:59204
+Dec 28 17:31 : exception: Failed to open mixer for 'My ALSA Device': no such mixer control: PCM
+Dec 28 17:32 : client: [8] opened from 127.0.0.1:59208
+Dec 28 17:33 : client: [7] closed
+Dec 28 17:34 : client: [9] opened from 127.0.0.1:59220
+Dec 28 17:34 : client: [9] closed
+Dec 28 17:37 : player: played "Iron_Maiden_-_Speed_Of_Light_(Official_Video).mp3"
+Dec 28 17:37 : client: [8] closed

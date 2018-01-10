@@ -1,5 +1,5 @@
 
-let g:python3_host_prog = '/usr/bin/python3'
+let g:python3_host_prog = '/usr/bin/python'
 " disable python 2 support
 let g:loaded_python_provider = 1
 
@@ -25,19 +25,20 @@ set encoding=utf8
 set guifont=Droid\ Sans\ Mono\ for\ Nerd\ 11
 
 " clipboard do sistema
-set clipboard^=unnamedplus,unnamed 
+set clipboard=unnamedplus
 
 " number lines
 set number 
+set rnu
 
 " set leader key
-let mapleader = "," 
+let mapleader = " " 
 
 " automatically change window's cwd to file's
 " dir
 set autochdir
 
-set colorcolumn=120
+set colorcolumn=100
 " Start scrolling slightly before the cursor reaches an edge
 set scrolloff=5
 set sidescrolloff=5

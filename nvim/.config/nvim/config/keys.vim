@@ -1,6 +1,6 @@
 
 " change buffer
-nmap <leader>A :bp<CR>
+nmap <leader>a :bp<CR>
 nmap <leader>d :bn<CR>
 
 " split navigations

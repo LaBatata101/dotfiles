@@ -4,7 +4,7 @@
 #if [ "$TMUX" = "" ]; then tmux; fi
 
 # Path to your oh-my-zsh installation.
-export ZSH=/home/la-batata101/.oh-my-zsh
+export ZSH=$HOME/.oh-my-zsh
 export EDITOR="vim"
 export USE_EDITOR=$EDITOR
 export VISUAL=$EDITOR
@@ -12,9 +12,7 @@ export VISUAL=$EDITOR
 # it'll load a random theme each time that oh-my-zsh is loaded.
 # See https://github.com/robbyrussell/oh-my-zsh/wiki/Themes
 ZSH_THEME="bullet-train"
-# ZSH_THEME="solarized-powerline"
-# ZSH_POWERLINE_SHOW_USER="false"
-# ZSH_POWERLINE_SINGLE_LINE="true"
+#ZSH_THEME="agnoster"
 
 # Uncomment the following line to use case-sensitive completion.
 # CASE_SENSITIVE="true"
@@ -58,7 +56,11 @@ HIST_STAMPS="mm/dd/yyyy"
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git tmux)
+plugins=(git 
+         zsh-autosuggestions
+         zsh-syntax-highlighting
+#        tmux
+)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -90,11 +92,8 @@ source $ZSH/oh-my-zsh.sh
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
-setxkbmap -option caps:swapescape
-export TERM=xterm-256color
-export RANGER_LOAD_DEFAULT_RC=FALSE
-export QT_QPA_PLATFORMTHEME="qt5ct"
-export QT_PLATFORM_PLUGIN="qt5ct"
+#export QT_QPA_PLATFORMTHEME="qt5ct"
+#export QT_PLATFORM_PLUGIN="qt5ct"
 
 # hide user@hostname
 prompt_context () {  }
@@ -110,7 +109,9 @@ BULLETTRAIN_PROMPT_ORDER=(
   cmd_exec_time
 )
 
-export PATH="/home/la-batata101/.pyenv/bin:$PATH"
-eval "$(pyenv init -)"
+BULLETTRAIN_VIRTUALENV_PREFIX= 
+
+# export PATH="/home/la-batata101/.pyenv/bin:$PATH"
+# eval "$(pyenv init -)"
 #eval "$(pyenv virtualenv-init -)"
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
