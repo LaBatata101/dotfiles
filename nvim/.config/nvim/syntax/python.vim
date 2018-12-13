@@ -227,7 +227,7 @@
     hi def link  pythonInclude      Include
     hi def link  pythonFunction     Function
     hi def link  pythonClass        Type  
-    hi def link  pythonParameters   Normal
+    hi def link  pythonParameters   Function
     hi def link  pythonParam        Normal
     hi def link  pythonBrackets     Normal
     hi def link  pythonClassParameters Normal

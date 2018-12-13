@@ -19,9 +19,9 @@
 "   <F5>        ->  Show White Spaces
 "--------------------------------------------------------------------------"
 
-source $HOME/.config/nvim/config/init.vim
-source $HOME/.config/nvim/config/general.vim
 source $HOME/.config/nvim/config/plugins.vim
-source $HOME/.config/nvim/config/keys.vim
-source $HOME/.config/nvim/config/line.vim
+source $HOME/.config/nvim/config/general.vim
+source $HOME/.config/nvim/config/plugins_config.vim
+source $HOME/.config/nvim/config/keys_binding.vim
+source $HOME/.config/nvim/config/statusline.vim
 source $HOME/.config/nvim/config/project.vim

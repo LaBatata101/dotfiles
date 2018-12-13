@@ -5,14 +5,14 @@
 
 # Path to your oh-my-zsh installation.
 export ZSH=$HOME/.oh-my-zsh
-export EDITOR="vim"
+export EDITOR="nvim"
 export USE_EDITOR=$EDITOR
 export VISUAL=$EDITOR
 # Set name of the theme to load. Optionally, if you set this to "random"
 # it'll load a random theme each time that oh-my-zsh is loaded.
 # See https://github.com/robbyrussell/oh-my-zsh/wiki/Themes
+#ZSH_THEME="spaceship"
 ZSH_THEME="bullet-train"
-#ZSH_THEME="agnoster"
 
 # Uncomment the following line to use case-sensitive completion.
 # CASE_SENSITIVE="true"
@@ -60,6 +60,8 @@ plugins=(git
          zsh-autosuggestions
          zsh-syntax-highlighting
 #        tmux
+         wd
+         web-search
 )
 
 source $ZSH/oh-my-zsh.sh
@@ -109,9 +111,12 @@ BULLETTRAIN_PROMPT_ORDER=(
   cmd_exec_time
 )
 
-BULLETTRAIN_VIRTUALENV_PREFIX= 
+BULLETTRAIN_VIRTUALENV_PREFIX=🐍
+
 
 # export PATH="/home/la-batata101/.pyenv/bin:$PATH"
 # eval "$(pyenv init -)"
 #eval "$(pyenv virtualenv-init -)"
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
+export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"

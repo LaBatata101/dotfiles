@@ -1,90 +1,58 @@
-"--------------------------------------------------------------------------"
-" Color	Scheme							      	   "
-" -------------------------------------------------------------------------"
-set termguicolors
-"set background=dark
-let g:onedark_allow_italics = 1
-let g:neodark#use_256color = 1
-colorscheme neodark
+call plug#begin('~/.config/nvim/plugged')
 
+" status line
+Plug 'itchyny/lightline.vim'
+Plug 'mgee/lightline-bufferline'
 
-"--------------------------------------------------------------------------"
-" indentLine                                                               "
-"--------------------------------------------------------------------------"
-let g:indentLine_enabled = 1
-let g:indentLine_char = '│'
+" icons for NERDTree, status line, etc.
+Plug 'ryanoasis/vim-devicons'
 
-"--------------------------------------------------------------------------"
-" Powerline setup                                                          "
-"--------------------------------------------------------------------------"
+Plug 'tmhedberg/SimpylFold'
+Plug 'vim-scripts/indentpython.vim', { 'for': 'python' }
 
-set laststatus=2
-if !has('gui_running')
-  set t_Co=256
-endif
+" Color Scheme
+Plug 'lifepillar/vim-solarized8'
+Plug 'joshdick/onedark.vim'
+Plug 'KeitaNakamura/neodark.vim' 
+Plug 'ajmwagar/vim-deus'
 
-"--------------------------------------------------------------------------"
-" A.L.E Configuration							   "
-"--------------------------------------------------------------------------"
-highlight ALEErrorSign ctermfg=9
-highlight ALEWarningSign ctermfg=226
-let g:ale_sign_error = '✗'
-let g:ale_sign_warning = '⚠ '
-let g:ale_fixers = {
-    \ 'python':['autopep8']
-    \}
-let g:ale_linters = {
-      \ 'python':['flake8'],
-      \}
-let g:ale_python_flake8_options = '--max-line-length=120 --ignore=E701,W191'
-let g:ale_lint_on_text_changed = 'never'
-let g:ale_lint_delay = 20
-let g:ale_lint_on_enter = 1
-let g:ale_open_list = 1 
-let g:ale_set_loclist = 1
-let g:ale_set_quickfix = 0
-let g:ale_keep_list_window_open = 0
-let g:ale_echo_msg_format = '[%linter%] %s [%severity%]'
-let g:ale_statusline_format = ['⨉ %d','⚠  %d','✔ OK']
-let g:ale_lint_on_save = 1
+" Python autocomplete
+Plug 'ncm2/ncm2'
+Plug 'ncm2/ncm2-jedi'
+Plug 'ncm2/ncm2-path'
+Plug 'roxma/nvim-yarp'
+Plug 'ncm2/ncm2-pyclang'
 
-"--------------------------------------------------------------------------"
-" AutoPep8                                                                 "
-"--------------------------------------------------------------------------"
-let g:autopep8_indent_size=4
-let g:autopep8_max_line_length=120
-let g:autopep8_ignore="E701,W191"
+" Syntax Checker
+Plug 'nvie/vim-flake8', {'for': 'python'}
+Plug 'w0rp/ale', {'for': 'python'}
+Plug 'tell-k/vim-autopep8', {'for': 'python'}
 
-"--------------------------------------------------------------------------"
-"    Jedi-VIM Config                                                       "
-"--------------------------------------------------------------------------"
-"autocmd FileType python setlocal completeopt-=preview
+" Git on VIM
+Plug 'tpope/vim-fugitive'
 
-"--------------------------------------------------------------------------"
-"      SimpylFold Config						   "
-"--------------------------------------------------------------------------"
-let g:SimpylFold_docstring_preview=1
+" Find file
+Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+Plug 'junegunn/fzf.vim'
 
-"--------------------------------------------------------------------------"
-"     DevIcons                                                             "
-"--------------------------------------------------------------------------"
-let g:WebDevIconsUnicodeDecorateFolderNodes = 1
-let g:DevIconsEnableFoldersOpenClose = 1
+" AutoClose for parentesis etc
+Plug 'cohama/lexima.vim'
 
-"---------------------------------------------------------------------------------
-"Undo Tree
-"---------------------------------------------------------------------------------
-if has("persistent_undo")
-  set undodir=~/.undodir/
-  set undofile
-endif
+" Surround
+Plug 'tpope/vim-surround'
 
-" nvim-completion-manager
-"---------------------------------------------------------------------------------
-let g:cm_completeopt = 'menu,menuone,noinsert,noselect,preview'
+" For comment lines
+" <leader>cc comment | <leader>cu uncomment
+Plug 'scrooloose/nerdcommenter'
 
-autocmd CursorMovedI * if pumvisible() == 0|pclose|endif
-autocmd InsertLeave * if pumvisible() == 0|pclose|endif
+Plug 'Yggdroot/indentLine'
+Plug 'editorconfig/editorconfig-vim'
 
-inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
-inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+" wiki
+Plug 'vimwiki/vimwiki'
+
+Plug 'amiorin/vim-project'
+
+Plug 'Shougo/neco-vim', { 'for': 'vim' }
+filetype plugin indent on    " required
+call plug#end()            " required

@@ -44,8 +44,12 @@ Plug 'rakr/vim-one'
 Plug 'ajmwagar/vim-deus'
 
 " Python autocomplete
-Plug 'davidhalter/jedi-vim', { 'for': 'python' }
-
+"Plug 'davidhalter/jedi-vim', { 'for': 'python' }
+Plug 'prabirshrestha/async.vim'
+Plug 'prabirshrestha/vim-lsp'
+Plug 'ryanolsonx/vim-lsp-python'
+Plug 'prabirshrestha/asyncomplete.vim'
+Plug 'prabirshrestha/asyncomplete-lsp.vim'
 " Syntax Checker
 Plug 'nvie/vim-flake8', {'for': 'python'}
 Plug 'w0rp/ale', {'for': 'python'}
@@ -72,6 +76,8 @@ Plug 'mbbill/undotree'
 Plug 'editorconfig/editorconfig-vim'
 Plug 'majutsushi/tagbar', { 'on': 'TagBar' }
 Plug 'KeitaNakamura/neodark.vim'
+Plug 'rhysd/vim-operator-surround'
+Plug 'kana/vim-operator-user'
 filetype plugin indent on    " required
 call plug#end()            " required
 
@@ -212,8 +218,10 @@ endif
 "--------------------------------------------------------------------------"
 highlight ALEErrorSign ctermfg=160
 highlight ALEWarningSign ctermfg=226
-let g:ale_sign_error = '✗'
-let g:ale_sign_warning = '⚠ '
+"let g:ale_sign_error = '✗'
+"let g:ale_sign_warning = '⚠ '
+let g:ale_sign_error = '❌'
+let g:ale_sign_warning = '⚠️'
 let g:ale_linters = {
       \ 'python':['flake8'],
       \}
@@ -221,7 +229,7 @@ let g:ale_python_flake8_options = '--max-line-length=120 --ignore=E701,W191'
 let g:ale_lint_on_text_changed = 'never'
 let g:ale_lint_delay = 50
 let g:ale_lint_on_enter = 1
-let g:ale_open_list = 1 
+"let g:ale_open_list = 1 
 let g:ale_set_loclist = 1
 let g:ale_set_quickfix = 0
 let g:ale_keep_list_window_open = 0
@@ -238,10 +246,6 @@ map <C-P> :FZF<CR>
 "--------------------------------------------------------------------------"
 " NERDTree								   "
 "--------------------------------------------------------------------------"
-" Open NERDTree when Vim startsup and no files were specified
-autocmd StdinReadPre * let s:std_in=1
-autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
-let NERDTreeIgnore=['\.pyc$', '\~$'] " ignore files in NERDTree
 map <F2> :NERDTreeToggle<CR>
 
 "--------------------------------------------------------------------------"
@@ -271,7 +275,7 @@ let g:DevIconsEnableFoldersOpenClose = 1
 " Status Line								   "
 "--------------------------------------------------------------------------"
 let g:lightline = {
-      \ 'colorscheme': 'one',
+      \ 'colorscheme': 'neodark',
       \ 'active': {
       \	  'left': [ [ 'mode', 'paste' ],
       \		    [ 'gitbranch', 'readonly', 'filename', 'modified' ] ],
@@ -356,3 +360,23 @@ endif
     "autocmd CmdlineEnter [/\?] :set hlsearch
     "autocmd CmdlineLeave [/\?] :set nohlsearch
 "augroup END
+
+inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
+inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<cr>"
+"let g:python3_host_prog = '/usr/bin/python'
+if executable('pyls')
+    au User lsp_setup call lsp#register_server({
+        \ 'name': 'pyls',
+        \ 'cmd': {server_info->['pyls']},
+        \ 'whitelist': ['python'],
+        \ })
+endif
+let g:asyncomplete_smart_completion = 1
+let g:asyncomplete_auto_popup = 1
+let g:asyncomplete_remove_duplicates = 1
+imap <c-space> <Plug>(asyncomplete_force_refresh)
+
+map <silent>aa <Plug>(operator-surround-append)
+map <silent>ad <Plug>(operator-surround-delete)
+map <silent>ar <Plug>(operator-surround-replace)

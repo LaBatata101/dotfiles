@@ -1,5 +1,2 @@
 let g:netrw_dirhistmax  =10
-let g:netrw_dirhist_cnt =3
-let g:netrw_dirhist_1='/home/labatata101/dotfiles/nvim/.config/nvim/plugged/neodark.vim/autoload'
-let g:netrw_dirhist_2='/home/labatata101/dotfiles/nvim/.config/nvim/plugged/neodark.vim/autoload/lightline'
-let g:netrw_dirhist_3='/home/labatata101/dotfiles/nvim/.config/nvim/plugged/neodark.vim/autoload/lightline/colorscheme'
+let g:netrw_dirhist_cnt =0
