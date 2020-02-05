@@ -1,22 +1,5 @@
 " Author: LaBatata101
-" Last Update: 2017/06/24
-"--------------------------------------------------------------------------"
-" Commands:
-"   <leader> = ,
-"<
-"   <leader>cc  ->  comment line
-"   <leader>cu  ->  uncomment line
-"   <leader>s   ->  save file
-"   <leader>r   ->  source file
-"   <leader>k   ->  close buffer
-"   <leader>q   ->  quit vim
-"   <leader>e	->  execute python file
-"   <space>     ->  fold
-"   Ctrl-P      ->  FuzzyFinder
-"   Ctrl-A      ->  previus buffer
-"   Ctrl-D      ->  next buffer
-"   <F2>        ->  NERDTree
-"   <F5>        ->  Show White Spaces
+" Last Update: 2019/02/16
 "--------------------------------------------------------------------------"
 
 source $HOME/.config/nvim/config/plugins.vim
@@ -25,3 +8,5 @@ source $HOME/.config/nvim/config/plugins_config.vim
 source $HOME/.config/nvim/config/keys_binding.vim
 source $HOME/.config/nvim/config/statusline.vim
 source $HOME/.config/nvim/config/project.vim
+source $HOME/.config/nvim/config/ranger.vim
+source $HOME/.config/nvim/config/terminal.vim

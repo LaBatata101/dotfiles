@@ -1,7 +1,7 @@
 
 let g:python3_host_prog = '/usr/bin/python'
 " disable python 2 support
-let g:loaded_python_provider = 1
+let g:loaded_python_provider = 0
 
 "set rtp+=~/.config/nvim/plugged/deoplete.nvim/
 "set rtp+=~/.config/nvim/plugged/echodoc.vim/
@@ -11,6 +11,7 @@ let g:loaded_python_provider = 1
 "let g:deoplete#omni#input_patterns = {}
 "let g:deoplete#omni#input_patterns.python3 = '\.'
 "autocmd CompleteDone * silent! pclose!
+set cursorline
 set nohlsearch
 set noshowmode
 " allow buffer switching without saving
@@ -36,7 +37,7 @@ let mapleader = " "
 
 " automatically change window's cwd to file's
 " dir
-set autochdir
+"set autochdir
 
 set colorcolumn=100
 " Start scrolling slightly before the cursor reaches an edge
@@ -60,7 +61,6 @@ syntax on
 
 set  undolevels=1000
 
-" Open NERDTree when Vim startsup and no files were specified
-" autocmd StdinReadPre * let s:std_in=1
-" autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
-" let NERDTreeIgnore=['\.pyc$', '\~$'] " ignore files in NERDTree
+set wildignore+=*.o,*.pyc,.git/*,__pycache__/*
+
+command! Cheatsheet :e $HOME/.config/nvim/config/cheatsheet.txt

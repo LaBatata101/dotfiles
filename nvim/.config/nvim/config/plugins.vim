@@ -15,6 +15,7 @@ Plug 'lifepillar/vim-solarized8'
 Plug 'joshdick/onedark.vim'
 Plug 'KeitaNakamura/neodark.vim' 
 Plug 'ajmwagar/vim-deus'
+Plug 'morhetz/gruvbox'
 
 " Python autocomplete
 Plug 'ncm2/ncm2'
@@ -24,9 +25,7 @@ Plug 'roxma/nvim-yarp'
 Plug 'ncm2/ncm2-pyclang'
 
 " Syntax Checker
-Plug 'nvie/vim-flake8', {'for': 'python'}
-Plug 'w0rp/ale', {'for': 'python'}
-Plug 'tell-k/vim-autopep8', {'for': 'python'}
+Plug 'w0rp/ale', {'for': ['python', 'c']}
 
 " Git on VIM
 Plug 'tpope/vim-fugitive'
@@ -49,10 +48,17 @@ Plug 'Yggdroot/indentLine'
 Plug 'editorconfig/editorconfig-vim'
 
 " wiki
-Plug 'vimwiki/vimwiki'
+"Plug 'vimwiki/vimwiki'
 
 Plug 'amiorin/vim-project'
 
 Plug 'Shougo/neco-vim', { 'for': 'vim' }
+Plug 'tyrannicaltoucan/vim-quantum'
+
+Plug 'majutsushi/tagbar', { 'for': ['c', 'python'] }
+" Semantic highlight for python
+Plug 'numirias/semshi', {'do': ':UpdateRemotePlugins'}
+
+Plug 'liuchengxu/vista.vim'
 filetype plugin indent on    " required
 call plug#end()            " required
