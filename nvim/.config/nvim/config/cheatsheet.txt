@@ -1,0 +1,35 @@
+<leader> = Space
+
+# QUICKFIX
+    <leader>lo -> open quickfix list
+    <leader>ll -> close quickfix list
+    <leader>ln -> next error in quickfix
+    <leader>lp -> previous error in quickfix
+
+# BUFFER
+    <leader>p -> previous buffer
+    <leader>n -> next buffer
+    <leader>k -> close buffer
+
+# SPLIT
+    <leader>h -> split horizontally
+    <leader>v -> split vertically
+    <leader>o -> restore buffer
+    ## MOVIMENTATION
+        <leader>J -> move to bottom split
+        <leader>K -> move to up split
+        <leader>L -> move to left split
+        <leader>H -> move to right split
+    ## RESIZING (arrow keys)
+        → resize left
+        ← resize right
+        ↓ resize down
+        ↑ resize up
+
+# GENERAL
+<leader>ff -> fold text
+<leader>s -> save file
+<leader>r -> source neovim config file
+<F6> -> show invisible characters
+<C-P> -> search files in current directory
+<C-g> -> search text in current directory
