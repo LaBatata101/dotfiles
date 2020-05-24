@@ -1,16 +1,7 @@
-
 let g:python3_host_prog = '/usr/bin/python'
 " disable python 2 support
 let g:loaded_python_provider = 0
 
-"set rtp+=~/.config/nvim/plugged/deoplete.nvim/
-"set rtp+=~/.config/nvim/plugged/echodoc.vim/
-"let g:deoplete#enable_at_startup = 1
-"let g:echodoc#enable_at_sartup = 1
-""autocmd FileType python setlocal omnifunc=python3complete#Complete
-"let g:deoplete#omni#input_patterns = {}
-"let g:deoplete#omni#input_patterns.python3 = '\.'
-"autocmd CompleteDone * silent! pclose!
 set cursorline
 set nohlsearch
 set noshowmode
