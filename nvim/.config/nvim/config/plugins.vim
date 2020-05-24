@@ -19,10 +19,14 @@ Plug 'morhetz/gruvbox'
 
 " Python autocomplete
 Plug 'ncm2/ncm2'
-Plug 'ncm2/ncm2-jedi'
 Plug 'ncm2/ncm2-path'
 Plug 'roxma/nvim-yarp'
 Plug 'ncm2/ncm2-pyclang'
+Plug 'autozimu/LanguageClient-neovim', {
+    \ 'branch': 'next',
+    \ 'do': 'bash install.sh',
+    \ }
+
 
 " Syntax Checker
 Plug 'w0rp/ale', {'for': ['python', 'c']}
@@ -31,7 +35,7 @@ Plug 'w0rp/ale', {'for': ['python', 'c']}
 Plug 'tpope/vim-fugitive'
 
 " Find file
-Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+Plug 'junegunn/fzf', { 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 
 " AutoClose for parentesis etc
@@ -52,7 +56,6 @@ Plug 'editorconfig/editorconfig-vim'
 
 Plug 'amiorin/vim-project'
 
-Plug 'Shougo/neco-vim', { 'for': 'vim' }
 Plug 'tyrannicaltoucan/vim-quantum'
 
 Plug 'majutsushi/tagbar', { 'for': ['c', 'python'] }
@@ -60,5 +63,6 @@ Plug 'majutsushi/tagbar', { 'for': ['c', 'python'] }
 Plug 'numirias/semshi', {'do': ':UpdateRemotePlugins'}
 
 Plug 'liuchengxu/vista.vim'
+Plug 'pechorin/any-jump.vim'
 filetype plugin indent on    " required
 call plug#end()            " required
