@@ -1,0 +1,22 @@
+{
+    "initializationOptions": {
+        "plugins": {
+            "flake8": {
+                "args": [
+                    "--max-line-length=120",
+                    "--ignore=E701,W191,E402"
+                ],
+                "enabled": true
+            },
+            "mccabe": {
+                "enabled": false
+            },
+            "pycodestyle": {
+                "enabled": false
+            },
+            "pydocstyle": {
+                "enabled": false
+            }
+        }
+    }
+}

@@ -1,6 +1,6 @@
-set rtp+=~/.config/nvim/plugged/vim-project/
-call project#rc("~/Scripts_Python")
+"set rtp+=~/.config/nvim/plugged/vim-project/
+"call project#rc("~/Scripts_Python")
 
-Project 'django/simplemooc'
+"Project 'django/simplemooc'
 
-call project#rc()
+"call project#rc()

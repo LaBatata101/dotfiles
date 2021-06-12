@@ -11,9 +11,6 @@ noremap <leader>n :bn<CR>
 " close buffer
 map <leader>k :bd<CR>
 
-" restore splits
-noremap <leader>o :only<CR>
-
 " Split resizing
 nmap <left> <C-w>5<
 nmap <up> <C-w>5+
@@ -23,6 +20,9 @@ nmap <right> <C-w>5>
 " Split
 noremap <Leader>h :<C-u>split<CR>
 nmap <Leader>v :<C-u>vsplit<CR>
+
+" restore splits
+noremap <leader>o :only<CR>
 
 " split navigations
 nnoremap <leader>J <C-W><C-J>
@@ -44,10 +44,9 @@ nnoremap <F6> :<C-U>setlocal lcs=tab:>-,trail:-,eol:$,space:. list! list? <CR>
 " compile C program and run it
 map <F5> :!clang % -o %< && %< <CR>
 
-
-autocmd FileType python noremap <buffer> <leader>t :<C-u>Autopep8<CR>
-
 " map FuzzyFinder to Ctrl-P
-map <C-P> :Files<CR>
+nnoremap <C-P> :Files<CR>
 " Search for text inside files
-nnoremap <C-g> :Rg<Cr>
+nnoremap <C-g> :Rg<CR>
+" Switch buffers
+nnoremap <TAB> :Buffers<CR>

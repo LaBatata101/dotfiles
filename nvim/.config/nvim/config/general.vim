@@ -1,6 +1,10 @@
 let g:python3_host_prog = '/usr/bin/python'
 " disable python 2 support
 let g:loaded_python_provider = 0
+" skip python 2 check
+let g:python_host_skip_check = 1
+
+let updatetime=300
 
 set cursorline
 set nohlsearch
@@ -30,7 +34,7 @@ let mapleader = " "
 " dir
 "set autochdir
 
-set colorcolumn=100
+set colorcolumn=120
 " Start scrolling slightly before the cursor reaches an edge
 set scrolloff=5
 set sidescrolloff=5

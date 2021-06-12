@@ -1,2 +1,5 @@
 let g:netrw_dirhistmax  =10
-let g:netrw_dirhist_cnt =0
+let g:netrw_dirhist_cnt =3
+let g:netrw_dirhist_1='/home/labatata101/Code/C/exercises_of_book/programing_projects'
+let g:netrw_dirhist_2='/home/labatata101/dotfiles/nvim/.config/nvim/plugged/neoranger'
+let g:netrw_dirhist_3='/home/labatata101/dotfiles/nvim/.config/nvim/plugged/neoranger/plugin'
