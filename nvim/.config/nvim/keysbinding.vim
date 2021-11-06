@@ -28,7 +28,7 @@ nmap <down> <C-w>5-
 nmap <right> <C-w>5>
 
 " source it
-map <leader>r <cmd>source $HOME/.config/nvim/init.vim<CR>
+map <leader>r <cmd>source $MYVIMRC<CR>
 
 " Telescope
 nnoremap <leader>ff <cmd>Telescope find_files<cr>
