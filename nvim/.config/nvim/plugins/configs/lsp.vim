@@ -82,40 +82,14 @@ lsp_installer.on_server_ready(function(server)
     server:setup(opts)
 end)
 
---require'lspconfig'.pyright.setup{}
---local lsp_installer_servers = require'nvim-lsp-installer.servers'
---
---local ok, pyright = lsp_installer_servers.get_server("pyright")
---if ok then
---    local opts = {
---        on_attach = require "lsp_signature".on_attach(),
---    }
---
---    pyright:setup(opts)
---end
-
---require'lspconfig'.rust_analyzer.setup{
---    settings = {
---            ["rust-analyzer"] = {
---                checkOnSave = {
---                    command = "clippy"
---                }
---            },
---    },
---
---    on_attach = require "lsp_signature".on_attach()
---}
-
-local signs = { Error = " ", Warning = " ", Hint = " ", Information = " " }
-
-for type, icon in pairs(signs) do
-  local hl = "DiagnosticSign" .. type
-  vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = hl })
-end
+vim.fn.sign_define("DiagnosticSignError", {text = " ", texthl = "DiagnosticSignError"})
+vim.fn.sign_define("DiagnosticSignWarn", {text = " ", texthl = "DiagnosticSignWarn"})
+vim.fn.sign_define("DiagnosticSignInformation", {text = " ", texthl = "DiagnosticSignInformation"})
+vim.fn.sign_define("DiagnosticSignHint", {text = "", texthl = "DiagnosticSignHint"})
 EOF
 
 " Show diagnostic popup on cursor hold
-autocmd CursorHold * lua vim.lsp.diagnostic.show_line_diagnostics()
+autocmd CursorHold <buffer> lua vim.diagnostic.open_float(nil, {focusable=false, source='always', border='rounded'})
 
 " Format on save
 autocmd BufWritePre <buffer> lua vim.lsp.buf.formatting_sync(nil, 1000)
