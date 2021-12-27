@@ -34,6 +34,7 @@ map <leader>r <cmd>source $MYVIMRC<CR>
 nnoremap <leader>ff <cmd>Telescope find_files<cr>
 nnoremap <leader>fg <cmd>Telescope live_grep<cr>
 nnoremap <leader>fb <cmd>Telescope buffers<cr>
+nnoremap <silent> ga <cmd>Telescope lsp_code_actions<CR>
 
 " LSP
 nnoremap <silent> K     <cmd>lua vim.lsp.buf.hover()<CR>
@@ -41,8 +42,7 @@ nnoremap <silent> gi    <cmd>lua vim.lsp.buf.implementation()<CR>
 nnoremap <silent> gr    <cmd>lua vim.lsp.buf.references()<CR>
 nnoremap <silent> gW    <cmd>lua vim.lsp.buf.workspace_symbol()<CR>
 nnoremap <silent> gd    <cmd>lua vim.lsp.buf.definition()<CR>
-nnoremap <silent> ga    <cmd>lua vim.lsp.buf.code_action()<CR>
-nnoremap <silent> <F2>  <cmd>lua vim.lsp.buf.rename()<CR>
+nnoremap <leader>rn    <cmd>lua vim.lsp.buf.rename()<CR>
 
 " Hop
 nnoremap <leader><leader> <cmd>HopWord<CR>
