@@ -61,7 +61,7 @@ plugins=(git
          zsh-syntax-highlighting
 #        tmux
          wd
-         web-search
+         #web-search
 )
 
 source $ZSH/oh-my-zsh.sh
@@ -117,9 +117,17 @@ BULLETTRAIN_VIRTUALENV_PREFIX=🐍
 # export PATH="/home/la-batata101/.pyenv/bin:$PATH"
 # eval "$(pyenv init -)"
 #eval "$(pyenv virtualenv-init -)"
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
+# FZF
+source /usr/share/fzf/key-bindings.zsh
+source /usr/share/fzf/completion.zsh
 
 #export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
 
 # added by pipx (https://github.com/cs01/pipx)
-export PATH="/home/labatata101/.local/bin:$PATH"
+export PATH="$HOME/.local/bin:$PATH"
+
+# add cargo bin path
+export PATH="$HOME/.cargo/bin/:$PATH"
+
+# export PATH="$HOME/.local/share/nvim/lsp_servers/rust:$PATH" 
