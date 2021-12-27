@@ -55,3 +55,5 @@ set completeopt=menu,menuone,noselect
 set autoindent
 
 set signcolumn=yes
+
+set pumblend=20
