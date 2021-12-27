@@ -13,7 +13,6 @@ source $CFG_DIR/plugins/configs/lualine.vim
 source $CFG_DIR/plugins/configs/nvim_cmp.vim
 source $CFG_DIR/plugins/configs/telescope.vim
 source $CFG_DIR/plugins/configs/neoscroll.vim
-source $CFG_DIR/plugins/configs/rust_tools.vim
 source $CFG_DIR/plugins/configs/bufferline.vim
 source $CFG_DIR/plugins/configs/tokyonight.vim
 source $CFG_DIR/plugins/configs/lsp_installer.vim
@@ -23,3 +22,4 @@ source $CFG_DIR/plugins/configs/nvim_lightbulb.vim
 source $CFG_DIR/plugins/configs/indent_blankline.vim
 source $CFG_DIR/plugins/configs/trouble.vim
 source $CFG_DIR/plugins/configs/hop.vim
+source $CFG_DIR/plugins/configs/treesitter.vim
