@@ -39,10 +39,13 @@ nnoremap <silent> ga <cmd>Telescope lsp_code_actions<CR>
 " LSP
 nnoremap <silent> K     <cmd>lua vim.lsp.buf.hover()<CR>
 nnoremap <silent> gi    <cmd>lua vim.lsp.buf.implementation()<CR>
-nnoremap <silent> gr    <cmd>lua vim.lsp.buf.references()<CR>
 nnoremap <silent> gW    <cmd>lua vim.lsp.buf.workspace_symbol()<CR>
 nnoremap <silent> gd    <cmd>lua vim.lsp.buf.definition()<CR>
-nnoremap <leader>rn    <cmd>lua vim.lsp.buf.rename()<CR>
+nnoremap <leader>rn     <cmd>lua vim.lsp.buf.rename()<CR>
+
+" Trouble
+nnoremap <leader>td     <cmd>TroubleToggle document_diagnostics<CR>
+nnoremap <silent> gr    <cmd>TroubleToggle lsp_references<CR>
 
 " Hop
 nnoremap <leader><leader> <cmd>HopWord<CR>
