@@ -23,3 +23,5 @@ source $CFG_DIR/plugins/configs/indent_blankline.vim
 source $CFG_DIR/plugins/configs/trouble.vim
 source $CFG_DIR/plugins/configs/hop.vim
 source $CFG_DIR/plugins/configs/treesitter.vim
+source $CFG_DIR/plugins/configs/illuminate.vim
+source $CFG_DIR/plugins/configs/comment.vim

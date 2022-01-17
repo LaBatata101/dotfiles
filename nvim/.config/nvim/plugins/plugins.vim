@@ -38,7 +38,7 @@ Plug 'lukas-reineke/indent-blankline.nvim'
 Plug 'windwp/nvim-autopairs'
 
 " Comment Code
-Plug 'b3nj5m1n/kommentary'
+Plug 'numToStr/Comment.nvim'
 
 " Misc
 Plug 'nvim-lua/plenary.nvim'
@@ -58,6 +58,9 @@ Plug 'hrsh7th/vim-vsnip-integ'
 
 " Smooth scrolling
 Plug 'karb94/neoscroll.nvim'
+
+" Highlight word under the cursor
+Plug 'RRethy/vim-illuminate'
 
 " Fix/Perfomance improvements
 Plug 'antoinemadec/FixCursorHold.nvim'

@@ -40,9 +40,14 @@ for _, name in pairs(servers) do
   end
 end
 
+local function custom_on_attach(client, bufnr)
+    require "lsp_signature".on_attach()
+    require "illuminate".on_attach(client)
+end
+
 lsp_installer.on_server_ready(function(server)
     local opts = {
-        on_attach = require "lsp_signature".on_attach(),
+        on_attach = custom_on_attach,
     }
 
     -- (optional) Customize the options passed to the server
@@ -54,6 +59,9 @@ lsp_installer.on_server_ready(function(server)
             ["rust-analyzer"] = {
                 checkOnSave = {
                     command = "clippy"
+                },
+                completion = {
+                    addCallArgumentSnippets = false,
                 }
             },
         }
