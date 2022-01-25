@@ -1,4 +1,4 @@
-lua <<EOF
+lua << EOF
 local lspkind = require "lspkind"
 lspkind.init()
 
@@ -94,3 +94,4 @@ cmp.setup {
     ghost_text = true,
   },
 }
+EOF
