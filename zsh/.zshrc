@@ -1,13 +1,3 @@
-# If you come from bash you might have to change your $PATH.
-#export PATH=$HOME/bin:/usr/local/bin:$PATH
-#alias tmux="TERM=screen-256color-bce tmux"
-#if [ "$TMUX" = "" ]; then tmux; fi
-
-# Path to your oh-my-zsh installation.
-export ZSH=$HOME/.oh-my-zsh
-export EDITOR="nvim"
-export USE_EDITOR=$EDITOR
-export VISUAL=$EDITOR
 # Set name of the theme to load. Optionally, if you set this to "random"
 # it'll load a random theme each time that oh-my-zsh is loaded.
 # See https://github.com/robbyrussell/oh-my-zsh/wiki/Themes
@@ -59,9 +49,8 @@ HIST_STAMPS="mm/dd/yyyy"
 plugins=(git 
          zsh-autosuggestions
          zsh-syntax-highlighting
-#        tmux
          wd
-         #web-search
+         fzf
 )
 
 source $ZSH/oh-my-zsh.sh
@@ -94,8 +83,6 @@ source $ZSH/oh-my-zsh.sh
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
-#export QT_QPA_PLATFORMTHEME="qt5ct"
-#export QT_PLATFORM_PLUGIN="qt5ct"
 
 # hide user@hostname
 prompt_context () {  }
@@ -113,21 +100,14 @@ BULLETTRAIN_PROMPT_ORDER=(
 
 BULLETTRAIN_VIRTUALENV_PREFIX=🐍
 
+# Pyenv config
+export PYENV_ROOT="$HOME/.pyenv"
+export PATH="$PYENV_ROOT/bin:$PATH"
+eval "$(pyenv init --path)"
+export PYENV_VIRTUALENVWRAPPER_PREFER_PYVENV="true"
+export WORKON_HOME=$HOME/.virtualenvs
 
-# export PATH="/home/la-batata101/.pyenv/bin:$PATH"
-# eval "$(pyenv init -)"
-#eval "$(pyenv virtualenv-init -)"
-
-# FZF
-source /usr/share/fzf/key-bindings.zsh
-source /usr/share/fzf/completion.zsh
-
-#export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
-
-# added by pipx (https://github.com/cs01/pipx)
-export PATH="$HOME/.local/bin:$PATH"
-
-# add cargo bin path
-export PATH="$HOME/.cargo/bin/:$PATH"
-
-# export PATH="$HOME/.local/share/nvim/lsp_servers/rust:$PATH" 
+if command -v pyenv 1>/dev/null 2>&1; then
+  eval "$(pyenv init -)"
+  eval "$(pyenv virtualenv-init -)"
+fi
