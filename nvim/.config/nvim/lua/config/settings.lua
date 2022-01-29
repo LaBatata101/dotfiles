@@ -45,4 +45,15 @@ vim.opt.pumblend = 20
 
 vim.opt.linebreak = true
 
--- vim.cmd [[autocmd CursorMoved <buffer> :nohlsearch]]
+-- emoji is true by default but makes (n)vim treat all emoji as double width
+-- which breaks rendering so we turn this off.
+-- CREDIT: https://www.youtube.com/watch?v=F91VWOelFNE
+vim.opt.emoji = false
+
+vim.cmd [[
+  augroup VimrcIncSearchHighlight
+    autocmd!
+    autocmd CmdlineEnter [/\\?] :set hlsearch
+    autocmd CmdlineLeave [/\\?] :set nohlsearch
+  augroup END
+]]
