@@ -15,7 +15,6 @@ source $CFG_DIR/plugins/configs/telescope.vim
 source $CFG_DIR/plugins/configs/neoscroll.vim
 source $CFG_DIR/plugins/configs/bufferline.vim
 source $CFG_DIR/plugins/configs/tokyonight.vim
-source $CFG_DIR/plugins/configs/lsp_installer.vim
 source $CFG_DIR/plugins/configs/lsp_signature.vim
 source $CFG_DIR/plugins/configs/nvim_autopairs.vim
 source $CFG_DIR/plugins/configs/nvim_lightbulb.vim
@@ -25,3 +24,4 @@ source $CFG_DIR/plugins/configs/hop.vim
 source $CFG_DIR/plugins/configs/treesitter.vim
 source $CFG_DIR/plugins/configs/illuminate.vim
 source $CFG_DIR/plugins/configs/comment.vim
+source $CFG_DIR/plugins/configs/fidget.vim
