@@ -20,11 +20,22 @@ return require('packer').startup({function(use)
   use 'folke/lsp-colors.nvim'
   use {
     'folke/trouble.nvim',
+    cmd = 'TroubleToggle',
+    -- keys = {'<leader>td', 'gr'},
     requires = "kyazdani42/nvim-web-devicons",
+    config = function()
+      require("config.plugins.trouble")
+    end
   }
 
   -- Show LSP load progress
-  use 'j-hui/fidget.nvim'
+  use {
+    'j-hui/fidget.nvim',
+    ft = {'rust', 'lua'},
+    config = function()
+      require("config.plugins.fidget")
+    end
+  }
 
   -- Show a 💡 when a code action is available
   use 'kosayoda/nvim-lightbulb'
@@ -32,17 +43,26 @@ return require('packer').startup({function(use)
   -- Completion
   use {
     'hrsh7th/nvim-cmp',
+    module = 'cmp',
+    event = 'InsertEnter',
     requires = {
       { 'hrsh7th/cmp-path', after = 'nvim-cmp' },
       { 'hrsh7th/cmp-nvim-lsp', after = 'nvim-cmp' },
       { 'hrsh7th/cmp-buffer', after = 'nvim-cmp' },
-      { 'hrsh7th/cmp-vsnip', after = 'nvim-cmp' }
+      { 'hrsh7th/cmp-vsnip', after = {'nvim-cmp', 'vim-vsnip'} }
     }
   }
 
   -- Snippet
-  use 'hrsh7th/vim-vsnip'
-  use 'hrsh7th/vim-vsnip-integ'
+  use {
+    'hrsh7th/vim-vsnip',
+    ft = {'python', 'lua', 'c', 'rust'},
+    event = 'InsertEnter'
+  }
+  use {
+    'hrsh7th/vim-vsnip-integ',
+    after = 'vim-vsnip'
+  }
 
   -- Themes
   use 'folke/tokyonight.nvim'
@@ -53,6 +73,7 @@ return require('packer').startup({function(use)
   -- Autoclose parentesis etc
   use {
     'windwp/nvim-autopairs',
+    after = 'nvim-cmp',
     config = function()
       require('nvim-autopairs').setup()
     end
@@ -63,7 +84,12 @@ return require('packer').startup({function(use)
 
   use {
     'nvim-telescope/telescope.nvim',
-    requires = { 'nvim-lua/plenary.nvim' }
+    cmd = 'Telescope',
+    -- keys = {'<leader>ff', '<leader>fg', '<leader>fb', 'ga'},
+    requires = { 'nvim-lua/plenary.nvim' },
+    config = function()
+      require("config.plugins.telescope")
+    end
   }
 
   -- status line
@@ -85,6 +111,16 @@ return require('packer').startup({function(use)
   use {
     'phaazon/hop.nvim',
     branch = 'v1'
+  }
+
+  -- rename UI
+  use {
+    'filipdutescu/renamer.nvim',
+    branch = 'master',
+    requires = { {'nvim-lua/plenary.nvim'} },
+    config = function()
+      require('renamer').setup()
+    end
   }
 
   -- Smooth scrolling
