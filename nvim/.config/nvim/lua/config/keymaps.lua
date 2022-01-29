@@ -43,7 +43,9 @@ map('n', 'K', '<cmd>lua vim.lsp.buf.hover()<CR>', { noremap = true, silent = tru
 map('n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<CR>', { noremap = true, silent = true })
 map('n', 'gW', '<cmd>lua vim.lsp.buf.workspace_symbol()<CR>', { noremap = true, silent = true })
 map('n', 'gd', '<cmd>lua vim.lsp.buf.definition()<CR>', { noremap = true, silent = true })
-map('n', '<leader>rn', '<cmd>lua vim.lsp.buf.rename()<CR>', { noremap = true })
+
+-- Rename
+map('', '<leader>rn', '<cmd>lua require("renamer").rename()<CR>', { noremap = true, silent = true })
 
 -- Trouble
 map('n', '<leader>td', '<cmd>TroubleToggle document_diagnostics<CR>', { noremap = true })
