@@ -1,7 +1,7 @@
-#!/bin/sh
+#!/usr/bin/env bash
 # This script swaps the CAPSLOCK key with ESC key before starting neovim 
 # and reset the key configuration to what it was before after the execution of neovim
-# FIXME: if the session is suspended the key remap gets back to normal
+# BUG: if the session is suspended the key remap gets back to normal
 
 function get_xkbmap_options() {
     setxkbmap -query | awk 'FNR == 5 {size=split($2, array, ",");
