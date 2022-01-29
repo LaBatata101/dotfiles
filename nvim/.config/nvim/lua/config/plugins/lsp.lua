@@ -43,9 +43,14 @@ local function custom_on_attach(client, bufnr)
   require "illuminate".on_attach(client)
 end
 
+local handlers =  {
+  ["textDocument/hover"] =  vim.lsp.with(vim.lsp.handlers.hover, {border = 'rounded'}),
+}
+
 lsp_installer.on_server_ready(function(server)
   local opts = {
     on_attach = custom_on_attach,
+    handlers = handlers,
   }
 
   -- (optional) Customize the options passed to the server
@@ -120,7 +125,7 @@ vim.fn.sign_define("DiagnosticSignInformation", {text = " ", texthl = "Diagno
 vim.fn.sign_define("DiagnosticSignHint", {text = "", texthl = "DiagnosticSignHint"})
 
 -- Show diagnostic popup on cursor hold
-vim.cmd [[autocmd CursorHold <buffer> lua vim.diagnostic.open_float(nil, {focusable=false, source='always', border='rounded'})]]
+vim.cmd [[autocmd CursorHold * lua vim.diagnostic.open_float(nil, {focus=false, source='if_many', border='rounded'})]]
 
 -- Format on save
-vim.cmd [[autocmd BufWritePre <buffer> lua vim.lsp.buf.formatting_sync(nil, 1000)]]
+vim.cmd [[autocmd BufWritePre * lua vim.lsp.buf.formatting_sync(nil, 1000)]]
