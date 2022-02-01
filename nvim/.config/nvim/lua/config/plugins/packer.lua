@@ -130,11 +130,29 @@ return require('packer').startup({function(use)
   use 'RRethy/vim-illuminate'
 
   -- Fix/Perfomance improvements
-  use 'antoinemadec/FixCursorHold.nvim'
+  use { 'antoinemadec/FixCursorHold.nvim', event = 'BufReadPost' }
   use 'nathom/filetype.nvim'
   use 'lewis6991/impatient.nvim'
 
+  -- Profile neovim startup time
   use 'tweekmonster/startuptime.vim'
+
+  -- Debug
+  use { 'mfussenegger/nvim-dap', ft = vim.g.supported_languages }
+  use {
+    "rcarriga/nvim-dap-ui",
+    requires = {"mfussenegger/nvim-dap"},
+    after = 'nvim-dap',
+    config = function()
+      require("config.plugins.dap")
+    end
+  }
+  use {
+    "Pocco81/DAPInstall.nvim",
+    config = function()
+      require("config.plugins.DAPInstall")
+    end
+  }
 
   -- Automatically set up your configuration after cloning packer.nvim
   -- Put this at the end after all plugins

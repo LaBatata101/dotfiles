@@ -59,3 +59,11 @@ map('i', '<Tab>', 'vsnip#jumpable(1) ? "<Plug>(vsnip-jump-next)" : "<Tab>"', { e
 map('s', '<Tab>', 'vsnip#jumpable(1) ? "<Plug>(vsnip-jump-next)" : "<Tab>"', { expr = true })
 map('i', '<S-Tab>', 'vsnip#jumpable(-1) ? "<Plug>(vsnip-jump-prev)" : "<S-Tab>"', { expr = true })
 map('s', '<S-Tab>', 'vsnip#jumpable(-1) ? "<Plug>(vsnip-jump-prev)" : "<S-Tab>"', { expr = true })
+
+-- DAP
+map('n', '<F5>', '<cmd>lua require("dap").continue()<CR>', {noremap = true, silent = true})
+map('n', '<F10>', '<cmd>lua require("dap").step_over()<CR>', {noremap = true, silent = true})
+map('n', '<F11>', '<cmd>lua require("dap").step_into()<CR>', {noremap = true, silent = true})
+map('n', '<F12>', '<cmd>lua require("dap").step_out()<CR>', {noremap = true, silent = true})
+map('n', '<leader>b', '<cmd>lua require("dap").toggle_breakpoint()<CR>', {noremap = true, silent = true})
+map('n', '<leader>dc', '<cmd>lua require("dap").terminate();require("dapui").close()<CR>', {noremap = true, silent = true})
