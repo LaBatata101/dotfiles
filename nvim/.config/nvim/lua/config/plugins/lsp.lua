@@ -66,6 +66,9 @@ lsp_installer.on_server_ready(function(server)
       },
     }
 
+    local extension_path = '/home/labatata/.vscode/extensions/vadimcn.vscode-lldb-1.6.10/'
+    local codelldb_path = extension_path .. 'adapter/codelldb'
+    local liblldb_path = extension_path .. 'lldb/lib/liblldb.so'
     require("rust-tools").setup({
       server = vim.tbl_deep_extend("force", server:get_default_options(), opts),
       tools = {
@@ -74,6 +77,9 @@ lsp_installer.on_server_ready(function(server)
           other_hints_prefix = ":: ",
         }
       },
+      dap = {
+        adapter = require("rust-tools.dap").get_codelldb_adapter(codelldb_path, liblldb_path)
+      }
     })
     server:attach_buffers()
     return
