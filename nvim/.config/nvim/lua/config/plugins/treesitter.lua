@@ -2,10 +2,8 @@ require'nvim-treesitter.configs'.setup {
     highlight = {
         enable = true
     },
-    ensure_installed = {
-        "python",
-        "rust",
-        "vim",
-        "lua"
+    ensure_installed = vim.g.supported_languages,
+    indent = {
+      enable = true
     }
 }
