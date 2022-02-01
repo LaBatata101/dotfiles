@@ -1,26 +1,45 @@
 local fn = vim.fn
 local install_path = fn.stdpath('data')..'/site/pack/packer/start/packer.nvim'
 if fn.empty(fn.glob(install_path)) > 0 then
+  print("Downloading packer...")
   Packer_bootstrap = fn.system({'git', 'clone', '--depth', '1', 'https://github.com/wbthomason/packer.nvim', install_path})
+  vim.cmd([[packadd packer.nvim]])
+  print("packer.nvim installed")
 end
+
+vim.cmd([[ autocmd BufWritePost packer.lua source <afile> | PackerCompile ]])
 
 return require('packer').startup({function(use)
   use 'wbthomason/packer.nvim'
 
   -- LSP
-  use 'neovim/nvim-lspconfig'
+  use { 'neovim/nvim-lspconfig', ft = vim.g.supported_languages,
+    config = function()
+      require("config.plugins.lsp")
+    end
+  }
+  use { 'onsails/lspkind-nvim', after = 'nvim-lspconfig' }
+  use { 'ray-x/lsp_signature.nvim', after = 'nvim-lspconfig',
+    config = function()
+      require("config.plugins.lsp_signature")
+    end
+  }
+  use { 'folke/lsp-colors.nvim', after = 'nvim-lspconfig' }
+  use { 'simrat39/rust-tools.nvim', ft = 'rust' }
   use 'williamboman/nvim-lsp-installer'
-  use 'onsails/lspkind-nvim'
+
   use {
     'nvim-treesitter/nvim-treesitter',
-    run = ':TSUpdate'
+    run = ':TSUpdate',
+    ft = vim.g.supported_languages,
+    config = function()
+      require("config.plugins.treesitter")
+    end
   }
-  use 'simrat39/rust-tools.nvim'
-  use 'ray-x/lsp_signature.nvim'
-  use 'folke/lsp-colors.nvim'
+
   use {
     'folke/trouble.nvim',
-    cmd = 'TroubleToggle',
+    cmd = { 'TroubleToggle', 'Trouble' },
     -- keys = {'<leader>td', 'gr'},
     requires = "kyazdani42/nvim-web-devicons",
     config = function()
@@ -31,14 +50,18 @@ return require('packer').startup({function(use)
   -- Show LSP load progress
   use {
     'j-hui/fidget.nvim',
-    ft = {'rust', 'lua'},
+    ft = vim.g.supported_languages,
     config = function()
       require("config.plugins.fidget")
     end
   }
 
   -- Show a 💡 when a code action is available
-  use 'kosayoda/nvim-lightbulb'
+  use { 'kosayoda/nvim-lightbulb', after = 'nvim-lspconfig',
+    config = function()
+      require("config.plugins.lightbulb")
+    end
+  }
 
   -- Completion
   use {
@@ -47,7 +70,7 @@ return require('packer').startup({function(use)
     event = 'InsertEnter',
     requires = {
       { 'hrsh7th/cmp-path', after = 'nvim-cmp' },
-      { 'hrsh7th/cmp-nvim-lsp', after = 'nvim-cmp' },
+      { 'hrsh7th/cmp-nvim-lsp', after = { 'nvim-cmp', 'nvim-lspconfig' } },
       { 'hrsh7th/cmp-buffer', after = 'nvim-cmp' },
       { 'hrsh7th/cmp-vsnip', after = {'nvim-cmp', 'vim-vsnip'} }
     }
@@ -56,7 +79,7 @@ return require('packer').startup({function(use)
   -- Snippet
   use {
     'hrsh7th/vim-vsnip',
-    ft = {'python', 'lua', 'c', 'rust'},
+    ft = vim.g.supported_languages,
     event = 'InsertEnter'
   }
   use {
@@ -68,7 +91,11 @@ return require('packer').startup({function(use)
   use 'folke/tokyonight.nvim'
 
   -- Identation Level Lines
-  use 'lukas-reineke/indent-blankline.nvim'
+  use  { 'lukas-reineke/indent-blankline.nvim', ft = vim.g.supported_languages,
+    config = function ()
+      require("config.plugins.indent_blankline")
+    end
+  }
 
   -- Autoclose parentesis etc
   use {
@@ -84,9 +111,12 @@ return require('packer').startup({function(use)
 
   use {
     'nvim-telescope/telescope.nvim',
-    cmd = 'Telescope',
+    cmd = { 'Telescope', 'RustDebuggables' },
     -- keys = {'<leader>ff', '<leader>fg', '<leader>fb', 'ga'},
-    requires = { 'nvim-lua/plenary.nvim' },
+    requires = {
+      'nvim-lua/plenary.nvim',
+      { 'nvim-telescope/telescope-ui-select.nvim', module = "telescope._extensions.ui-select" }
+    },
     config = function()
       require("config.plugins.telescope")
     end
@@ -117,7 +147,8 @@ return require('packer').startup({function(use)
   use {
     'filipdutescu/renamer.nvim',
     branch = 'master',
-    requires = { {'nvim-lua/plenary.nvim'} },
+    requires = { 'nvim-lua/plenary.nvim' },
+    after = 'nvim-lspconfig',
     config = function()
       require('renamer').setup()
     end
