@@ -1,5 +1,6 @@
 require("indent_blankline").setup {
-  char_list = {'|', '¦', '┆', '┊'},
+  char = "🭳",
+  context_char = "🭳",
   filetype_exclude = {
     "text",
     "help",
@@ -8,7 +9,11 @@ require("indent_blankline").setup {
     "dapui_stacks",
     "dapui_watches",
     "dapui_breakpoints",
+    "packer",
+    "Trouble",
   },
+  buftype_exclude = {"nofile", "terminal", "lsp-installer", "lspinfo"},
+  use_treesiter = true,
   show_first_indent_level = false,
   show_trailing_blankline_indent = false,
   show_current_context = true,
