@@ -4,6 +4,7 @@ require("config.keymaps")
 
 pcall(require, "impatient")
 
+-- Load plugins and their configurations
 require("config.plugins.packer")
 
 -- Improve startup speed
@@ -11,12 +12,6 @@ require("config.plugins.packer")
 
 require("packer_compiled")
 -- load plugins configurations
-require("config.plugins.cmp")
-require("config.plugins.hop")
-require("config.plugins.comment")
 require("config.plugins.lualine")
-require("config.plugins.autopairs")
-require("config.plugins.neoscroll")
 require("config.plugins.bufferline")
-require("config.plugins.illuminate")
 require("config.plugins.tokyonight")
