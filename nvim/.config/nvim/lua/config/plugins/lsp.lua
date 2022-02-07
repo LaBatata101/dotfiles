@@ -26,6 +26,7 @@ end
 local servers = {
   "pyright",
   "rust-analyzer",
+  "sumneko_lua",
 }
 
 for _, name in pairs(servers) do
@@ -39,8 +40,18 @@ for _, name in pairs(servers) do
 end
 
 local function custom_on_attach(client, bufnr)
+  if client.resolved_capabilities.document_highlight then
+    vim.cmd [[
+      augroup lsp_document_highlight
+        autocmd! * <buffer>
+        autocmd CursorHold <buffer> lua vim.lsp.buf.document_highlight()
+        autocmd CursorHoldI <buffer> lua vim.lsp.buf.document_highlight()
+        autocmd CursorMoved <buffer> lua vim.lsp.buf.clear_references()
+      augroup END
+    ]]
+  end
   require "lsp_signature".on_attach()
-  require "illuminate".on_attach(client)
+  -- require "illuminate".on_attach(client)
 end
 
 local handlers =  {
@@ -53,10 +64,6 @@ lsp_installer.on_server_ready(function(server)
     handlers = handlers,
   }
 
-  -- (optional) Customize the options passed to the server
-  -- if server.name == "tsserver" then
-  --     opts.root_dir = function() ... end
-  -- end
   if server.name == "rust_analyzer" then
     opts.settings = {
       ["rust-analyzer"] = {
@@ -125,10 +132,12 @@ lsp_installer.on_server_ready(function(server)
   server:setup(opts)
 end)
 
-vim.fn.sign_define("DiagnosticSignError", {text = " ", texthl = "DiagnosticSignError"})
-vim.fn.sign_define("DiagnosticSignWarn", {text = " ", texthl = "DiagnosticSignWarn"})
-vim.fn.sign_define("DiagnosticSignInformation", {text = " ", texthl = "DiagnosticSignInformation"})
-vim.fn.sign_define("DiagnosticSignHint", {text = "", texthl = "DiagnosticSignHint"})
+vim.diagnostic.config({severiy_sort = true})
+
+vim.fn.sign_define("DiagnosticSignError", {text = "", texthl = "DiagnosticSignError"})
+vim.fn.sign_define("DiagnosticSignWarn", {text = "", texthl = "DiagnosticSignWarn"})
+vim.fn.sign_define("DiagnosticSignInformation", {text = "", texthl = "DiagnosticSignInformation"})
+vim.fn.sign_define("DiagnosticSignHint", {text = "", texthl = "DiagnosticSignHint"})
 
 -- Show diagnostic popup on cursor hold
 vim.cmd [[autocmd CursorHold * lua vim.diagnostic.open_float(nil, {focus=false, source='if_many', border='rounded'})]]
