@@ -61,6 +61,12 @@ vim.cmd [[
     autocmd CmdlineEnter [/\\?] :set hlsearch
     autocmd CmdlineLeave [/\\?] :set nohlsearch
   augroup END
+
+  augroup VimrcIncSearchAndReplace
+    autocmd!
+    autocmd CmdlineEnter [:s\\:%s] :set hlsearch
+    autocmd CmdlineLeave [:s\\:%s] :set nohlsearch
+  augroup END
 ]]
 
 -- disable builtin plugins
@@ -77,7 +83,7 @@ vim.g.loaded_vimballPlugin = 1
 vim.g.loaded_2html_plugin = 1
 
 vim.g.loaded_matchit = 1
-vim.g.loaded_matchparen = 1
+-- vim.g.loaded_matchparen = 1
 vim.g.loaded_logiPat = 1
 vim.g.loaded_rrhelper = 1
 
