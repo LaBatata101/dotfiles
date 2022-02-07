@@ -24,10 +24,10 @@ map('', '<leader>n', ':bn<CR>', { noremap = true })
 map('', '<leader>k', ':bd<CR>', {})
 
 -- split resizing
-map('', '<left>', '<C-w>5<', {})
-map('', '<up>', '<C-w>5+', {})
-map('', '<down>', '<C-w>5-', {})
-map('', '<right>', '<C-w>5>', {})
+map('', '<left>', '<C-w>2<', {})
+map('', '<up>', '<C-w>2+', {})
+map('', '<down>', '<C-w>2-', {})
+map('', '<right>', '<C-w>2>', {})
 
 -- source it
 map('', '<leader>r', '<cmd>source $MYVIMRC<CR>', {})
