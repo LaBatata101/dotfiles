@@ -1,0 +1,57 @@
+## My-Keymaps
+
+Save file |  <leader>s
+
+Move to bottom buffer | <C-j>
+Move to top buffer    | <C-k>
+Move to right buffer  | <C-l>
+Move to left buffer   | <C-h>
+
+Maximize current buffer | map :only<CR>
+
+Split buffer horizontally | <leader>h
+Split buffer vertically   |<leader>v
+
+Go to previous buffer | <leader>p
+Got to next buffer    | <leader>n
+
+Close current buffer | <leader>k
+
+Resize to the left  | <left>
+Resize upwards      | <up>
+Resize downwards    | <down>
+Resize to the right | <right>
+
+Reload config | <leader>r
+
+Search files in current directory  | <leader>ff
+Search string in current directory | <leader>fg
+List open buffers                  | <leader>fb
+List LSP code actions              | ga
+
+Hover                  | K
+Got to definition      | gd
+Go to implementation   | gi
+Show workspace symbols | gW
+
+Rename | <leader>rn
+
+Open document diagnostics | <leader>td
+List references           | gr
+
+Hop | <leader><leader>
+
+Continue/Start debugging | <F5>
+Toggle breakpoint        | <leader>b
+Stop debugging           | <leader>dc
+Step over                | <F10>
+Step into                | <F11>
+Step out                 | <F12>
+
+
+Open lazygit             | <leader>g
+Open a vertical terminal | <C-\>
+
+Open file explores | <leader>fe
+
+Open Cheatsheet | <leader>c
