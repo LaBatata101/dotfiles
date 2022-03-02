@@ -264,12 +264,16 @@ return require("packer").startup({
         require("config.plugins.dap")
       end,
     })
+    -- use({
+    --   "Pocco81/DAPInstall.nvim",
+    --   cmd = { "DIInstall", "DIList", "DIUninstall" },
+    --   after = "nvim-dap",
+    --   config = function()
+    --     require("config.plugins.DAPInstall")
+    --   end,
+    -- })
+
     use({
-      "Pocco81/DAPInstall.nvim",
-      cmd = { "DInstall", "DIList", "DIUninstall" },
-      config = function()
-        require("config.plugins.DAPInstall")
-      end,
     })
 
     -- Automatically set up your configuration after cloning packer.nvim

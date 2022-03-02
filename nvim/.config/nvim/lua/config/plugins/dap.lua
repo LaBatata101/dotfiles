@@ -1,22 +1,26 @@
 local dap = require("dap")
 local dapui = require("dapui")
 
-dap.defaults.fallback.terminal_win_cmd = 'belowright 9 new'
+dap.defaults.fallback.terminal_win_cmd = "belowright 9 new"
 
-dap.configurations.rust = {
-{
-    type = "rust",
-    request = "launch",
-    name = "lldb",
-    program = function()
-      local metadata_json = vim.fn.system("cargo metadata --format-version 1 --no-deps")
-      local metadata = vim.fn.json_decode(metadata_json)
-      local target_name = metadata.packages[1].targets[1].name
-      local target_dir = metadata.target_directory
-      return target_dir .. "/debug/" .. target_name
-    end,
-  },
-}
+-- local dap_install = require("dap-install")
+-- dap_install.config("codelldb", {})
+-- dap.configurations.rust = {
+--   {
+--     type = "codelldb",
+--     request = "launch",
+--     name = "Launch file",
+--     program = function()
+--       local metadata_json = vim.fn.system("cargo metadata --format-version 1 --no-deps")
+--       local metadata = vim.fn.json_decode(metadata_json)
+--       local target_name = metadata.packages[1].targets[1].name
+--       local target_dir = metadata.target_directory
+--       return target_dir .. "/debug/" .. target_name
+--     end,
+--     cwd = "${workspaceFolder}",
+--     stopOnEntry = true,
+--   },
+-- }
 
 dapui.setup()
 
