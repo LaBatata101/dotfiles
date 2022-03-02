@@ -1,65 +1,78 @@
+local ok, lualine = pcall(require, "lualine")
+if not ok then
+  return
+end
+
 local dapui_extension = {
   sections = {
     lualine_a = {
       {
-        'filename',
+        "filename",
         file_status = false,
-        color = {gui = 'bold'}
-      }
+        color = { gui = "bold" },
+      },
     },
   },
   inactive_sections = {
-    lualine_a = {{'filename', file_status = false}}
+    lualine_a = { { "filename", file_status = false } },
   },
   filetypes = {
     "dapui_scopes",
     "dapui_stacks",
     "dapui_watches",
     "dapui_breakpoints",
-  }
+  },
 }
 
+-- local terminal_extension = {
+--   sections = {},
+--   inactive_sections = {},
+--   filetypes = {
+--     "terminal-hide-lualine",
+--   },
+-- }
 
-require("lualine").setup {
+lualine.setup({
   options = {
-    theme = 'tokyonight',
+    theme = "tokyonight",
+    disabled_filetypes = { "Outline", "NvimTree", "toggleterm" },
   },
   extensions = { dapui_extension },
   sections = {
     lualine_a = {
       {
-        'mode',
+        "mode",
         color = {
-          gui = 'bold'
-        }
-      }
+          gui = "bold",
+        },
+      },
     },
     lualine_b = {
       {
-        'diagnostics',
+        "diagnostics",
         symbols = { error = " ", warn = " ", info = " ", hint = "" },
       },
-    {
-        'diff',
+      {
+        "diff",
         symbols = { added = " ", modified = "柳", removed = " " },
-      }
+      },
     },
     lualine_c = {
       {
-        'filename',
-        separator = '',
+        "filename",
+        separator = "",
         color = {
-          gui = 'italic'
-        }
+          gui = "italic",
+        },
       },
       {
-        '%=', -- set the next to be in the middle
-        separator = ''
+        "%=", -- set the next to be in the middle
+        separator = "",
       },
       {
         function()
-          local msg = 'No Active Lsp'
-          local buf_ft = vim.api.nvim_buf_get_option(0, 'filetype')
+          local msg = "No Active Lsp"
+          local buf_ft = vim.api.nvim_buf_get_option(0, "filetype")
           local clients = vim.lsp.get_active_clients()
           if next(clients) == nil then
             return msg
@@ -72,23 +85,26 @@ require("lualine").setup {
           end
           return msg
         end,
-        icon = ' LSP:',
+        icon = " LSP:",
         -- color = { gui = 'bold' },
       },
     },
     lualine_x = {
       {
-        'encoding',
+        "encoding",
         fmt = string.upper,
       },
-      'fileformat', 'filetype', 'filesize'},
+      "fileformat",
+      "filetype",
+      "filesize",
+    },
     lualine_z = {
       {
-        'location',
+        "location",
         fmt = function(str)
-          return str.."|%L"
-        end
-      }
+          return str .. "|%L"
+        end,
+      },
     },
-  }
-}
+  },
+})

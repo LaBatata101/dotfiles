@@ -1,9 +1,6 @@
-local lspkind = require "lspkind"
-lspkind.init()
+local cmp = require("cmp")
 
-local cmp = require "cmp"
-
-cmp.setup {
+cmp.setup({
   snippet = {
     expand = function(args)
       vim.fn["vsnip#anonymous"](args.body) -- For `vsnip` users.
@@ -13,28 +10,31 @@ cmp.setup {
   mapping = {
     ["<C-d>"] = cmp.mapping.scroll_docs(-4),
     ["<C-f>"] = cmp.mapping.scroll_docs(4),
-    ["<C-e>"] = cmp.mapping.close(),
-    ["<c-y>"] = cmp.mapping.confirm {
+    ["<C-e>"] = cmp.mapping.close(), -- close completion menu
+    ["<c-y>"] = cmp.mapping.confirm({
       behavior = cmp.ConfirmBehavior.Insert,
       select = true,
-    },
-    ["<c-q>"] = cmp.mapping.confirm {
+    }),
+    ["<c-space>"] = cmp.mapping.complete(), -- open completion menu
+    ["<CR>"] = cmp.mapping.confirm({
       behavior = cmp.ConfirmBehavior.Replace,
       select = true,
-    },
+    }),
+    ["<C-n>"] = cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Select }),
+    ["<C-p>"] = cmp.mapping.select_prev_item({ behavior = cmp.SelectBehavior.Select }),
+  },
 
-    ["<c-space>"] = cmp.mapping.complete(),
-    ['<CR>'] = cmp.mapping.confirm({ select = true }),
-
+  documentation = {
+    border = { "╭", "─", "╮", "│", "╯", "─", "╰", "│" },
   },
 
   completion = {
-    completeopt = 'menu,menuone,noinsert'
+    completeopt = "menu,menuone,noinsert",
   },
 
   sources = {
     { name = "nvim_lsp" },
-    { name = 'vsnip' },
+    { name = "vsnip" },
     { name = "path" },
     { name = "buffer", keyword_length = 4 },
   },
@@ -49,8 +49,8 @@ cmp.setup {
       -- copied from cmp-under, but I don't think I need the plugin for this.
       -- I might add some more of my own.
       function(entry1, entry2)
-        local _, entry1_under = entry1.completion_item.label:find "^_+"
-        local _, entry2_under = entry2.completion_item.label:find "^_+"
+        local _, entry1_under = entry1.completion_item.label:find("^_+")
+        local _, entry2_under = entry2.completion_item.label:find("^_+")
         entry1_under = entry1_under or 0
         entry2_under = entry2_under or 0
         if entry1_under > entry2_under then
@@ -67,16 +67,9 @@ cmp.setup {
     },
   },
 
-  -- Youtube: mention that you need a separate snippets plugin
-  --snippet = {
-  --expand = function(args)
-  -- require("luasnip").lsp_expand(args.body)
-  --end,
-  --},
-
   formatting = {
     -- Youtube: How to set up nice formatting for your sources.
-    format = lspkind.cmp_format {
+    format = require("lspkind").cmp_format({
       with_text = true,
       menu = {
         buffer = "[buf]",
@@ -84,7 +77,7 @@ cmp.setup {
         path = "[path]",
         vsnip = "[snip]",
       },
-    },
+    }),
   },
 
   experimental = {
@@ -92,4 +85,4 @@ cmp.setup {
 
     ghost_text = true,
   },
-}
+})

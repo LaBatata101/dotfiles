@@ -1,32 +1,51 @@
-local fn = vim.fn
-local install_path = fn.stdpath("data") .. "/site/pack/packer/start/packer.nvim"
-if fn.empty(fn.glob(install_path)) > 0 then
-  print("Downloading packer...")
-  Packer_bootstrap = fn.system({
-    "git",
-    "clone",
-    "--depth",
-    "1",
-    "https://github.com/wbthomason/packer.nvim",
-    install_path,
-  })
-  vim.cmd([[packadd packer.nvim]])
-  print("packer.nvim installed")
-end
-
 vim.cmd([[ autocmd BufWritePost packer.lua source <afile> | PackerCompile ]])
 
-return require("packer").startup({
+local packer_status_ok, packer = pcall(require, "packer")
+if not packer_status_ok then
+  return
+end
+
+packer.startup({
   function(use)
     use("wbthomason/packer.nvim")
+
+    -- Nice UI for vim.ui.select and vim.ui.input
+    use({
+      "stevearc/dressing.nvim",
+      event = "BufRead",
+      config = function()
+        require("dressing").setup()
+      end,
+    })
 
     -- LSP
     use({
       "neovim/nvim-lspconfig",
+      event = "BufRead",
       config = function()
         require("config.plugins.lsp")
       end,
+      requires = {
+        -- LSP manager
+        {
+          "williamboman/nvim-lsp-installer",
+          module = "nvim-lsp-installer",
+          event = "BufRead",
+          cmd = {
+            "LspInstall",
+            "LspInstallInfo",
+            "LspPrintInstalled",
+            "LspRestart",
+            "LspStart",
+            "LspStop",
+            "LspUninstall",
+            "LspUninstallAll",
+          },
+        },
+      },
     })
+
+    -- Show signature help
     use({
       "ray-x/lsp_signature.nvim",
       after = "nvim-lspconfig",
@@ -34,32 +53,21 @@ return require("packer").startup({
         require("config.plugins.lsp_signature")
       end,
     })
+    -- Creates missing LSP diagnostics highlight groups for color schemes that don't yet support the
+    -- Neovim 0.5 builtin lsp client
     use({ "folke/lsp-colors.nvim", after = "nvim-lspconfig" })
+
+    -- Adds extra functionality over rust analyzer
     use({ "simrat39/rust-tools.nvim", ft = "rust", after = "nvim-lspconfig" })
 
     -- Formatting
     use({
       "jose-elias-alvarez/null-ls.nvim",
+      ft = "lua",
       event = "BufRead",
       config = function()
         require("config.plugins.null_ls")
       end,
-    })
-
-    -- LSP manager
-    use({
-      "williamboman/nvim-lsp-installer",
-      event = "BufRead",
-      cmd = {
-        "LspInstall",
-        "LspInstallInfo",
-        "LspPrintInstalled",
-        "LspRestart",
-        "LspStart",
-        "LspStop",
-        "LspUninstall",
-        "LspUninstallAll",
-      },
     })
 
     use({
@@ -76,12 +84,14 @@ return require("packer").startup({
         "TSDisableAll",
         "TSEnableAll",
       },
+      requires = { "nvim-treesitter/playground", after = "nvim-treesitter" },
       -- ft = vim.g.supported_languages,
       config = function()
         require("config.plugins.treesitter")
       end,
     })
 
+    -- A pretty list for showing diagnostics, references, telescope results, quickfix and location lists
     use({
       "folke/trouble.nvim",
       cmd = { "TroubleToggle", "Trouble" },
@@ -120,14 +130,13 @@ return require("packer").startup({
         { "hrsh7th/cmp-nvim-lsp", after = { "nvim-cmp", "nvim-lspconfig" } },
         { "hrsh7th/cmp-buffer", after = "nvim-cmp" },
         { "hrsh7th/cmp-vsnip", after = { "nvim-cmp", "vim-vsnip" } },
+        -- Show pictograms for completion items
+        { "onsails/lspkind-nvim", after = "nvim-cmp", module = "lspkind" },
       },
       config = function()
         require("config.plugins.cmp")
       end,
     })
-
-    -- Show pictograms for completion items
-    use({ "onsails/lspkind-nvim", after = "nvim-cmp" })
 
     -- Snippet
     use({
@@ -141,9 +150,14 @@ return require("packer").startup({
     })
 
     -- Themes
-    use("folke/tokyonight.nvim")
+    use({
+      "folke/tokyonight.nvim",
+      config = function()
+        require("config.plugins.tokyonight")
+      end,
+    })
 
-    -- Identation Level Lines
+    -- Show Identation Level Lines
     use({
       "lukas-reineke/indent-blankline.nvim",
       ft = vim.g.supported_languages,
@@ -173,7 +187,8 @@ return require("packer").startup({
     -- Telescope
     use({
       "nvim-telescope/telescope.nvim",
-      cmd = { "Telescope", "RustDebuggables" },
+      cmd = { "Telescope" },
+      ft = "rust",
       -- keys = {'<leader>ff', '<leader>fg', '<leader>fb', 'ga'},
       requires = {
         "nvim-lua/plenary.nvim",
@@ -188,12 +203,18 @@ return require("packer").startup({
     use({
       "nvim-lualine/lualine.nvim",
       requires = { "kyazdani42/nvim-web-devicons" },
+      config = function()
+        require("config.plugins.lualine")
+      end,
     })
 
     -- Show tabs for open files
     use({
       "akinsho/bufferline.nvim",
       requires = "kyazdani42/nvim-web-devicons",
+      config = function()
+        require("config.plugins.bufferline")
+      end,
     })
 
     -- Surround text with (), [], "", '' etc
@@ -209,17 +230,6 @@ return require("packer").startup({
       end,
     })
 
-    -- rename UI
-    use({
-      "filipdutescu/renamer.nvim",
-      branch = "master",
-      requires = { "nvim-lua/plenary.nvim" },
-      ft = vim.g.supported_languages,
-      config = function()
-        require("renamer").setup()
-      end,
-    })
-
     -- Smooth scrolling
     use({
       "karb94/neoscroll.nvim",
@@ -229,20 +239,72 @@ return require("packer").startup({
       end,
     })
 
-    -- Highlight word under the cursor
-    -- use 'RRethy/vim-illuminate'
-
     -- Git
     use({
       "lewis6991/gitsigns.nvim",
+      event = "BufRead",
       requires = {
         "nvim-lua/plenary.nvim",
       },
       cond = function()
-        return require("lspconfig.util").find_git_ancestor(vim.fn.getcwd()) ~= nil
+        local ok, util = pcall(require, "lspconfig.util")
+        if ok then
+          return util.find_git_ancestor(vim.fn.getcwd()) ~= nil
+        else
+          return false
+        end
       end,
       config = function()
         require("config.plugins.gitsigns")
+      end,
+    })
+
+    -- A tree like view for LSP symbols
+    use({
+      "simrat39/symbols-outline.nvim",
+      cmd = "SymbolsOutline",
+      config = function()
+        require("config.plugins.symbols_outline")
+      end,
+    })
+
+    -- File explorer
+    use({
+      "kyazdani42/nvim-tree.lua",
+      cmd = "NvimTreeToggle",
+      config = function()
+        vim.g.nvim_tree_git_hl = 1
+        vim.g.nvim_tree_highlight_opened_files = 1
+        require("nvim-tree").setup({
+          diagnostics = {
+            enable = true,
+          },
+          update_focused_file = {
+            enable = true,
+          },
+        })
+      end,
+    })
+
+    -- Cheatsheet
+    use({
+      "sudormrfbin/cheatsheet.nvim",
+      cmd = "Cheatsheet",
+      requires = {
+        { "nvim-telescope/telescope.nvim" },
+        { "nvim-lua/popup.nvim" },
+        { "nvim-lua/plenary.nvim" },
+      },
+      config = function()
+        require("config.plugins.cheatsheet")
+      end,
+    })
+
+    -- Better terminal
+    use({
+      "akinsho/toggleterm.nvim",
+      config = function()
+        require("config.plugins.toggleterm")
       end,
     })
 
@@ -274,16 +336,19 @@ return require("packer").startup({
     -- })
 
     use({
+      "tjdevries/colorbuddy.nvim",
     })
 
     -- Automatically set up your configuration after cloning packer.nvim
     -- Put this at the end after all plugins
     if Packer_bootstrap then
+      vim.notify("Installing plugins...")
       require("packer").sync()
     end
   end,
   config = {
     compile_path = vim.fn.stdpath("config") .. "/lua/packer_compiled.lua",
+    clone_timeout = 180,
     display = {
       open_fn = function()
         return require("packer.util").float({ border = "rounded" })
@@ -291,3 +356,5 @@ return require("packer").startup({
     },
   },
 })
+
+return packer

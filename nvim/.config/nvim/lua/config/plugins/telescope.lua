@@ -4,7 +4,7 @@ local action_layout = require("telescope.actions.layout")
 
 telescope.setup {
   defaults = {
-    -- winblend = 30,
+    winblend = 15,
     prompt_prefix = '🔍 ',
     selection_caret = " ",
     mappings = {
