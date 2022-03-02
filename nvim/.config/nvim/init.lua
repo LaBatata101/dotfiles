@@ -1,17 +1,21 @@
 require("config.globals")
 require("config.settings")
 require("config.keymaps")
+require("config.colors")
 
-pcall(require, "impatient")
+local bootstrap = require("config.bootstrap")
+
+bootstrap.install_packer()
+-- Improve startup speed
+local ok, _ = pcall(require, "impatient")
+if ok then
+  require("impatient").enable_profile()
+end
 
 -- Load plugins and their configurations
 require("config.plugins.packer")
 
--- Improve startup speed
--- require("impatient")
-
-require("packer_compiled")
--- load plugins configurations
-require("config.plugins.lualine")
-require("config.plugins.bufferline")
-require("config.plugins.tokyonight")
+local compiled_ok, _ = pcall(require, "packer_compiled")
+if compiled_ok then
+  require("packer_compiled")
+end
