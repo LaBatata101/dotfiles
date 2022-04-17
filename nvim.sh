@@ -21,7 +21,7 @@ then
     setxkbmap -option caps:swapescape
 fi
 
-nvim $*
+exec nvim $*
 
 # reset the key configuration back to what it was before
 if ! pidof nvim > /dev/null

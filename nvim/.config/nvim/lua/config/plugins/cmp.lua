@@ -1,9 +1,10 @@
 local cmp = require("cmp")
+local luasnip = require("luasnip")
 
 cmp.setup({
   snippet = {
     expand = function(args)
-      vim.fn["vsnip#anonymous"](args.body) -- For `vsnip` users.
+      luasnip.lsp_expand(args.body)
     end,
   },
 
@@ -22,10 +23,25 @@ cmp.setup({
     }),
     ["<C-n>"] = cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Select }),
     ["<C-p>"] = cmp.mapping.select_prev_item({ behavior = cmp.SelectBehavior.Select }),
+    ["<Tab>"] = cmp.mapping(function(fallback)
+      if luasnip.expand_or_jumpable() then
+        luasnip.expand_or_jump()
+      else
+        fallback()
+      end
+    end, { "i", "s" }),
+
+    ["<S-Tab>"] = cmp.mapping(function(fallback)
+      if luasnip.jumpable(-1) then
+        luasnip.jump(-1)
+      else
+        fallback()
+      end
+    end, { "i", "s" }),
   },
 
-  documentation = {
-    border = { "╭", "─", "╮", "│", "╯", "─", "╰", "│" },
+  window = {
+    documentation = cmp.config.window.bordered(),
   },
 
   completion = {
@@ -34,7 +50,7 @@ cmp.setup({
 
   sources = {
     { name = "nvim_lsp" },
-    { name = "vsnip" },
+    { name = "luasnip" },
     { name = "path" },
     { name = "buffer", keyword_length = 4 },
   },
@@ -75,7 +91,7 @@ cmp.setup({
         buffer = "[buf]",
         nvim_lsp = "[LSP]",
         path = "[path]",
-        vsnip = "[snip]",
+        luasnip = "[snip]",
       },
     }),
   },

@@ -31,6 +31,7 @@ function M.install_language_servers()
       if not server:is_installed() then
         print("Installing " .. name .. "...")
         server:install()
+        print(name .. " installed!")
       end
     end
   end

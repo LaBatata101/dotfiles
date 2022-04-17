@@ -21,7 +21,12 @@ map("", "<leader>p", ":bp<CR>", { noremap = true, silent = true })
 map("", "<leader>n", ":bn<CR>", { noremap = true, silent = true })
 
 -- close buffer
-map("", "<leader>k", ":bd<CR>", { noremap = true, silent = true })
+map(
+  "",
+  "<leader>k",
+  "<cmd>lua require('config.utils').ask_to_save_before_closing()<CR>",
+  { noremap = true, silent = true }
+)
 
 -- split resizing
 map("", "<left>", "<C-w>2>", {})
@@ -53,12 +58,6 @@ map("n", "gr", "<cmd>TroubleToggle lsp_references<CR>", { noremap = true })
 
 -- Hop
 map("n", "<leader><leader>", "<cmd>HopWord<CR>", { noremap = true })
-
--- Snippet
-map("i", "<Tab>", 'vsnip#jumpable(1) ? "<Plug>(vsnip-jump-next)" : "<Tab>"', { expr = true })
-map("s", "<Tab>", 'vsnip#jumpable(1) ? "<Plug>(vsnip-jump-next)" : "<Tab>"', { expr = true })
-map("i", "<S-Tab>", 'vsnip#jumpable(-1) ? "<Plug>(vsnip-jump-prev)" : "<S-Tab>"', { expr = true })
-map("s", "<S-Tab>", 'vsnip#jumpable(-1) ? "<Plug>(vsnip-jump-prev)" : "<S-Tab>"', { expr = true })
 
 -- DAP
 map("n", "<F5>", '<cmd>lua require("dap").continue()<CR>', { noremap = true, silent = true })
@@ -104,3 +103,6 @@ map("n", "<leader>fe", "<cmd>NvimTreeToggle<CR>", { noremap = true })
 
 -- Cheatsheet
 map("n", "<leader>c", "<cmd>Cheatsheet<CR>", { noremap = true })
+
+-- LUASnip
+map("i", "<c-l>", "<cmd>lua require('config.plugins.luasnip').change_choice()<CR>", { silent = true })

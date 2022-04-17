@@ -15,6 +15,8 @@ end
 -- Load plugins and their configurations
 require("config.plugins.packer")
 
+bootstrap.install_language_servers()
+
 local compiled_ok, _ = pcall(require, "packer_compiled")
 if compiled_ok then
   require("packer_compiled")

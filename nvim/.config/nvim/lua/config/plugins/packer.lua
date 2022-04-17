@@ -14,7 +14,18 @@ packer.startup({
       "stevearc/dressing.nvim",
       event = "BufRead",
       config = function()
-        require("dressing").setup()
+        require("dressing").setup({
+          input = {
+            get_config = function(opts)
+              if opts.prompt ~= nil and opts.prompt == "Save buffer before closing (Y/n)?" then
+                return {
+                  prompt_align = "center",
+                  relative = "win",
+                }
+              end
+            end,
+          },
+        })
       end,
     })
 
@@ -129,7 +140,7 @@ packer.startup({
         { "hrsh7th/cmp-path", after = "nvim-cmp" },
         { "hrsh7th/cmp-nvim-lsp", after = { "nvim-cmp", "nvim-lspconfig" } },
         { "hrsh7th/cmp-buffer", after = "nvim-cmp" },
-        { "hrsh7th/cmp-vsnip", after = { "nvim-cmp", "vim-vsnip" } },
+        { "saadparwaiz1/cmp_luasnip", after = { "nvim-cmp" } },
         -- Show pictograms for completion items
         { "onsails/lspkind-nvim", after = "nvim-cmp", module = "lspkind" },
       },
@@ -140,13 +151,12 @@ packer.startup({
 
     -- Snippet
     use({
-      "hrsh7th/vim-vsnip",
+      "L3MON4D3/LuaSnip",
       ft = vim.g.supported_languages,
       event = "InsertEnter",
-    })
-    use({
-      "hrsh7th/vim-vsnip-integ",
-      after = "vim-vsnip",
+      config = function()
+        require("config.plugins.luasnip")
+      end,
     })
 
     -- Themes
@@ -190,6 +200,7 @@ packer.startup({
       cmd = { "Telescope" },
       ft = "rust",
       -- keys = {'<leader>ff', '<leader>fg', '<leader>fb', 'ga'},
+      module = "telescope",
       requires = {
         "nvim-lua/plenary.nvim",
         { "nvim-telescope/telescope-ui-select.nvim", module = "telescope._extensions.ui-select" },
@@ -338,6 +349,9 @@ packer.startup({
     use({
       "tjdevries/colorbuddy.nvim",
     })
+
+    -- Better Python Indentation
+    use({ "Vimjas/vim-python-pep8-indent", ft = "python" })
 
     -- Automatically set up your configuration after cloning packer.nvim
     -- Put this at the end after all plugins

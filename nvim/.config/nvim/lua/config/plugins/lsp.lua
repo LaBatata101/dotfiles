@@ -142,4 +142,5 @@ vim.fn.sign_define("DiagnosticSignHint", { text = " ", texthl = "DiagnosticSi
 vim.cmd([[autocmd CursorHold * lua vim.diagnostic.open_float(nil, {focus=false, source='if_many', border='rounded'})]])
 
 -- Format on save
-vim.cmd([[autocmd BufWritePre * lua vim.lsp.buf.formatting_sync(nil, 1000)]])
+-- vim.cmd([[autocmd BufWritePre * lua vim.lsp.buf.formatting_sync(nil, 1000)]])
+vim.cmd([[autocmd BufWritePre * lua vim.lsp.buf.formatting_sync()]])

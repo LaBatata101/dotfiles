@@ -1,5 +1,7 @@
 ## My-Keymaps
 
+Reselect last selection | gv
+
 Save file |  <leader>s
 
 Move to bottom buffer | <C-j>
