@@ -26,6 +26,8 @@ function M.ask_to_save_before_closing()
         return
       end
     end)
+  else
+    vim.api.nvim_buf_delete(buf.name, {})
   end
 end
 
@@ -88,6 +90,7 @@ function M.reload_config()
   R("config.globals")
   R("config.settings")
   R("config.keymaps")
+  R("config.utils")
   -- R("config.plugins", true)
   R("config.plugins.autopairs")
   R("config.plugins.bufferline")
