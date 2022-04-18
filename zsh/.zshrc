@@ -101,13 +101,17 @@ BULLETTRAIN_PROMPT_ORDER=(
 BULLETTRAIN_VIRTUALENV_PREFIX=🐍
 
 # Pyenv config
-export PYENV_ROOT="$HOME/.pyenv"
-export PATH="$PYENV_ROOT/bin:$PATH"
-eval "$(pyenv init --path)"
-export PYENV_VIRTUALENVWRAPPER_PREFER_PYVENV="true"
-export WORKON_HOME=$HOME/.virtualenvs
+# export PYENV_ROOT="$HOME/.pyenv"
+# export PATH="$PYENV_ROOT/bin:$PATH"
+# eval "$(pyenv init --path)"
+# export PYENV_VIRTUALENVWRAPPER_PREFER_PYVENV="true"
+# export WORKON_HOME=$HOME/.virtualenvs
+#
+# if command -v pyenv 1>/dev/null 2>&1; then
+#   eval "$(pyenv init -)"
+#   eval "$(pyenv virtualenv-init -)"
+# fi
 
-if command -v pyenv 1>/dev/null 2>&1; then
-  eval "$(pyenv init -)"
-  eval "$(pyenv virtualenv-init -)"
-fi
+bindkey '^ ' autosuggest-accept
+
+. /opt/asdf-vm/asdf.sh
