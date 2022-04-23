@@ -6,7 +6,7 @@ end
 
 bufferline.setup({
   options = {
-    separator_style = "slant",
+    -- separator_style = "padded_slant",
     diagnostics = "nvim_lsp",
 
     diagnostics_indicator = function(count, level, diagnostics_dict, context)

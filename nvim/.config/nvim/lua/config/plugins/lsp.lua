@@ -1,4 +1,4 @@
-local function custom_on_attach(client, bufnr)
+local function custom_on_attach(client, _)
   if client.name == "sumneko_lua" then
     client.resolved_capabilities.document_formatting = false
     client.resolved_capabilities.document_range_formatting = false
@@ -93,36 +93,19 @@ lsp_installer.on_server_ready(function(server)
   end
 
   if server.name == "sumneko_lua" then
-    local runtime_path = vim.split(package.path, ";")
-    table.insert(runtime_path, "lua/?.lua")
-    table.insert(runtime_path, "lua/?/init.lua")
-
     opts.settings = {
       ["Lua"] = {
-        runtime = {
-          -- Tell the language server which version of Lua you're using (most likely LuaJIT in the case of Neovim)
-          version = "LuaJIT",
-          -- Setup your lua path
-          path = runtime_path,
-        },
-        diagnostics = {
-          -- Get the language server to recognize the `vim` global
-          globals = { "vim" },
-        },
         workspace = {
-          -- Make the server aware of Neovim runtime files
-          library = vim.api.nvim_get_runtime_file("", true),
           checkThirdParty = false,
+          completion = { callSnippet = "Disable" },
+          workspace = { maxPreload = 5000 },
         },
         format = {
           enable = false,
         },
-        -- Do not send telemetry data containing a randomized but unique identifier
-        telemetry = {
-          enable = false,
-        },
       },
     }
+    opts = vim.tbl_deep_extend("force", require("lua-dev").setup(), opts)
   end
 
   -- This setup() function is exactly the same as lspconfig's setup function.
@@ -135,7 +118,6 @@ vim.diagnostic.config({ severiy_sort = true, update_in_insert = true })
 vim.fn.sign_define("DiagnosticSignError", { text = " ", texthl = "DiagnosticSignError" })
 vim.fn.sign_define("DiagnosticSignWarn", { text = " ", texthl = "DiagnosticSignWarn" })
 vim.fn.sign_define("DiagnosticSignInfo", { text = " ", texthl = "DiagnosticSignInfo" })
--- vim.fn.sign_define("DiagnosticSignHint", {text = "", texthl = "DiagnosticSignHint"})
 vim.fn.sign_define("DiagnosticSignHint", { text = " ", texthl = "DiagnosticSignHint" })
 
 -- Show diagnostic popup on cursor hold

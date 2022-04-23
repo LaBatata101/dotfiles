@@ -95,7 +95,11 @@ packer.startup({
         "TSDisableAll",
         "TSEnableAll",
       },
-      requires = { "nvim-treesitter/playground", after = "nvim-treesitter" },
+      requires = {
+        "nvim-treesitter/playground",
+        after = "nvim-treesitter",
+        cmd = { "TSPlaygroundToggle", "TSHighlightCapturesUnderCursor", "TSNodeUnderCursor" },
+      },
       -- ft = vim.g.supported_languages,
       config = function()
         require("config.plugins.treesitter")
@@ -282,7 +286,7 @@ packer.startup({
     -- File explorer
     use({
       "kyazdani42/nvim-tree.lua",
-      cmd = "NvimTreeToggle",
+      -- cmd = "NvimTreeToggle",
       config = function()
         vim.g.nvim_tree_git_hl = 1
         vim.g.nvim_tree_highlight_opened_files = 1
@@ -352,6 +356,8 @@ packer.startup({
 
     -- Better Python Indentation
     use({ "Vimjas/vim-python-pep8-indent", ft = "python" })
+
+    use({ "folke/lua-dev.nvim", ft = "lua" })
 
     -- Automatically set up your configuration after cloning packer.nvim
     -- Put this at the end after all plugins

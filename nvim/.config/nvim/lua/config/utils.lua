@@ -18,16 +18,16 @@ function M.ask_to_save_before_closing()
       local input_lower = string.lower(input)
       if input_lower == "y" then
         vim.api.nvim_command("write")
-        vim.api.nvim_buf_delete(buf.name, {})
+        vim.api.nvim_buf_delete(buf.bufnr, {})
       elseif input_lower == "n" then
-        vim.api.nvim_buf_delete(buf.name, { force = true })
+        vim.api.nvim_buf_delete(buf.bufnr, { force = true })
       else
         print("Invalid Option! Aborting...")
         return
       end
     end)
   else
-    vim.api.nvim_buf_delete(buf.name, {})
+    vim.api.nvim_buf_delete(buf.bufnr, {})
   end
 end
 
