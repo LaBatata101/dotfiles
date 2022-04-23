@@ -8,7 +8,6 @@ export RANGER_LOAD_DEFAULT_RC=FALSE
 # added by pipx (https://github.com/cs01/pipx)
 export PATH="$HOME/.local/bin:$PATH"
 
-# add cargo bin path
-export PATH="$HOME/.cargo/bin/:$PATH"
-
 export FZF_BASE=$(command -v fzf)
+
+. "$HOME/.cargo/env"
