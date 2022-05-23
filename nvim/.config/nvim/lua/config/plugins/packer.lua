@@ -1,4 +1,8 @@
-vim.cmd([[ autocmd BufWritePost packer.lua source <afile> | PackerCompile ]])
+-- vim.cmd([[ autocmd BufWritePost packer.lua source <afile> | PackerCompile ]])
+vim.api.nvim_create_autocmd("BufWritePost", {
+  pattern = "packer.lua",
+  command = "source <afile> | PackerCompile",
+})
 
 local packer_status_ok, packer = pcall(require, "packer")
 if not packer_status_ok then
@@ -357,7 +361,29 @@ packer.startup({
     -- Better Python Indentation
     use({ "Vimjas/vim-python-pep8-indent", ft = "python" })
 
+    -- Lua configuration
     use({ "folke/lua-dev.nvim", ft = "lua" })
+
+    -- Show which funtion I'm currently at in status line
+    use({
+      "SmiteshP/nvim-gps",
+      module = "nvim-gps",
+      config = function()
+        require("nvim-gps").setup({
+          separator = "  ",
+        })
+      end,
+    })
+
+    use({ "editorconfig/editorconfig-vim" })
+
+    use({
+      "rmagatti/auto-session",
+      config = function()
+        vim.o.sessionoptions = "blank,buffers,curdir,folds,help,tabpages,winsize,winpos,terminal"
+        require("auto-session").setup()
+      end,
+    })
 
     -- Automatically set up your configuration after cloning packer.nvim
     -- Put this at the end after all plugins

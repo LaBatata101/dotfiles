@@ -1,7 +1,6 @@
 require("config.globals")
 require("config.settings")
 require("config.keymaps")
-require("config.colors")
 
 local bootstrap = require("config.bootstrap")
 
@@ -14,10 +13,14 @@ end
 
 -- Load plugins and their configurations
 require("config.plugins.packer")
+-- require("config.colors")
 
-bootstrap.install_language_servers()
+-- bootstrap.install_language_servers()
 
 local compiled_ok, _ = pcall(require, "packer_compiled")
 if compiled_ok then
   require("packer_compiled")
 end
+
+-- COLORS
+vim.api.nvim_set_hl(0, "Folded", { link = "Normal" })

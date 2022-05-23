@@ -46,4 +46,7 @@ LightBulbFunc = function()
   })
 end
 
-vim.cmd([[ autocmd CursorHold,CursorHoldI * lua LightBulbFunc() ]])
+vim.api.nvim_create_autocmd({ "CursorHold", "CursorHoldI" }, {
+  pattern = "*",
+  callback = LightBulbFunc,
+})

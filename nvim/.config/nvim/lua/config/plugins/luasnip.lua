@@ -82,6 +82,11 @@ ls.add_snippets("python", {
   }),
 })
 
+ls.add_snippets("rust", {
+  s("tests", { t("#[cfg(test)]"), t({ "", "mod tests {", "\t" }), i(1), t({ "", "}" }) }),
+  s("test", { t({ "#[test]", "fn " }), i(1), t({ "() {", "\t" }), i(0), t({ "", "}" }) }),
+})
+
 function M.change_choice()
   if ls.choice_active() then
     ls.change_choice(1)

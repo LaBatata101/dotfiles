@@ -1,7 +1,5 @@
 local M = {}
 
-local util = require("lspconfig.util")
-local path = util.path
 local glob = vim.fn.glob
 local system = vim.fn.system
 local trim = vim.fn.trim
@@ -32,6 +30,8 @@ function M.ask_to_save_before_closing()
 end
 
 function M.get_python_path(workspace)
+  local util = require("lspconfig.util")
+  local path = util.path
   -- 1. Use activated virtualenv.
   if vim.env.VIRTUAL_ENV then
     return path.join(vim.env.VIRTUAL_ENV, "bin", "python")
@@ -74,6 +74,15 @@ function M.get_python_path(workspace)
 
   -- 6. Fallback to system Python.
   return vim.fn.exepath("python3") or vim.fn.exepath("python") or "python"
+end
+
+function M.fold_text()
+  local total_lines = string.format("(%d lines)", vim.v.foldend - vim.v.foldstart + 1)
+  local line_text = vim.fn.getline(vim.v.foldstart)
+  local total_spaces = vim.fn.abs(vim.opt.textwidth:get() - (string.len(total_lines) + string.len(line_text))) - 7
+  local spaces = string.rep(" ", total_spaces)
+
+  return string.format(" %s ··· %s%s", line_text, spaces, total_lines)
 end
 
 local RELOAD = function(name, all_submodules)

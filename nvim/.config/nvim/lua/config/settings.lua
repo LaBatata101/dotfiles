@@ -21,6 +21,7 @@ vim.opt.number = true
 vim.opt.rnu = true
 
 vim.opt.colorcolumn = "120"
+vim.opt.textwidth = 119
 
 vim.opt.scrolloff = 5
 vim.opt.sidescrolloff = 5
@@ -54,6 +55,9 @@ vim.opt.emoji = false
 vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
 vim.opt.foldmethod = "expr"
 vim.opt.foldlevelstart = 99
+vim.opt.foldtext = "v:lua.require('config.utils').fold_text()"
+
+vim.opt.fillchars = {fold = " "}
 
 -- Splitting a new window below the current one
 vim.opt.splitbelow = true
@@ -63,20 +67,6 @@ vim.opt.splitright = true
 -- Disable continuation of comments to the next linebreak
 vim.opt.formatoptions:remove({ "c" })
 -- vim.o.formatoptions = "cql"
-
-vim.cmd([[
-  augroup VimrcIncSearchHighlight
-    autocmd!
-    autocmd CmdlineEnter [/\\?] :set hlsearch
-    autocmd CmdlineLeave [/\\?] :set nohlsearch
-  augroup END
-
-  augroup VimrcIncSearchAndReplace
-    autocmd!
-    autocmd CmdlineEnter [:s\\:%s] :set hlsearch
-    autocmd CmdlineLeave [:s\\:%s] :set nohlsearch
-  augroup END
-]])
 
 -- disable builtin plugins
 vim.g.loaded_gzip = 1
@@ -100,11 +90,32 @@ vim.g.loaded_netrw = 1
 vim.g.loaded_netrwPlugin = 1
 vim.g.loaded_netrwSettings = 1
 
-vim.cmd([[
-  augroup noevim_terminal
-    autocmd!
-      autocmd TermOpen * startinsert
-      " autocmd TermOpen * setlocal ft=terminal-hide-lualine
-      autocmd TermOpen * setlocal nonumber norelativenumber
-  augroup END
-]])
+local neovim_terminal = vim.api.nvim_create_augroup("neovim_terminal", {})
+vim.api.nvim_create_autocmd("TermOpen", {
+  group = neovim_terminal,
+  pattern = "*",
+  command = "startinsert | setlocal nonumber norelativenumber nocursorline signcolumn=no",
+})
+
+local vimrc_incsearch_highlight = vim.api.nvim_create_augroup("VimrcIncSearchHighlight", {})
+local vimrc_incsearch_and_replace = vim.api.nvim_create_augroup("VimrcIncSearchAndReplace", {})
+vim.api.nvim_create_autocmd("CmdlineEnter", {
+  group = vimrc_incsearch_highlight,
+  pattern = "[/\\?]",
+  command = "set hlsearch",
+})
+vim.api.nvim_create_autocmd("CmdlineLeave", {
+  group = vimrc_incsearch_highlight,
+  pattern = "[/\\?]",
+  command = "set nohlsearch",
+})
+vim.api.nvim_create_autocmd("CmdlineEnter", {
+  group = vimrc_incsearch_and_replace,
+  pattern = "[:s\\:%s]",
+  command = "set hlsearch",
+})
+vim.api.nvim_create_autocmd("CmdlineLeave", {
+  group = vimrc_incsearch_and_replace,
+  pattern = "[:s\\:%s]",
+  command = "set nohlsearch",
+})

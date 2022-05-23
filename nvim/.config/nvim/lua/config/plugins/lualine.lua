@@ -2,6 +2,7 @@ local ok, lualine = pcall(require, "lualine")
 if not ok then
   return
 end
+local gps = require("nvim-gps")
 
 local dapui_extension = {
   sections = {
@@ -35,7 +36,8 @@ local dapui_extension = {
 lualine.setup({
   options = {
     theme = "tokyonight",
-    disabled_filetypes = { "Outline", "NvimTree", "toggleterm" },
+    disabled_filetypes = { "Outline", },
+    globalstatus = true,
   },
   extensions = { dapui_extension },
   sections = {
@@ -88,6 +90,7 @@ lualine.setup({
         icon = " LSP:",
         -- color = { gui = 'bold' },
       },
+      { gps.get_location, cond = gps.is_available },
     },
     lualine_x = {
       {
