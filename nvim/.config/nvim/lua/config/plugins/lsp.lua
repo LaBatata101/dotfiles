@@ -1,18 +1,24 @@
 local function custom_on_attach(client, _)
-  if client.name == "sumneko_lua" then
+  if client.name == "sumneko_lua" or client.name == "clangd" then
     client.resolved_capabilities.document_formatting = false
     client.resolved_capabilities.document_range_formatting = false
+    -- client.server_capabilities.documentFormattingProvider = false
+    -- client.server_capabilities.documentRangeFormattingProvider = false
   end
 
+  -- if client.server_capabilities.documentHighlightProvider then
   if client.resolved_capabilities.document_highlight then
-    vim.cmd([[
-      augroup lsp_document_highlight
-        autocmd! * <buffer>
-        autocmd CursorHold <buffer> lua vim.lsp.buf.document_highlight()
-        autocmd CursorHoldI <buffer> lua vim.lsp.buf.document_highlight()
-        autocmd CursorMoved <buffer> lua vim.lsp.buf.clear_references()
-      augroup END
-    ]])
+    local lsp_document_highlight = vim.api.nvim_create_augroup("lsp_document_highlight", {})
+    vim.api.nvim_create_autocmd({ "CursorHold", "CursorHoldI" }, {
+      group = lsp_document_highlight,
+      pattern = "<buffer>",
+      callback = vim.lsp.buf.document_highlight,
+    })
+    vim.api.nvim_create_autocmd("CursorMoved", {
+      group = lsp_document_highlight,
+      pattern = "<buffer>",
+      callback = vim.lsp.buf.clear_references,
+    })
   end
 
   require("lsp_signature").on_attach()
@@ -121,8 +127,19 @@ vim.fn.sign_define("DiagnosticSignInfo", { text = " ", texthl = "DiagnosticSi
 vim.fn.sign_define("DiagnosticSignHint", { text = " ", texthl = "DiagnosticSignHint" })
 
 -- Show diagnostic popup on cursor hold
-vim.cmd([[autocmd CursorHold * lua vim.diagnostic.open_float(nil, {focus=false, source='if_many', border='rounded'})]])
+vim.api.nvim_create_autocmd("CursorHold", {
+  pattern = "<buffer>",
+  callback = function()
+    vim.diagnostic.open_float(nil, { focus = false, source = "if_many", border = "rounded" })
+  end,
+})
 
 -- Format on save
--- vim.cmd([[autocmd BufWritePre * lua vim.lsp.buf.formatting_sync(nil, 1000)]])
-vim.cmd([[autocmd BufWritePre * lua vim.lsp.buf.formatting_sync()]])
+vim.api.nvim_create_autocmd("BufWritePre", {
+  pattern = "<buffer>",
+  callback = function()
+    -- vim.schedule(function()
+    vim.lsp.buf.formatting_sync()
+    -- end)
+  end,
+})
