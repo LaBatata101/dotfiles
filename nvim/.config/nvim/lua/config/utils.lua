@@ -8,24 +8,75 @@ function M.ask_to_save_before_closing()
   local buf = vim.fn.getbufinfo("%")[1]
 
   if buf.changed == 1 then
-    vim.ui.input({ prompt = "Save buffer before closing (Y/n)?", default = "Y" }, function(input)
-      if input == nil then
-        return
-      end
+    vim.ui.input(
+      { prompt = string.format('Save "%s" before closing (Y/n)?', vim.fn.expand("%:t")), default = "Y" },
+      function(input)
+        if input == nil then
+          return
+        end
 
-      local input_lower = string.lower(input)
-      if input_lower == "y" then
-        vim.api.nvim_command("write")
-        vim.api.nvim_buf_delete(buf.bufnr, {})
-      elseif input_lower == "n" then
-        vim.api.nvim_buf_delete(buf.bufnr, { force = true })
-      else
-        print("Invalid Option! Aborting...")
-        return
+        local input_lower = string.lower(input)
+        if input_lower == "y" then
+          vim.api.nvim_command("write")
+          vim.api.nvim_buf_delete(buf.bufnr, {})
+        elseif input_lower == "n" then
+          vim.api.nvim_buf_delete(buf.bufnr, { force = true })
+        else
+          print("Invalid Option! Aborting...")
+          return
+        end
       end
-    end)
+    )
   else
     vim.api.nvim_buf_delete(buf.bufnr, {})
+  end
+end
+
+function M.ask_to_save_before_quitting()
+  local modified_buffers = vim.fn.getbufinfo({ bufmodified = true })
+  local force_quit = false
+  local cancel_quit = false
+
+  -- if #modified_buffers == 1 then
+  --   print(modified_buffers[1].bufnr)
+  --   vim.api.nvim_buf_call(modified_buffers[1].bufnr, function()
+  --     vim.api.nvim_command("w")
+  --   end)
+  --   return
+  -- end
+
+  for _, buf in pairs(modified_buffers) do
+    vim.ui.input(
+      { prompt = string.format('Save "%s" before closing (Y/n)?', vim.fn.expand("%:t")), default = "Y" },
+      function(input)
+        if input == nil then
+          cancel_quit = true
+          return
+        end
+
+        local input_lower = string.lower(input)
+        if input_lower == "y" then
+          vim.api.nvim_buf_call(buf.bufnr, function()
+            vim.api.nvim_command("write")
+          end)
+        elseif input_lower == "n" then
+          force_quit = true
+        else
+          cancel_quit = true
+          print("Invalid Option! Aborting...")
+          return
+        end
+      end
+    )
+  end
+
+  if cancel_quit then
+    return
+  elseif force_quit then
+    vim.api.nvim_command("q!")
+  else
+    vim.api.nvim_command("q")
+    print("HEREEE")
   end
 end
 
@@ -80,9 +131,51 @@ function M.fold_text()
   local total_lines = string.format("(%d lines)", vim.v.foldend - vim.v.foldstart + 1)
   local line_text = vim.fn.getline(vim.v.foldstart)
   local total_spaces = vim.fn.abs(vim.opt.textwidth:get() - (string.len(total_lines) + string.len(line_text))) - 7
+  local last_fold_line = vim.fn.trim(vim.fn.getline(vim.v.foldend))
+
+  if last_fold_line ~= "}" then
+    last_fold_line = ""
+  else
+    total_spaces = total_spaces - 1
+  end
+
   local spaces = string.rep(" ", total_spaces)
 
-  return string.format(" %s ··· %s%s", line_text, spaces, total_lines)
+  return string.format(" %s ··· %s%s%s", line_text, last_fold_line, spaces, total_lines)
+end
+
+function M.text_handler(virtText, lnum, endLnum, width, truncate)
+  local newVirtText = {}
+  local suffix = ("(%d lines)"):format(endLnum - lnum)
+  local sufWidth = vim.fn.strdisplaywidth(suffix)
+  local targetWidth = width - sufWidth
+  local curWidth = 0
+
+  for _, chunk in ipairs(virtText) do
+    local chunkText = chunk[1]
+    local chunkWidth = vim.fn.strdisplaywidth(chunkText)
+    if targetWidth > curWidth + chunkWidth then
+      table.insert(newVirtText, chunk)
+    else
+      chunkText = truncate(chunkText, targetWidth - curWidth)
+      local hlGroup = chunk[2]
+      table.insert(newVirtText, { chunkText, hlGroup })
+      chunkWidth = vim.fn.strdisplaywidth(chunkText)
+      -- str width returned from truncate() may less than 2nd argument, need padding
+      if curWidth + chunkWidth < targetWidth then
+        suffix = suffix .. (" "):rep(targetWidth - curWidth - chunkWidth)
+      end
+      break
+    end
+    curWidth = curWidth + chunkWidth
+  end
+
+  local ellipsis_suffix = " ···"
+  local total_preffix_spaces = vim.opt.textwidth:get() - (sufWidth + curWidth + vim.fn.strdisplaywidth(ellipsis_suffix))
+  suffix = ellipsis_suffix .. (" "):rep(total_preffix_spaces) .. suffix
+
+  table.insert(newVirtText, { suffix, "MoreMsg" })
+  return newVirtText
 end
 
 local RELOAD = function(name, all_submodules)

@@ -47,6 +47,7 @@ end)
 -- Telescope
 map("n", "<leader>ff", "<cmd>Telescope find_files<CR>", { noremap = true })
 map("n", "<leader>fg", "<cmd>Telescope live_grep<CR>", { noremap = true })
+map("n", "<leader>fs", "<cmd>Telescope current_buffer_fuzzy_find<CR>", { noremap = true })
 map("n", "<leader>fb", "<cmd>Telescope buffers<CR>", { noremap = true })
 
 -- LSP
@@ -119,4 +120,9 @@ map("i", "<c-l>", function()
 end, { silent = true })
 
 -- save all and quit
+-- map("n", "ZZ", function()
+--   require("config.utils").ask_to_save_before_quitting()
+-- end, { silent = true })
 map("n", "ZZ", "<cmd>conf qa<CR>", { silent = true })
+
+map("n", "<leader>S", "<cmd>SymbolsOutline<CR>", { noremap = true })

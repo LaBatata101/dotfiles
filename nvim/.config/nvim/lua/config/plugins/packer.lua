@@ -100,9 +100,15 @@ packer.startup({
         "TSEnableAll",
       },
       requires = {
-        "nvim-treesitter/playground",
-        after = "nvim-treesitter",
-        cmd = { "TSPlaygroundToggle", "TSHighlightCapturesUnderCursor", "TSNodeUnderCursor" },
+        {
+          "nvim-treesitter/playground",
+          after = "nvim-treesitter",
+          cmd = { "TSPlaygroundToggle", "TSHighlightCapturesUnderCursor", "TSNodeUnderCursor" },
+        },
+        {
+          "nvim-treesitter/nvim-treesitter-textobjects",
+          after = "nvim-treesitter",
+        },
       },
       -- ft = vim.g.supported_languages,
       config = function()
@@ -168,12 +174,63 @@ packer.startup({
     })
 
     -- Themes
+    -- use({
+    --   "folke/tokyonight.nvim",
+    --   config = function()
+    --     require("config.plugins.tokyonight")
+    --   end,
+    -- })
+
+    -- use({
+    --   "catppuccin/nvim",
+    --   as = "catppuccin",
+    --   config = function()
+    --     local catppuccin = require("catppuccin")
+    --     catppuccin.setup({
+    --       integrations = {
+    --         native_lsp = {
+    --           enabled = true,
+    --           virtual_text = {
+    --             errors = "NONE",
+    --             hints = "NONE",
+    --             warnings = "NONE",
+    --             information = "NONE",
+    --           },
+    --           underlines = {
+    --             errors = "undercurl",
+    --             hints = "undercurl",
+    --             warnings = "undercurl",
+    --             information = "undercurl",
+    --           },
+    --         },
+    --       },
+    --     })
+    --
+    --     vim.g.catppuccin_flavour = "macchiato"
+    --     vim.cmd([[colorscheme catppuccin]])
+    --   end,
+    -- })
     use({
-      "folke/tokyonight.nvim",
+      "ellisonleao/gruvbox.nvim",
       config = function()
-        require("config.plugins.tokyonight")
+        vim.opt.background = "dark"
+        vim.g.gruvbox_italic = 1
+        vim.g.gruvbox_underline = 0
+        vim.cmd([[colorscheme gruvbox]])
       end,
     })
+
+    -- use({
+    --   "sainnhe/gruvbox-material",
+    --   config = function()
+    --     vim.opt.background = "dark"
+    --     vim.g.gruvbox_material_better_performance = 1
+    --     vim.g.gruvbox_material_enable_italic = 1
+    --     vim.g.gruvbox_material_enable_bold = 1
+    --     vim.g.gruvbox_material_diagnostic_line_highlight = 1
+    --     vim.cmd([[colorscheme gruvbox-material]])
+    --   end,
+    -- })
 
     -- Show Identation Level Lines
     use({
@@ -282,9 +339,6 @@ packer.startup({
     use({
       "simrat39/symbols-outline.nvim",
       cmd = "SymbolsOutline",
-      config = function()
-        require("config.plugins.symbols_outline")
-      end,
     })
 
     -- File explorer
@@ -377,6 +431,7 @@ packer.startup({
 
     use({ "editorconfig/editorconfig-vim" })
 
+    -- Session management
     use({
       "rmagatti/auto-session",
       config = function()
@@ -384,6 +439,22 @@ packer.startup({
         require("auto-session").setup()
       end,
     })
+
+    -- Wait for https://github.com/neovim/neovim/pull/17446
+    -- use({
+    --   "kevinhwang91/nvim-ufo",
+    --   requires = "kevinhwang91/promise-async",
+    --   config = function()
+    --     local capabilities = vim.lsp.protocol.make_client_capabilities()
+    --     capabilities.textDocument.foldingRange = {
+    --       dynamicRegistration = false,
+    --       lineFoldingOnly = true,
+    --     }
+    --     require("ufo").setup({
+    --       fold_virt_text_handler = require("config.utils").text_handler,
+    --     })
+    --   end,
+    -- })
 
     -- Automatically set up your configuration after cloning packer.nvim
     -- Put this at the end after all plugins

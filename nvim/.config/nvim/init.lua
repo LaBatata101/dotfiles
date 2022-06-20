@@ -15,7 +15,7 @@ end
 require("config.plugins.packer")
 -- require("config.colors")
 
--- bootstrap.install_language_servers()
+bootstrap.install_language_servers()
 
 local compiled_ok, _ = pcall(require, "packer_compiled")
 if compiled_ok then
@@ -23,4 +23,5 @@ if compiled_ok then
 end
 
 -- COLORS
-vim.api.nvim_set_hl(0, "Folded", { link = "Normal" })
+vim.api.nvim_set_hl(0, "Folded", {  italic = false  })
+vim.api.nvim_set_hl(0, "LspSignatureActiveParameter", {fg = require("gruvbox.colors").bright_yellow, bg = nil})

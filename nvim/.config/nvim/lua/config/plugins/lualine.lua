@@ -35,8 +35,8 @@ local dapui_extension = {
 
 lualine.setup({
   options = {
-    theme = "tokyonight",
-    disabled_filetypes = { "Outline", },
+    theme = "gruvbox-material",
+    -- disabled_filetypes = { "Outline", },
     globalstatus = true,
   },
   extensions = { dapui_extension },

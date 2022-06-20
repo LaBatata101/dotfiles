@@ -80,24 +80,6 @@ lsp_installer.on_server_ready(function(server)
     end
   end
 
-  if server.name == "pylsp" then
-    opts.settings = {
-      ["pylsp"] = {
-        plugins = {
-          flake8 = {
-            enabled = true,
-          },
-          pylint = {
-            enabled = true,
-          },
-          mypy = {
-            overrides = { "--python-executable", require("config.utils").get_python_path(vim.fn.getcwd()) },
-          },
-        },
-      },
-    }
-  end
-
   if server.name == "sumneko_lua" then
     opts.settings = {
       ["Lua"] = {
@@ -139,7 +121,7 @@ vim.api.nvim_create_autocmd("BufWritePre", {
   pattern = "<buffer>",
   callback = function()
     -- vim.schedule(function()
-    vim.lsp.buf.formatting_sync()
+    vim.lsp.buf.formatting_sync(nil, 1000)
     -- end)
   end,
 })

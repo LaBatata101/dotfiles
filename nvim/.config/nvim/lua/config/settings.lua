@@ -56,8 +56,11 @@ vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
 vim.opt.foldmethod = "expr"
 vim.opt.foldlevelstart = 99
 vim.opt.foldtext = "v:lua.require('config.utils').fold_text()"
+-- vim.wo.foldcolumn = "1"
+-- vim.wo.foldlevel = 99
+-- vim.wo.foldenable = true
 
-vim.opt.fillchars = {fold = " "}
+vim.opt.fillchars = { fold = " " }
 
 -- Splitting a new window below the current one
 vim.opt.splitbelow = true
@@ -119,3 +122,8 @@ vim.api.nvim_create_autocmd("CmdlineLeave", {
   pattern = "[:s\\:%s]",
   command = "set nohlsearch",
 })
+
+vim.g.symbols_outline = {
+  auto_preview = false,
+  width = 35,
+}

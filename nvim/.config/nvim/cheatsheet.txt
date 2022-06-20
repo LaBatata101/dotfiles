@@ -28,6 +28,7 @@ Reload config | <leader>r
 
 Search files in current directory  | <leader>ff
 Search string in current directory | <leader>fg
+Search string in current open file | <leader>fs
 List open buffers                  | <leader>fb
 List LSP code actions              | ga
 
@@ -57,3 +58,15 @@ Open a vertical terminal | <C-\>
 Open file explores | <leader>fe
 
 Open Cheatsheet | <leader>c
+
+Select function outer | af
+Select function inner | if
+Select class outer | ac
+Select class inner | ic
+
+Show the symbols in current file | <leader>S
+
+Move current split to the far left    | <C-W H>	   
+Move current split to the very bottom | <C-W J>	   
+Move current split to the very top    | <C-W K>	   
+Move current split to the far right   | <C-W L>	   
