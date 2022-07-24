@@ -51,7 +51,13 @@ map("n", "<leader>fs", "<cmd>Telescope current_buffer_fuzzy_find<CR>", { noremap
 map("n", "<leader>fb", "<cmd>Telescope buffers<CR>", { noremap = true })
 
 -- LSP
-map("n", "K", vim.lsp.buf.hover, { noremap = true, silent = true })
+map("n", "K", function()
+  if vim.fn.foldclosed(vim.fn.getpos(".")[2]) < 0 then
+    vim.lsp.buf.hover()
+  else
+    require("ufo").peekFoldedLinesUnderCursor()
+  end
+end, { noremap = true, silent = true })
 map("n", "gi", vim.lsp.buf.implementation, { noremap = true, silent = true })
 map("n", "gW", vim.lsp.buf.workspace_symbol, { noremap = true, silent = true })
 map("n", "ga", vim.lsp.buf.code_action, { noremap = true, silent = true })
