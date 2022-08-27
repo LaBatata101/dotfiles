@@ -1,13 +1,6 @@
-local function custom_on_attach(client, _)
-  if client.name == "sumneko_lua" or client.name == "clangd" then
-    client.resolved_capabilities.document_formatting = false
-    client.resolved_capabilities.document_range_formatting = false
-    -- client.server_capabilities.documentFormattingProvider = false
-    -- client.server_capabilities.documentRangeFormattingProvider = false
-  end
-
-  -- if client.server_capabilities.documentHighlightProvider then
-  if client.resolved_capabilities.document_highlight then
+local function custom_on_attach(client, bufnr)
+  if client.server_capabilities.documentHighlightProvider then
+    -- if client.resolved_capabilities.document_highlight then
     local lsp_document_highlight = vim.api.nvim_create_augroup("lsp_document_highlight", {})
     vim.api.nvim_create_autocmd({ "CursorHold", "CursorHoldI" }, {
       group = lsp_document_highlight,
@@ -22,20 +15,23 @@ local function custom_on_attach(client, _)
   end
 
   require("lsp_signature").on_attach()
+  require("nvim-navic").attach(client, bufnr)
 end
 
 local handlers = {
   ["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, { border = "rounded" }),
 }
 
-local lsp_installer = require("nvim-lsp-installer")
-lsp_installer.on_server_ready(function(server)
-  local opts = {
-    on_attach = custom_on_attach,
-    handlers = handlers,
-  }
+local opts = {
+  on_attach = custom_on_attach,
+  handlers = handlers,
+}
 
-  if server.name == "rust_analyzer" then
+local lspconfig = require("lspconfig")
+require("mason-lspconfig").setup_handlers {
+
+  ["rust_analyzer"] = function()
+    opts.cmd = { vim.fn.stdpath("data") .. "/mason/bin/rust-analyzer" }
     opts.settings = {
       ["rust-analyzer"] = {
         checkOnSave = {
@@ -54,7 +50,7 @@ lsp_installer.on_server_ready(function(server)
     local codelldb_path = extension_path .. "adapter/codelldb"
     local liblldb_path = extension_path .. "lldb/lib/liblldb.so"
     require("rust-tools").setup({
-      server = vim.tbl_deep_extend("force", server:get_default_options(), opts),
+      server = opts,
       tools = {
         runnables = { use_telescope = false },
         debuggables = { use_telescope = false },
@@ -69,18 +65,17 @@ lsp_installer.on_server_ready(function(server)
         adapter = require("rust-tools.dap").get_codelldb_adapter(codelldb_path, liblldb_path),
       },
     })
-    server:attach_buffers()
-    return
-  end
+  end,
 
-  if server.name == "pyright" then
+  ["pyright"] = function()
     opts.on_init = function(client)
       local utils = require("config.utils")
       client.config.settings.python.pythonPath = utils.get_python_path(client.config.root_dir)
     end
-  end
+    lspconfig.pyright.setup(opts)
+  end,
 
-  if server.name == "sumneko_lua" then
+  ["sumneko_lua"] = function()
     opts.settings = {
       ["Lua"] = {
         workspace = {
@@ -89,17 +84,13 @@ lsp_installer.on_server_ready(function(server)
           workspace = { maxPreload = 5000 },
         },
         format = {
-          enable = false,
+          enable = true,
         },
       },
     }
-    opts = vim.tbl_deep_extend("force", require("lua-dev").setup(), opts)
+    lspconfig.sumneko_lua.setup(vim.tbl_deep_extend("force", require("lua-dev").setup(), opts))
   end
-
-  -- This setup() function is exactly the same as lspconfig's setup function.
-  -- Refer to https://github.com/neovim/nvim-lspconfig/blob/master/ADVANCED_README.md
-  server:setup(opts)
-end)
+}
 
 vim.diagnostic.config({ severiy_sort = true, update_in_insert = true })
 
@@ -121,7 +112,12 @@ vim.api.nvim_create_autocmd("BufWritePre", {
   pattern = "<buffer>",
   callback = function()
     -- vim.schedule(function()
-    vim.lsp.buf.formatting_sync(nil, 1000)
+    vim.lsp.buf.format({
+      timeout_ms = 2500,
+      filter = function(client)
+        return client.name ~= "clangd"
+      end,
+    })
     -- end)
   end,
 })

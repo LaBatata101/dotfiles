@@ -21,7 +21,3 @@ local compiled_ok, _ = pcall(require, "packer_compiled")
 if compiled_ok then
   require("packer_compiled")
 end
-
--- COLORS
-vim.api.nvim_set_hl(0, "Folded", {  italic = false  })
-vim.api.nvim_set_hl(0, "LspSignatureActiveParameter", {fg = require("gruvbox.colors").bright_yellow, bg = nil})

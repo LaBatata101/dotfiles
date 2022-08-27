@@ -16,8 +16,5 @@ null_ls.setup({
       extra_args = { "-l", "120", "--preview" },
     }),
     null_ls.builtins.formatting.isort,
-    null_ls.builtins.formatting.stylua.with({
-      extra_args = { "--indent-type", "Spaces", "--indent-width", "2" },
-    }),
   },
 })

@@ -52,15 +52,16 @@ vim.opt.linebreak = true
 vim.opt.emoji = false
 
 -- folding config
-vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
-vim.opt.foldmethod = "expr"
-vim.opt.foldlevelstart = 99
-vim.opt.foldtext = "v:lua.require('config.utils').fold_text()"
--- vim.wo.foldcolumn = "1"
--- vim.wo.foldlevel = 99
--- vim.wo.foldenable = true
+-- vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
+-- vim.opt.foldmethod = "expr"
+-- vim.opt.foldlevelstart = 99
+-- vim.opt.foldtext = "v:lua.require('config.utils').fold_text()"
 
-vim.opt.fillchars = { fold = " " }
+vim.wo.foldcolumn = "1"
+vim.wo.foldlevel = 99
+vim.wo.foldenable = true
+-- vim.wo.foldcolumndigits = false
+vim.o.fillchars = [[eob: ,fold: ,foldopen:,foldsep: ,foldclose:]]
 
 -- Splitting a new window below the current one
 vim.opt.splitbelow = true
@@ -97,7 +98,7 @@ local neovim_terminal = vim.api.nvim_create_augroup("neovim_terminal", {})
 vim.api.nvim_create_autocmd("TermOpen", {
   group = neovim_terminal,
   pattern = "*",
-  command = "startinsert | setlocal nonumber norelativenumber nocursorline signcolumn=no",
+  command = "startinsert | setlocal nonumber norelativenumber nocursorline signcolumn=no foldcolumn=0",
 })
 
 local vimrc_incsearch_highlight = vim.api.nvim_create_augroup("VimrcIncSearchHighlight", {})

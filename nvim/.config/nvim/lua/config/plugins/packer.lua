@@ -20,6 +20,7 @@ packer.startup({
       config = function()
         require("dressing").setup({
           input = {
+            insert_only = false,
             get_config = function(opts)
               if opts.prompt ~= nil and opts.prompt == "Save buffer before closing (Y/n)?" then
                 return {
@@ -36,28 +37,26 @@ packer.startup({
     -- LSP
     use({
       "neovim/nvim-lspconfig",
-      event = "BufRead",
+      -- event = "BufRead",
       config = function()
         require("config.plugins.lsp")
       end,
-      requires = {
-        -- LSP manager
-        {
-          "williamboman/nvim-lsp-installer",
-          module = "nvim-lsp-installer",
-          event = "BufRead",
-          cmd = {
-            "LspInstall",
-            "LspInstallInfo",
-            "LspPrintInstalled",
-            "LspRestart",
-            "LspStart",
-            "LspStop",
-            "LspUninstall",
-            "LspUninstallAll",
-          },
-        },
-      },
+    })
+
+    use({
+      "williamboman/mason.nvim",
+      config = function()
+        require("mason").setup()
+      end,
+    })
+
+    use({
+      "williamboman/mason-lspconfig.nvim",
+      config = function()
+        require("mason-lspconfig").setup({
+          ensure_installed = {"sumneko_lua", "rust_analyzer", "pyright"}
+        })
+      end,
     })
 
     -- Show signature help
@@ -174,63 +173,19 @@ packer.startup({
     })
 
     -- Themes
-    -- use({
-    --   "folke/tokyonight.nvim",
-    --   config = function()
-    --     require("config.plugins.tokyonight")
-    --   end,
-    -- })
-
-    -- use({
-    --   "catppuccin/nvim",
-    --   as = "catppuccin",
-    --   config = function()
-    --     local catppuccin = require("catppuccin")
-    --     catppuccin.setup({
-    --       integrations = {
-    --         native_lsp = {
-    --           enabled = true,
-    --           virtual_text = {
-    --             errors = "NONE",
-    --             hints = "NONE",
-    --             warnings = "NONE",
-    --             information = "NONE",
-    --           },
-    --           underlines = {
-    --             errors = "undercurl",
-    --             hints = "undercurl",
-    --             warnings = "undercurl",
-    --             information = "undercurl",
-    --           },
-    --         },
-    --       },
-    --     })
-    --
-    --     vim.g.catppuccin_flavour = "macchiato"
-    --     vim.cmd([[colorscheme catppuccin]])
-    --   end,
-    -- })
     use({
-      "ellisonleao/gruvbox.nvim",
+      "rebelot/kanagawa.nvim",
       config = function()
-        vim.opt.background = "dark"
-        vim.g.gruvbox_italic = 1
-        vim.g.gruvbox_underline = 0
-        vim.cmd([[colorscheme gruvbox]])
+        local default_colors = require("kanagawa.colors").setup()
+        require("kanagawa").setup({
+          overrides = {
+            WinSeparator = { bg = "NONE", fg = default_colors.bg_dark },
+            WinBar = { bold = false },
+          },
+        })
+        vim.cmd([[colorscheme kanagawa]])
       end,
     })
-
-    -- use({
-    --   "sainnhe/gruvbox-material",
-    --   config = function()
-    --     vim.opt.background = "dark"
-    --     vim.g.gruvbox_material_better_performance = 1
-    --     vim.g.gruvbox_material_enable_italic = 1
-    --     vim.g.gruvbox_material_enable_bold = 1
-    --     vim.g.gruvbox_material_diagnostic_line_highlight = 1
-    --     vim.cmd([[colorscheme gruvbox-material]])
-    --   end,
-    -- })
 
     -- Show Identation Level Lines
     use({
@@ -346,14 +301,16 @@ packer.startup({
       "kyazdani42/nvim-tree.lua",
       -- cmd = "NvimTreeToggle",
       config = function()
-        vim.g.nvim_tree_git_hl = 1
-        vim.g.nvim_tree_highlight_opened_files = 1
         require("nvim-tree").setup({
           diagnostics = {
             enable = true,
           },
           update_focused_file = {
             enable = true,
+          },
+          renderer = {
+            highlight_git = true,
+            highlight_opened_files = "2",
           },
         })
       end,
@@ -420,12 +377,11 @@ packer.startup({
 
     -- Show which funtion I'm currently at in status line
     use({
-      "SmiteshP/nvim-gps",
-      module = "nvim-gps",
+      "SmiteshP/nvim-navic",
+      -- module = "SmiteshP/nvim-navic",
       config = function()
-        require("nvim-gps").setup({
-          separator = "  ",
-        })
+        require("nvim-navic").setup({ highlight = false, separator = "  " })
+        vim.o.winbar = "%{%v:lua.require'nvim-navic'.get_location()%}"
       end,
     })
 
@@ -441,20 +397,18 @@ packer.startup({
     })
 
     -- Wait for https://github.com/neovim/neovim/pull/17446
-    -- use({
-    --   "kevinhwang91/nvim-ufo",
-    --   requires = "kevinhwang91/promise-async",
-    --   config = function()
-    --     local capabilities = vim.lsp.protocol.make_client_capabilities()
-    --     capabilities.textDocument.foldingRange = {
-    --       dynamicRegistration = false,
-    --       lineFoldingOnly = true,
-    --     }
-    --     require("ufo").setup({
-    --       fold_virt_text_handler = require("config.utils").text_handler,
-    --     })
-    --   end,
-    -- })
+    use({
+      "kevinhwang91/nvim-ufo",
+      requires = "kevinhwang91/promise-async",
+      config = function()
+        require("ufo").setup({
+          fold_virt_text_handler = require("config.utils").text_handler,
+          provider_selector = function(bufnr, filetype, buftype)
+            return { "treesitter", "indent" }
+          end,
+        })
+      end,
+    })
 
     -- Automatically set up your configuration after cloning packer.nvim
     -- Put this at the end after all plugins

@@ -49,6 +49,9 @@ map("n", "<leader>ff", "<cmd>Telescope find_files<CR>", { noremap = true })
 map("n", "<leader>fg", "<cmd>Telescope live_grep<CR>", { noremap = true })
 map("n", "<leader>fs", "<cmd>Telescope current_buffer_fuzzy_find<CR>", { noremap = true })
 map("n", "<leader>fb", "<cmd>Telescope buffers<CR>", { noremap = true })
+map("n", "<leader>ft", "<cmd>Telescope lsp_document_symbols<CR>", { noremap = true })
+map("n", "<leader>fw", "<cmd>Telescope lsp_workspace_symbols<CR>", { noremap = true })
+map("n", "<leader>fW", "<cmd>Telescope lsp_dynamic_workspace_symbols<CR>", { noremap = true })
 
 -- LSP
 map("n", "K", function()

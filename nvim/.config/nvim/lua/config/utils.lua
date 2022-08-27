@@ -81,8 +81,7 @@ function M.ask_to_save_before_quitting()
 end
 
 function M.get_python_path(workspace)
-  local util = require("lspconfig.util")
-  local path = util.path
+  local path = require("lspconfig.util").path
   -- 1. Use activated virtualenv.
   if vim.env.VIRTUAL_ENV then
     return path.join(vim.env.VIRTUAL_ENV, "bin", "python")
@@ -97,7 +96,7 @@ function M.get_python_path(workspace)
   end
 
   -- 3. Find and use virtualenv managed by Poetry.
-  if util.has_bins("poetry") and path.is_file(path.join(workspace, "poetry.lock")) then
+  if vim.fn.executable("poetry") and path.is_file(path.join(workspace, "poetry.lock")) then
     local output = trim(system("poetry env info -p"))
     if path.is_dir(output) then
       return path.join(output, "bin", "python")
@@ -105,7 +104,7 @@ function M.get_python_path(workspace)
   end
 
   -- 4. Find and use virtualenv managed by Pipenv.
-  if util.has_bins("pipenv") and path.is_file(path.join(workspace, "Pipfile")) then
+  if vim.fn.executable("pipenv") and path.is_file(path.join(workspace, "Pipfile")) then
     local output = trim(system("cd " .. workspace .. "; pipenv --py"))
     if path.is_dir(output) then
       return output
@@ -113,7 +112,7 @@ function M.get_python_path(workspace)
   end
 
   -- 5. Find and use virtualenv managed by Pyenv.
-  if util.has_bins("pyenv") and path.is_file(path.join(workspace, ".python-version")) then
+  if vim.fn.executable("pyenv") and path.is_file(path.join(workspace, ".python-version")) then
     local venv_name = trim(system("cat " .. path.join(workspace, ".python-version")))
     local pyenv_dir = path.join(vim.env.HOME, ".pyenv")
     local virtualenv_dir = path.join(pyenv_dir, "versions", venv_name)
