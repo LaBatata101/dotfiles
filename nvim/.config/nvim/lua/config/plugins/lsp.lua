@@ -31,7 +31,6 @@ local lspconfig = require("lspconfig")
 require("mason-lspconfig").setup_handlers {
 
   ["rust_analyzer"] = function()
-    opts.cmd = { vim.fn.stdpath("data") .. "/mason/bin/rust-analyzer" }
     opts.settings = {
       ["rust-analyzer"] = {
         checkOnSave = {
@@ -50,7 +49,7 @@ require("mason-lspconfig").setup_handlers {
     local codelldb_path = extension_path .. "adapter/codelldb"
     local liblldb_path = extension_path .. "lldb/lib/liblldb.so"
     require("rust-tools").setup({
-      server = opts,
+      server = vim.tbl_deep_extend("force", {cmd = { vim.fn.stdpath("data") .. "/mason/bin/rust-analyzer" }}, opts),
       tools = {
         runnables = { use_telescope = false },
         debuggables = { use_telescope = false },

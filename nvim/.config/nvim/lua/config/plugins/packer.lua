@@ -176,11 +176,8 @@ packer.startup({
     use({
       "rebelot/kanagawa.nvim",
       config = function()
-        local default_colors = require("kanagawa.colors").setup()
         require("kanagawa").setup({
           overrides = {
-            WinSeparator = { bg = "NONE", fg = default_colors.bg_dark },
-            WinBar = { bold = false },
           },
         })
         vim.cmd([[colorscheme kanagawa]])
