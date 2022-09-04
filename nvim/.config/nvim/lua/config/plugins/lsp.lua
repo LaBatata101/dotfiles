@@ -29,6 +29,9 @@ local opts = {
 
 local lspconfig = require("lspconfig")
 require("mason-lspconfig").setup_handlers {
+  function(server_name)
+    lspconfig[server_name].setup {}
+  end,
 
   ["rust_analyzer"] = function()
     opts.settings = {
@@ -49,7 +52,7 @@ require("mason-lspconfig").setup_handlers {
     local codelldb_path = extension_path .. "adapter/codelldb"
     local liblldb_path = extension_path .. "lldb/lib/liblldb.so"
     require("rust-tools").setup({
-      server = vim.tbl_deep_extend("force", {cmd = { vim.fn.stdpath("data") .. "/mason/bin/rust-analyzer" }}, opts),
+      server = opts,
       tools = {
         runnables = { use_telescope = false },
         debuggables = { use_telescope = false },
@@ -69,7 +72,7 @@ require("mason-lspconfig").setup_handlers {
   ["pyright"] = function()
     opts.on_init = function(client)
       local utils = require("config.utils")
-      client.config.settings.python.pythonPath = utils.get_python_path(client.config.root_dir)
+      client.config.settings.python.pythonPath = utils.get_python_bin_path(client.config.root_dir)
     end
     lspconfig.pyright.setup(opts)
   end,

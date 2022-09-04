@@ -34,15 +34,15 @@ map("", "<leader>k", function()
 end, { noremap = true, silent = true })
 
 -- split resizing
-map("", "<left>", "<C-w>2>")
-map("", "<up>", "<C-w>2-")
-map("", "<down>", "<C-w>2+")
-map("", "<right>", "<C-w>2<")
+map("", "<left>", "<C-w>2>", { silent = true })
+map("", "<up>", "<C-w>2-", { silent = true })
+map("", "<down>", "<C-w>2+", { silent = true })
+map("", "<right>", "<C-w>2<", { silent = true })
 
 -- source it
 map("", "<leader>r", function()
   return require("config.utils").reload_config()
-end)
+end, { silent = true })
 
 -- Telescope
 map("n", "<leader>ff", "<cmd>Telescope find_files<CR>", { noremap = true })
@@ -55,10 +55,9 @@ map("n", "<leader>fW", "<cmd>Telescope lsp_dynamic_workspace_symbols<CR>", { nor
 
 -- LSP
 map("n", "K", function()
-  if vim.fn.foldclosed(vim.fn.getpos(".")[2]) < 0 then
+  local winid = require("ufo").peekFoldedLinesUnderCursor()
+  if not winid then
     vim.lsp.buf.hover()
-  else
-    require("ufo").peekFoldedLinesUnderCursor()
   end
 end, { noremap = true, silent = true })
 map("n", "gi", vim.lsp.buf.implementation, { noremap = true, silent = true })
@@ -99,7 +98,7 @@ end, { noremap = true, silent = true })
 
 map("n", "<leader>dc", function()
   require("dap").terminate()
-  return require("dapui").close()
+  return require("dapui").close({})
 end, { noremap = true, silent = true })
 
 -- Terminal

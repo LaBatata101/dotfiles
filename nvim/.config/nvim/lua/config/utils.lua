@@ -3,6 +3,7 @@ local M = {}
 local glob = vim.fn.glob
 local system = vim.fn.system
 local trim = vim.fn.trim
+local path = require("lspconfig.util").path
 
 function M.ask_to_save_before_closing()
   local buf = vim.fn.getbufinfo("%")[1]
@@ -80,18 +81,17 @@ function M.ask_to_save_before_quitting()
   end
 end
 
-function M.get_python_path(workspace)
-  local path = require("lspconfig.util").path
+local function get_python_path(workspace)
   -- 1. Use activated virtualenv.
   if vim.env.VIRTUAL_ENV then
-    return path.join(vim.env.VIRTUAL_ENV, "bin", "python")
+    return vim.env.VIRTUAL_ENV
   end
 
   -- 2. Find and use virtualenv in workspace directory.
   for _, pattern in ipairs({ "*", ".*" }) do
     local match = glob(path.join(workspace, pattern, "pyvenv.cfg"))
     if not vim.fn.empty(match) then
-      return path.join(path.dirname(match), "bin", "python")
+      return path.dirname(match)
     end
   end
 
@@ -99,7 +99,7 @@ function M.get_python_path(workspace)
   if vim.fn.executable("poetry") and path.is_file(path.join(workspace, "poetry.lock")) then
     local output = trim(system("poetry env info -p"))
     if path.is_dir(output) then
-      return path.join(output, "bin", "python")
+      return output
     end
   end
 
@@ -118,12 +118,24 @@ function M.get_python_path(workspace)
     local virtualenv_dir = path.join(pyenv_dir, "versions", venv_name)
 
     if path.is_dir(virtualenv_dir) then
-      return path.join(virtualenv_dir, "bin", "python")
+      return virtualenv_dir
     end
   end
+end
 
-  -- 6. Fallback to system Python.
+function M.get_python_bin_path(workspace)
+  local python_dir = get_python_path(workspace)
+
+  if python_dir then
+    return path.join(python_dir, "bin", "python")
+  end
+  -- Fallback to system Python.
   return vim.fn.exepath("python3") or vim.fn.exepath("python") or "python"
+end
+
+function M.get_python_lib_path(workspace)
+  local python_dir = get_python_path(workspace)
+  return glob(path.join(python_dir, "lib", "*", "site-packages"))
 end
 
 function M.fold_text()
@@ -145,11 +157,10 @@ end
 
 function M.text_handler(virtText, lnum, endLnum, width, truncate)
   local newVirtText = {}
-  local suffix = ("(%d lines)"):format(endLnum - lnum)
+  local suffix = ('  %d lines '):format(endLnum - lnum)
   local sufWidth = vim.fn.strdisplaywidth(suffix)
   local targetWidth = width - sufWidth
   local curWidth = 0
-
   for _, chunk in ipairs(virtText) do
     local chunkText = chunk[1]
     local chunkWidth = vim.fn.strdisplaywidth(chunkText)
@@ -170,7 +181,7 @@ function M.text_handler(virtText, lnum, endLnum, width, truncate)
   end
 
   local ellipsis_suffix = " ···"
-  local total_preffix_spaces = vim.opt.textwidth:get() - (sufWidth + curWidth + vim.fn.strdisplaywidth(ellipsis_suffix))
+  local total_preffix_spaces = vim.opt.textwidth:get() - sufWidth - curWidth - vim.fn.strdisplaywidth(ellipsis_suffix)
   suffix = ellipsis_suffix .. (" "):rep(total_preffix_spaces) .. suffix
 
   table.insert(newVirtText, { suffix, "MoreMsg" })
@@ -212,7 +223,6 @@ function M.reload_config()
   R("config.plugins.neoscroll")
   R("config.plugins.null_ls")
   R("config.plugins.packer")
-  R("config.plugins.symbols_outline")
   R("config.plugins.telescope")
   R("config.plugins.toggleterm")
   R("config.plugins.tokyonight")

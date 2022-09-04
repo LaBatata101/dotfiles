@@ -54,7 +54,7 @@ packer.startup({
       "williamboman/mason-lspconfig.nvim",
       config = function()
         require("mason-lspconfig").setup({
-          ensure_installed = {"sumneko_lua", "rust_analyzer", "pyright"}
+          ensure_installed = { "sumneko_lua", "rust_analyzer", "pyright" }
         })
       end,
     })
@@ -176,8 +176,10 @@ packer.startup({
     use({
       "rebelot/kanagawa.nvim",
       config = function()
+        local colors = require("kanagawa.colors").setup()
         require("kanagawa").setup({
           overrides = {
+            MoreMsg = { bg = "#2a2a37" }
           },
         })
         vim.cmd([[colorscheme kanagawa]])
@@ -382,7 +384,9 @@ packer.startup({
       end,
     })
 
-    use({ "editorconfig/editorconfig-vim" })
+    use({ "editorconfig/editorconfig-vim", cond = function()
+      return vim.fn.filereadable(".editorconfig") == 1
+    end })
 
     -- Session management
     use({
