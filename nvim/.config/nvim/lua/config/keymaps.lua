@@ -61,7 +61,6 @@ map("n", "K", function()
   end
 end, { noremap = true, silent = true })
 map("n", "gi", vim.lsp.buf.implementation, { noremap = true, silent = true })
-map("n", "gW", vim.lsp.buf.workspace_symbol, { noremap = true, silent = true })
 map("n", "ga", vim.lsp.buf.code_action, { noremap = true, silent = true })
 map("n", "gd", vim.lsp.buf.definition, { noremap = true, silent = true })
 

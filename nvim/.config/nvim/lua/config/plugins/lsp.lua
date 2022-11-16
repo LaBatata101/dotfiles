@@ -1,6 +1,5 @@
 local function custom_on_attach(client, bufnr)
   if client.server_capabilities.documentHighlightProvider then
-    -- if client.resolved_capabilities.document_highlight then
     local lsp_document_highlight = vim.api.nvim_create_augroup("lsp_document_highlight", {})
     vim.api.nvim_create_autocmd({ "CursorHold", "CursorHoldI" }, {
       group = lsp_document_highlight,
@@ -26,6 +25,8 @@ local opts = {
   on_attach = custom_on_attach,
   handlers = handlers,
 }
+
+require("neodev").setup({ setup_jsonls = false })
 
 local lspconfig = require("lspconfig")
 require("mason-lspconfig").setup_handlers {
@@ -90,7 +91,7 @@ require("mason-lspconfig").setup_handlers {
         },
       },
     }
-    lspconfig.sumneko_lua.setup(vim.tbl_deep_extend("force", require("lua-dev").setup(), opts))
+    lspconfig.sumneko_lua.setup(opts)
   end
 }
 
@@ -103,23 +104,20 @@ vim.fn.sign_define("DiagnosticSignHint", { text = " ", texthl = "DiagnosticSi
 
 -- Show diagnostic popup on cursor hold
 vim.api.nvim_create_autocmd("CursorHold", {
-  pattern = "<buffer>",
+  pattern = "*",
   callback = function()
-    vim.diagnostic.open_float(nil, { focus = false, source = "if_many", border = "rounded" })
+    vim.diagnostic.open_float({ focus = false, source = "always", border = "rounded" })
   end,
 })
 
 -- Format on save
 vim.api.nvim_create_autocmd("BufWritePre", {
-  pattern = "<buffer>",
+  pattern = "*",
   callback = function()
-    -- vim.schedule(function()
     vim.lsp.buf.format({
-      timeout_ms = 2500,
       filter = function(client)
         return client.name ~= "clangd"
       end,
     })
-    -- end)
   end,
 })

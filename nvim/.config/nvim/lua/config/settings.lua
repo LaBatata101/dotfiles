@@ -4,7 +4,7 @@ vim.g.python3_host_prog = "/usr/bin/python"
 vim.g.loaded_python_provider = 0
 vim.g.python_host_skip_check = 1
 
-vim.g.cursorhold_updatetime = 250
+vim.opt.updatetime = 250
 
 vim.opt.mouse = "a"
 vim.opt.cursorline = true

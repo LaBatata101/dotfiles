@@ -1,4 +1,3 @@
--- vim.cmd([[ autocmd BufWritePost packer.lua source <afile> | PackerCompile ]])
 vim.api.nvim_create_autocmd("BufWritePost", {
   pattern = "packer.lua",
   command = "source <afile> | PackerCompile",
@@ -72,12 +71,12 @@ packer.startup({
     use({ "folke/lsp-colors.nvim", after = "nvim-lspconfig" })
 
     -- Adds extra functionality over rust analyzer
-    use({ "simrat39/rust-tools.nvim", ft = "rust", after = "nvim-lspconfig" })
+    use({ "simrat39/rust-tools.nvim" })
 
     -- Formatting
     use({
       "jose-elias-alvarez/null-ls.nvim",
-      ft = "lua",
+      ft = "python",
       event = "BufRead",
       config = function()
         require("config.plugins.null_ls")
@@ -178,8 +177,9 @@ packer.startup({
       config = function()
         local colors = require("kanagawa.colors").setup()
         require("kanagawa").setup({
+          globalStatus = true,
           overrides = {
-            MoreMsg = { bg = "#2a2a37" }
+            MoreMsg = { bg = colors.sumiInk2 },
           },
         })
         vim.cmd([[colorscheme kanagawa]])
@@ -338,7 +338,6 @@ packer.startup({
     })
 
     -- Fix/Perfomance improvements
-    use({ "antoinemadec/FixCursorHold.nvim", event = "BufReadPost" })
     use("nathom/filetype.nvim")
     use("lewis6991/impatient.nvim")
 
@@ -372,14 +371,14 @@ packer.startup({
     use({ "Vimjas/vim-python-pep8-indent", ft = "python" })
 
     -- Lua configuration
-    use({ "folke/lua-dev.nvim", ft = "lua" })
+    use({ "folke/neodev.nvim" })
 
     -- Show which funtion I'm currently at in status line
     use({
       "SmiteshP/nvim-navic",
       -- module = "SmiteshP/nvim-navic",
       config = function()
-        require("nvim-navic").setup({ highlight = false, separator = "  " })
+        require("nvim-navic").setup({ highlight = true, separator = "  " })
         vim.o.winbar = "%{%v:lua.require'nvim-navic'.get_location()%}"
       end,
     })
