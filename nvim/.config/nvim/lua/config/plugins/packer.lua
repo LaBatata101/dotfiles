@@ -107,6 +107,11 @@ packer.startup({
           "nvim-treesitter/nvim-treesitter-textobjects",
           after = "nvim-treesitter",
         },
+        {
+          "windwp/nvim-ts-autotag",
+          after = "nvim-treesitter",
+          -- ft = {"javascript", "html", "xml", "typescript", "javascriptreact", "typescriptreact", "jsx", "tsx"}
+        }
       },
       -- ft = vim.g.supported_languages,
       config = function()
@@ -338,7 +343,7 @@ packer.startup({
     })
 
     -- Fix/Perfomance improvements
-    use("nathom/filetype.nvim")
+    -- use("nathom/filetype.nvim")
     use("lewis6991/impatient.nvim")
 
     -- Profile neovim startup time
@@ -409,6 +414,17 @@ packer.startup({
         })
       end,
     })
+
+    use({ "norcalli/nvim-colorizer.lua", ft = { "css", "javascript", "html", "typescript" }, config = function()
+      require("colorizer").setup({
+        'css';
+        'javascript';
+        'typescript';
+        html = {
+          mode = 'foreground';
+        }
+      })
+    end })
 
     -- Automatically set up your configuration after cloning packer.nvim
     -- Put this at the end after all plugins

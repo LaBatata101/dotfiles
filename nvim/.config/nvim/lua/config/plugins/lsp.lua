@@ -92,6 +92,23 @@ require("mason-lspconfig").setup_handlers {
       },
     }
     lspconfig.sumneko_lua.setup(opts)
+  end,
+
+  ["tsserver"] = function()
+    opts.settings = {
+      ["javascript"] = {
+        format = {
+          enable = false
+        }
+      },
+      ["typescript"] = {
+        format = {
+          enable = false
+        }
+      }
+    }
+
+    lspconfig.tsserver.setup(opts)
   end
 }
 

@@ -16,5 +16,8 @@ null_ls.setup({
       extra_args = { "-l", "120", "--preview" },
     }),
     null_ls.builtins.formatting.isort,
+    null_ls.builtins.formatting.prettier.with({
+      extra_args = { "--print-width", "100", "--tab-width", "4" }
+    })
   },
 })
