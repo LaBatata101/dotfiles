@@ -70,3 +70,5 @@ Move current split to the far left    | <C-W H>
 Move current split to the very bottom | <C-W J>	   
 Move current split to the very top    | <C-W K>	   
 Move current split to the far right   | <C-W L>	   
+
+Toggle diagnostics | <leader>dd

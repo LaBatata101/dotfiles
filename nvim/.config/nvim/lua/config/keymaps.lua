@@ -63,6 +63,16 @@ end, { noremap = true, silent = true })
 map("n", "gi", vim.lsp.buf.implementation, { noremap = true, silent = true })
 map("n", "ga", vim.lsp.buf.code_action, { noremap = true, silent = true })
 map("n", "gd", vim.lsp.buf.definition, { noremap = true, silent = true })
+local diagnostics_active = true
+map("n", "<leader>dd", function()
+  diagnostics_active = not diagnostics_active
+
+  if diagnostics_active then
+    vim.diagnostic.show(nil, 0)
+  else
+    vim.diagnostic.hide(nil, 0)
+  end
+end)
 
 -- Rename
 map("", "<leader>rn", vim.lsp.buf.rename, { noremap = true, silent = true })
