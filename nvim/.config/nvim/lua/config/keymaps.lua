@@ -41,7 +41,8 @@ map("", "<right>", "<C-w>2<", { silent = true })
 
 -- source it
 map("", "<leader>r", function()
-  return require("config.utils").reload_config()
+  require("plenary.reload").reload_module("config")
+  vim.cmd [[source $MYVIMRC]]
 end, { silent = true })
 
 -- Telescope
