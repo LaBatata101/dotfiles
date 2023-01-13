@@ -72,3 +72,6 @@ Move current split to the very top    | <C-W K>
 Move current split to the far right   | <C-W L>	   
 
 Toggle diagnostics | <leader>dd
+
+Outer block text object | bo
+Inner block text object | bi
