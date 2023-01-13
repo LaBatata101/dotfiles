@@ -4,20 +4,8 @@ require("config.keymaps")
 
 local bootstrap = require("config.bootstrap")
 
-bootstrap.install_packer()
--- Improve startup speed
-local ok, _ = pcall(require, "impatient")
-if ok then
-  require("impatient").enable_profile()
-end
+bootstrap.install_lazy_nvim()
 
--- Load plugins and their configurations
-require("config.plugins.packer")
--- require("config.colors")
+require("config.plugins.lazy")
 
 bootstrap.install_language_servers()
-
-local compiled_ok, _ = pcall(require, "packer_compiled")
-if compiled_ok then
-  require("packer_compiled")
-end

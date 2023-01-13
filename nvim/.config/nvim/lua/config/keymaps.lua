@@ -45,15 +45,6 @@ map("", "<leader>r", function()
   vim.cmd [[source $MYVIMRC]]
 end, { silent = true })
 
--- Telescope
-map("n", "<leader>ff", "<cmd>Telescope find_files<CR>", { noremap = true })
-map("n", "<leader>fg", "<cmd>Telescope live_grep<CR>", { noremap = true })
-map("n", "<leader>fs", "<cmd>Telescope current_buffer_fuzzy_find<CR>", { noremap = true })
-map("n", "<leader>fb", "<cmd>Telescope buffers<CR>", { noremap = true })
-map("n", "<leader>ft", "<cmd>Telescope lsp_document_symbols<CR>", { noremap = true })
-map("n", "<leader>fw", "<cmd>Telescope lsp_workspace_symbols<CR>", { noremap = true })
-map("n", "<leader>fW", "<cmd>Telescope lsp_dynamic_workspace_symbols<CR>", { noremap = true })
-
 -- LSP
 map("n", "K", function()
   local winid = require("ufo").peekFoldedLinesUnderCursor()
@@ -78,38 +69,8 @@ end)
 -- Rename
 map("", "<leader>rn", vim.lsp.buf.rename, { noremap = true, silent = true })
 
--- Trouble
-map("n", "<leader>td", "<cmd>TroubleToggle document_diagnostics<CR>", { noremap = true })
-map("n", "gr", "<cmd>TroubleToggle lsp_references<CR>", { noremap = true })
-
 -- Hop
 map("n", "<leader><leader>", "<cmd>HopWord<CR>", { noremap = true })
-
--- DAP
-map("n", "<F5>", function()
-  return require("dap").continue()
-end, { noremap = true, silent = true })
-
-map("n", "<F10>", function()
-  return require("dap").step_over()
-end, { noremap = true, silent = true })
-
-map("n", "<F11>", function()
-  return require("dap").step_into()
-end, { noremap = true, silent = true })
-
-map("n", "<F12>", function()
-  return require("dap").step_out()
-end, { noremap = true, silent = true })
-
-map("n", "<leader>b", function()
-  return require("dap").toggle_breakpoint()
-end, { noremap = true, silent = true })
-
-map("n", "<leader>dc", function()
-  require("dap").terminate()
-  return require("dapui").close({})
-end, { noremap = true, silent = true })
 
 -- Terminal
 map("t", "<Esc>", "<C-\\><C-n>", { noremap = true })
@@ -117,20 +78,6 @@ map("t", "<C-j>", "<C-\\><C-n><C-w>j", { noremap = true })
 map("t", "<C-k>", "<C-\\><C-n><C-w>k", { noremap = true })
 map("t", "<C-l>", "<C-\\><C-n><C-w>l", { noremap = true })
 map("t", "<C-h>", "<C-\\><C-n><C-w>h", { noremap = true })
-
-map({ "n", "t" }, "<C-\\>", function()
-  return require("config.plugins.toggleterm").vertical_term_toggle()
-end, { noremap = true, silent = true })
-
-map("n", "<leader>g", function()
-  return require("config.plugins.toggleterm").lazygit_toggle()
-end, { noremap = true, silent = true })
-
--- File explorer
-map("n", "<leader>fe", "<cmd>NvimTreeToggle<CR>", { noremap = true })
-
--- Cheatsheet
-map("n", "<leader>c", "<cmd>Cheatsheet<CR>", { noremap = true })
 
 -- LUASnip
 map("i", "<c-l>", function()
@@ -142,5 +89,3 @@ end, { silent = true })
 --   require("config.utils").ask_to_save_before_quitting()
 -- end, { silent = true })
 map("n", "ZZ", "<cmd>conf qa<CR>", { silent = true })
-
-map("n", "<leader>S", "<cmd>SymbolsOutline<CR>", { noremap = true })
