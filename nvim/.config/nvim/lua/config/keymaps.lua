@@ -42,7 +42,7 @@ map("", "<right>", "<C-w>2<", { silent = true })
 -- source it
 map("", "<leader>r", function()
   require("plenary.reload").reload_module("config")
-  vim.cmd [[source $MYVIMRC]]
+  vim.cmd([[source $MYVIMRC]])
 end, { silent = true })
 
 -- LSP
@@ -55,6 +55,9 @@ end, { noremap = true, silent = true })
 map("n", "gi", vim.lsp.buf.implementation, { noremap = true, silent = true })
 map("n", "ga", vim.lsp.buf.code_action, { noremap = true, silent = true })
 map("n", "gd", vim.lsp.buf.definition, { noremap = true, silent = true })
+map("n", "<leader>dn", vim.diagnostic.goto_next, { noremap = true, silent = true })
+map("n", "<leader>dp", vim.diagnostic.goto_prev, { noremap = true, silent = true })
+
 local diagnostics_active = true
 map("n", "<leader>dd", function()
   diagnostics_active = not diagnostics_active

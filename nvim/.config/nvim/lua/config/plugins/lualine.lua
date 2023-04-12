@@ -53,11 +53,11 @@ lualine.setup({
         symbols = { error = " ", warn = " ", info = " ", hint = "" },
       },
       {
-        "branch"
+        "branch",
       },
       {
         "diff",
-        symbols = { added = " ", modified = "柳", removed = " " },
+        symbols = { added = " ", modified = " ", removed = " " },
       },
     },
     lualine_c = {

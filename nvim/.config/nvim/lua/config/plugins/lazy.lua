@@ -16,7 +16,7 @@ require("lazy").setup({
           end,
         },
       })
-    end
+    end,
   },
 
   -- LSP
@@ -40,7 +40,7 @@ require("lazy").setup({
     "williamboman/mason-lspconfig.nvim",
     config = function()
       require("mason-lspconfig").setup({
-        ensure_installed = { "sumneko_lua", "rust_analyzer", "pyright" }
+        ensure_installed = { "sumneko_lua", "rust_analyzer", "pyright" },
       })
     end,
   },
@@ -105,7 +105,7 @@ require("lazy").setup({
     cmd = { "TroubleToggle", "Trouble" },
     keys = {
       { "<leader>td", "<cmd>TroubleToggle document_diagnostics<CR>", noremap = true },
-      { "gr", "<cmd>TroubleToggle lsp_references<CR>", noremap = true }
+      { "gr", "<cmd>TroubleToggle lsp_references<CR>", noremap = true },
     },
     dependencies = { "kyazdani42/nvim-web-devicons" },
     config = function()
@@ -168,7 +168,7 @@ require("lazy").setup({
         globalStatus = true,
         overrides = {
           MoreMsg = { bg = colors.sumiInk2 },
-          ["@type.qualifier"] = { link = "Keyword" }
+          ["@type.qualifier"] = { link = "Keyword" },
         },
       })
 
@@ -177,18 +177,18 @@ require("lazy").setup({
   },
 
   {
-    'navarasu/onedark.nvim',
+    "navarasu/onedark.nvim",
     lazy = true,
     config = function()
       require("onedark").setup({
         style = "deep",
         highlights = {
           ["@keyword.function"] = { fmt = "italic" },
-          ["@conditional"] = { fmt = "bold" }
-        }
+          ["@conditional"] = { fmt = "bold" },
+        },
       })
       -- require('onedark').load()
-    end
+    end,
   },
 
   -- Show Identation Level Lines
@@ -223,13 +223,13 @@ require("lazy").setup({
     "nvim-telescope/telescope.nvim",
     cmd = "Telescope",
     keys = {
-      { '<leader>ff', '<cmd>Telescope find_files<CR>', noremap = true },
-      { '<leader>fg', "<cmd>Telescope live_grep<CR>", noremap = true },
-      { '<leader>fb', "<cmd>Telescope buffers<CR>", noremap = true },
-      { '<leader>fs', "<cmd>Telescope current_buffer_fuzzy_find<CR>", noremap = true },
-      { '<leader>ft', "<cmd>Telescope lsp_document_symbols<CR>", noremap = true },
-      { '<leader>fw', "<cmd>Telescope lsp_workspace_symbols<CR>", noremap = true },
-      { '<leader>fW', "<cmd>Telescope lsp_dynamic_workspace_symbols<CR>", noremap = true },
+      { "<leader>ff", "<cmd>Telescope find_files<CR>", noremap = true },
+      { "<leader>fg", "<cmd>Telescope live_grep<CR>", noremap = true },
+      { "<leader>fb", "<cmd>Telescope buffers<CR>", noremap = true },
+      { "<leader>fs", "<cmd>Telescope current_buffer_fuzzy_find<CR>", noremap = true },
+      { "<leader>ft", "<cmd>Telescope lsp_document_symbols<CR>", noremap = true },
+      { "<leader>fw", "<cmd>Telescope lsp_workspace_symbols<CR>", noremap = true },
+      { "<leader>fW", "<cmd>Telescope lsp_dynamic_workspace_symbols<CR>", noremap = true },
     },
     dependencies = {
       "nvim-lua/plenary.nvim",
@@ -303,7 +303,7 @@ require("lazy").setup({
   {
     "kyazdani42/nvim-tree.lua",
     keys = {
-      { "<leader>fe", "<cmd>NvimTreeToggle<CR>", noremap = true }
+      { "<leader>fe", "<cmd>NvimTreeToggle<CR>", noremap = true },
     },
     config = function()
       require("nvim-tree").setup({
@@ -345,9 +345,11 @@ require("lazy").setup({
         function()
           require("config.plugins.toggleterm").vertical_term_toggle()
         end,
-        mode = { "n", "t" }, noremap = true, silent = true
+        mode = { "n", "t" },
+        noremap = true,
+        silent = true,
       },
-      "<C-t>"
+      "<C-t>",
     },
     config = function()
       require("config.plugins.toggleterm")
@@ -378,17 +380,18 @@ require("lazy").setup({
   },
 
   {
-    "norcalli/nvim-colorizer.lua", ft = { "css", "javascript", "html", "typescript" },
+    "norcalli/nvim-colorizer.lua",
+    ft = { "css", "javascript", "html", "typescript" },
     config = function()
       require("colorizer").setup({
-        'css';
-        'javascript';
-        'typescript';
+        "css",
+        "javascript",
+        "typescript",
         html = {
-          mode = 'foreground';
-        }
+          mode = "foreground",
+        },
       })
-    end
+    end,
   },
 
   -- Better Python Indentation
@@ -410,11 +413,21 @@ require("lazy").setup({
     "editorconfig/editorconfig-vim",
     cond = function()
       return vim.fn.filereadable(".editorconfig") == 1
-    end
+    end,
   },
 
   {
     "tweekmonster/startuptime.vim",
     cmd = "StartupTime",
-  }
+  },
+
+  {
+    "akinsho/flutter-tools.nvim",
+    ft = "dart",
+    config = function()
+      require("flutter-tools").setup({
+        flutter_lookup_cmd = "asdf where flutter",
+      })
+    end,
+  },
 })

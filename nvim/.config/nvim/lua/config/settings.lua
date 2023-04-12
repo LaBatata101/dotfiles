@@ -8,7 +8,6 @@ vim.opt.updatetime = 250
 
 vim.opt.mouse = "a"
 vim.opt.cursorline = true
--- vim.opt.nohlsearch = true
 vim.opt.showmode = false
 
 vim.opt.hidden = true -- allow buffer switching without saving
@@ -51,11 +50,9 @@ vim.opt.linebreak = true
 -- CREDIT: https://www.youtube.com/watch?v=F91VWOelFNE
 vim.opt.emoji = false
 
--- folding config
--- vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
--- vim.opt.foldmethod = "expr"
--- vim.opt.foldlevelstart = 99
--- vim.opt.foldtext = "v:lua.require('config.utils').fold_text()"
+-- Spell check
+-- vim.opt.spelllang = "en_us"
+-- vim.opt.spell = true
 
 vim.wo.foldcolumn = "1"
 vim.wo.foldlevel = 99
@@ -68,9 +65,8 @@ vim.opt.splitbelow = true
 -- Splitting a new window at the right of the current one
 vim.opt.splitright = true
 
--- Disable continuation of comments to the next linebreak
+-- Disable continuation of comments to the next line break
 vim.opt.formatoptions:remove({ "c" })
--- vim.o.formatoptions = "cql"
 
 -- disable builtin plugins
 vim.g.loaded_gzip = 1
@@ -128,3 +124,8 @@ vim.g.symbols_outline = {
   auto_preview = false,
   width = 35,
 }
+
+vim.api.nvim_create_autocmd("VimEnter", {
+  pattern = "*",
+  command = "silent !setxkbmap -option caps:escape_shifted_capslock",
+})

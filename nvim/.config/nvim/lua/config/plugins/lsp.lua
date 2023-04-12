@@ -29,9 +29,9 @@ local opts = {
 require("neodev").setup({ setup_jsonls = false })
 
 local lspconfig = require("lspconfig")
-require("mason-lspconfig").setup_handlers {
+require("mason-lspconfig").setup_handlers({
   function(server_name)
-    lspconfig[server_name].setup {}
+    lspconfig[server_name].setup({})
   end,
 
   ["rust_analyzer"] = function()
@@ -87,7 +87,7 @@ require("mason-lspconfig").setup_handlers {
           workspace = { maxPreload = 5000 },
         },
         format = {
-          enable = true,
+          enable = false,
         },
       },
     }
@@ -98,19 +98,19 @@ require("mason-lspconfig").setup_handlers {
     opts.settings = {
       ["javascript"] = {
         format = {
-          enable = false
-        }
+          enable = false,
+        },
       },
       ["typescript"] = {
         format = {
-          enable = false
-        }
-      }
+          enable = false,
+        },
+      },
     }
 
     lspconfig.tsserver.setup(opts)
-  end
-}
+  end,
+})
 
 vim.diagnostic.config({ severiy_sort = true, update_in_insert = true })
 
