@@ -40,7 +40,7 @@ require("lazy").setup({
     "williamboman/mason-lspconfig.nvim",
     config = function()
       require("mason-lspconfig").setup({
-        ensure_installed = { "sumneko_lua", "rust_analyzer", "pyright" },
+        ensure_installed = { "lua_ls", "rust_analyzer", "pyright" },
       })
     end,
   },
@@ -52,9 +52,6 @@ require("lazy").setup({
       require("config.plugins.lsp_signature")
     end,
   },
-  -- Creates missing LSP diagnostics highlight groups for color schemes that don't yet support the
-  -- Neovim 0.5 builtin lsp client
-  { "folke/lsp-colors.nvim" },
 
   -- Adds extra functionality over rust analyzer
   { "simrat39/rust-tools.nvim" },
@@ -163,13 +160,14 @@ require("lazy").setup({
     "rebelot/kanagawa.nvim",
     priority = 1000,
     config = function()
-      local colors = require("kanagawa.colors").setup()
       require("kanagawa").setup({
         globalStatus = true,
-        overrides = {
-          MoreMsg = { bg = colors.sumiInk2 },
-          ["@type.qualifier"] = { link = "Keyword" },
-        },
+        overrides = function(_)
+          return {
+            LspDiagnosticDefaultInformation = { bg = "none" },
+            ["@type.qualifier"] = { link = "Keyword" },
+          }
+        end,
       })
 
       vim.cmd.colorscheme("kanagawa")
@@ -410,13 +408,6 @@ require("lazy").setup({
   },
 
   {
-    "editorconfig/editorconfig-vim",
-    cond = function()
-      return vim.fn.filereadable(".editorconfig") == 1
-    end,
-  },
-
-  {
     "tweekmonster/startuptime.vim",
     cmd = "StartupTime",
   },
@@ -430,4 +421,30 @@ require("lazy").setup({
       })
     end,
   },
+
+  -- {
+  --   "luukvbaal/statuscol.nvim",
+  --   config = function()
+  --     local builtin = require("statuscol.builtin")
+  --     require("statuscol").setup({
+  --       relculright = true,
+  --       segments = {
+  --         {
+  --           sign = { name = { "GitSigns.*" }, maxwidth = 1, colwidth = 1, auto = true },
+  --           click = "v:lua.ScSa",
+  --         },
+  --         {
+  --           sign = { name = { ".*" }, maxwidth = 1, colwidth = 1, auto = false },
+  --           click = "v:lua.ScSa",
+  --         },
+  --         -- {
+  --         --   sign = { name = { "LightBulbSign" }, maxwidth = 1, colwidth = 1, auto = true },
+  --         --   click = "v:lua.ScSa",
+  --         -- },
+  --         { text = { builtin.lnumfunc }, click = "v:lua.ScLa" },
+  --         { text = { " ", builtin.foldfunc, " " }, click = "v:lua.ScFa", colwidth = 2 },
+  --       },
+  --     })
+  --   end,
+  -- },
 })

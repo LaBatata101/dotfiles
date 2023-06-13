@@ -13,8 +13,11 @@ local function custom_on_attach(client, bufnr)
     })
   end
 
+  if client.server_capabilities.documentSymbolProvider then
+    require("nvim-navic").attach(client, bufnr)
+  end
+
   require("lsp_signature").on_attach()
-  require("nvim-navic").attach(client, bufnr)
 end
 
 local handlers = {
@@ -33,7 +36,6 @@ require("mason-lspconfig").setup_handlers({
   function(server_name)
     lspconfig[server_name].setup({})
   end,
-
   ["rust_analyzer"] = function()
     opts.settings = {
       ["rust-analyzer"] = {
@@ -69,7 +71,6 @@ require("mason-lspconfig").setup_handlers({
       },
     })
   end,
-
   ["pyright"] = function()
     opts.on_init = function(client)
       local utils = require("config.utils")
@@ -77,8 +78,7 @@ require("mason-lspconfig").setup_handlers({
     end
     lspconfig.pyright.setup(opts)
   end,
-
-  ["sumneko_lua"] = function()
+  ["lua_ls"] = function()
     opts.settings = {
       ["Lua"] = {
         workspace = {
@@ -91,9 +91,8 @@ require("mason-lspconfig").setup_handlers({
         },
       },
     }
-    lspconfig.sumneko_lua.setup(opts)
+    lspconfig.lua_ls.setup(opts)
   end,
-
   ["tsserver"] = function()
     opts.settings = {
       ["javascript"] = {

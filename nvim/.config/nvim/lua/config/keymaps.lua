@@ -1,7 +1,12 @@
 local map = vim.keymap.set
 
 -- save file
-map("", "<leader>s", ":w<CR>", { noremap = true, silent = true })
+map("", "<leader>s", function()
+  local bufnr = vim.api.nvim_get_current_buf()
+  vim.api.nvim_buf_call(bufnr, function()
+    vim.cmd.write()
+  end)
+end, { noremap = true, silent = true })
 
 -- split navigations
 map("n", "<C-j>", "<C-w>j", { noremap = true })

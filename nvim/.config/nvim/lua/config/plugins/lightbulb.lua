@@ -50,3 +50,5 @@ vim.api.nvim_create_autocmd({ "CursorHold", "CursorHoldI" }, {
   pattern = "*",
   callback = LightBulbFunc,
 })
+
+-- vim.fn.sign_define("LightBulbSign", { text = "", texthl = "", linehl = "", numhl = "" })

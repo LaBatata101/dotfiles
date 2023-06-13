@@ -10,7 +10,7 @@ function M.ask_to_save_before_closing()
 
   if buf.changed == 1 then
     vim.ui.input(
-      { prompt = string.format('Save "%s" before closing (Y/n)?', vim.fn.expand("%:t")), default = "Y" },
+      { prompt = string.format('Save "%s" before closing (y/N)?', vim.fn.expand("%:t")), default = "N" },
       function(input)
         if input == nil then
           return
@@ -157,7 +157,7 @@ end
 
 function M.text_handler(virtText, lnum, endLnum, width, truncate)
   local newVirtText = {}
-  local suffix = ('  %d lines '):format(endLnum - lnum)
+  local suffix = ("  %d lines "):format(endLnum - lnum)
   local sufWidth = vim.fn.strdisplaywidth(suffix)
   local targetWidth = width - sufWidth
   local curWidth = 0
