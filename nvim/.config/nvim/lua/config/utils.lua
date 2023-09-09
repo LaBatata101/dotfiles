@@ -5,80 +5,110 @@ local system = vim.fn.system
 local trim = vim.fn.trim
 local path = require("lspconfig.util").path
 
+local function create_input_dialog(prompt, opts)
+  local Input = require("nui.input")
+  local event = require("nui.utils.autocmd").event
+
+  local input = Input({
+    position = "50%",
+    size = {
+      width = #prompt + 4,
+    },
+    border = {
+      style = "single",
+      text = {
+        top = prompt,
+        top_align = "center",
+      },
+    },
+    win_options = {
+      winhighlight = "Normal:Normal,FloatBorder:Normal",
+    },
+  }, {
+    prompt = "> ",
+    default_value = "N",
+    on_close = opts.on_close,
+    on_submit = opts.on_submit,
+  })
+
+  -- mount/open the component
+  input:mount()
+
+  -- unmount component when cursor leaves buffer
+  input:on(event.BufLeave, function()
+    input:unmount()
+  end)
+end
+
 function M.ask_to_save_before_closing()
-  local buf = vim.fn.getbufinfo("%")[1]
+  local bufnr = vim.api.nvim_get_current_buf()
 
-  if buf.changed == 1 then
-    vim.ui.input(
-      { prompt = string.format('Save "%s" before closing (y/N)?', vim.fn.expand("%:t")), default = "N" },
-      function(input)
-        if input == nil then
-          return
-        end
+  if vim.api.nvim_buf_get_option(bufnr, "modified") then
+    local prompt_msg = string.format('Save "%s" before closing (y/N)?', vim.fn.expand("%:t"))
 
-        local input_lower = string.lower(input)
-        if input_lower == "y" then
-          vim.api.nvim_command("write")
-          vim.api.nvim_buf_delete(buf.bufnr, {})
-        elseif input_lower == "n" then
-          vim.api.nvim_buf_delete(buf.bufnr, { force = true })
+    create_input_dialog(prompt_msg, {
+      on_close = nil,
+      on_submit = function(value)
+        local value_lower = string.lower(value)
+        if value_lower == "y" then
+          vim.api.nvim_buf_call(bufnr, function()
+            vim.cmd.write()
+          end)
+
+          vim.api.nvim_buf_delete(bufnr, {})
+        elseif value_lower == "n" then
+          vim.api.nvim_buf_delete(bufnr, { force = true })
         else
           print("Invalid Option! Aborting...")
-          return
         end
-      end
-    )
+      end,
+    })
   else
-    vim.api.nvim_buf_delete(buf.bufnr, {})
+    vim.api.nvim_buf_delete(bufnr, {})
   end
 end
 
-function M.ask_to_save_before_quitting()
-  local modified_buffers = vim.fn.getbufinfo({ bufmodified = true })
-  local force_quit = false
-  local cancel_quit = false
+local function get_modified_buffers_id()
+  local buffers = vim.api.nvim_list_bufs()
+  local modified_buffers = {}
 
-  -- if #modified_buffers == 1 then
-  --   print(modified_buffers[1].bufnr)
-  --   vim.api.nvim_buf_call(modified_buffers[1].bufnr, function()
-  --     vim.api.nvim_command("w")
-  --   end)
-  --   return
-  -- end
+  for _, bufnr in ipairs(buffers) do
+    if vim.api.nvim_buf_get_option(bufnr, "modified") then
+      table.insert(modified_buffers, bufnr)
+    end
+  end
 
-  for _, buf in pairs(modified_buffers) do
-    vim.ui.input(
-      { prompt = string.format('Save "%s" before closing (Y/n)?', vim.fn.expand("%:t")), default = "Y" },
-      function(input)
-        if input == nil then
-          cancel_quit = true
-          return
-        end
+  return modified_buffers
+end
 
-        local input_lower = string.lower(input)
-        if input_lower == "y" then
-          vim.api.nvim_buf_call(buf.bufnr, function()
-            vim.api.nvim_command("write")
+function M.ask_to_save_before_exit()
+  print("ENTER - ask_to_save_before_exit")
+  local buffers_id = get_modified_buffers_id()
+  print(vim.print(buffers_id))
+  --
+  for _, bufnr in ipairs(buffers_id) do
+    print(bufnr)
+    local prompt_msg = string.format('Save "%s" before closing (Y/n)?', vim.api.nvim_buf_get_name(bufnr))
+
+    create_input_dialog(prompt_msg, {
+      on_close = nil,
+      on_submit = function(value)
+        print("ENTER - on_submit")
+        local input = value:lower()
+        if input == "y" then
+          vim.api.nvim_buf_call(bufnr, function()
+            vim.cmd.write()
           end)
-        elseif input_lower == "n" then
-          force_quit = true
-        else
-          cancel_quit = true
-          print("Invalid Option! Aborting...")
-          return
+        elseif input == "n" then
+          vim.api.nvim_buf_set_option(bufnr, "modified", false)
         end
-      end
-    )
+        print("EXIT - on_submit")
+      end,
+    })
   end
 
-  if cancel_quit then
-    return
-  elseif force_quit then
-    vim.api.nvim_command("q!")
-  else
-    vim.api.nvim_command("q")
-    print("HEREEE")
-  end
+  print("EXIT - ask_to_save_before_exit")
+  vim.cmd.quit()
 end
 
 local function get_python_path(workspace)

@@ -6,14 +6,6 @@ require("lazy").setup({
       require("dressing").setup({
         input = {
           insert_only = false,
-          get_config = function(opts)
-            if opts.prompt ~= nil and opts.prompt == "Save buffer before closing (Y/n)?" then
-              return {
-                prompt_align = "center",
-                relative = "win",
-              }
-            end
-          end,
         },
       })
     end,
@@ -90,12 +82,6 @@ require("lazy").setup({
     end,
   },
 
-  {
-    "nvim-treesitter/playground",
-    lazy = true,
-    cmd = { "TSPlaygroundToggle", "TSHighlightCapturesUnderCursor", "TSNodeUnderCursor" },
-  },
-
   -- A pretty list for showing diagnostics, references, telescope results, quickfix and location lists
   {
     "folke/trouble.nvim",
@@ -114,6 +100,7 @@ require("lazy").setup({
   {
     "j-hui/fidget.nvim",
     ft = vim.g.supported_languages,
+    taget = "legacy",
     config = function()
       require("config.plugins.fidget")
     end,
@@ -166,6 +153,7 @@ require("lazy").setup({
           return {
             LspDiagnosticDefaultInformation = { bg = "none" },
             ["@type.qualifier"] = { link = "Keyword" },
+            LspInlayHint = { link = "Comment" },
           }
         end,
       })
@@ -174,20 +162,29 @@ require("lazy").setup({
     end,
   },
 
-  {
-    "navarasu/onedark.nvim",
-    lazy = true,
-    config = function()
-      require("onedark").setup({
-        style = "deep",
-        highlights = {
-          ["@keyword.function"] = { fmt = "italic" },
-          ["@conditional"] = { fmt = "bold" },
-        },
-      })
-      -- require('onedark').load()
-    end,
-  },
+  -- {
+  --   "dasupradyumna/midnight.nvim",
+  --   priority = 1000,
+  --   lazy = false,
+  --   config = function()
+  --     vim.cmd.colorscheme("midnight")
+  --   end,
+  -- },
+
+  -- {
+  --   "navarasu/onedark.nvim",
+  --   -- lazy = true,
+  --   config = function()
+  --     require("onedark").setup({
+  --       style = "deep",
+  --       highlights = {
+  --         ["@keyword.function"] = { fmt = "italic" },
+  --         ["@conditional"] = { fmt = "bold" },
+  --       },
+  --     })
+  --     require('onedark').load()
+  --   end,
+  -- },
 
   -- Show Identation Level Lines
   {
@@ -261,14 +258,20 @@ require("lazy").setup({
 
   -- Easily jump to far text
   {
-    "phaazon/hop.nvim",
-    event = "BufRead",
-    branch = "v1",
-    config = function()
-      require("hop").setup()
-    end,
+    "folke/flash.nvim",
+    event = "VeryLazy",
+    opts = {},
+    keys = {
+      {
+        "s",
+        mode = { "n", "x", "o" },
+        function()
+          -- default options: exact mode, multi window, all directions, with a backdrop
+          require("flash").jump()
+        end,
+      },
+    },
   },
-
   -- Smooth scrolling
   {
     "karb94/neoscroll.nvim",
@@ -359,7 +362,9 @@ require("lazy").setup({
     "rmagatti/auto-session",
     config = function()
       vim.o.sessionoptions = "blank,buffers,curdir,folds,help,tabpages,winsize,winpos,terminal"
-      require("auto-session").setup()
+      require("auto-session").setup({
+        auto_session_use_git_branch = true,
+      })
     end,
   },
 
@@ -420,6 +425,17 @@ require("lazy").setup({
         flutter_lookup_cmd = "asdf where flutter",
       })
     end,
+  },
+
+  -- UI component library
+  {
+    "MunifTanjim/nui.nvim",
+    lazy = true,
+  },
+
+  -- Better marks
+  {
+    "chentoast/marks.nvim",
   },
 
   -- {

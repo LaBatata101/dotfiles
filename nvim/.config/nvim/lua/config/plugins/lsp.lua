@@ -17,6 +17,10 @@ local function custom_on_attach(client, bufnr)
     require("nvim-navic").attach(client, bufnr)
   end
 
+  if client.server_capabilities.inlayHintProvider then
+    vim.lsp.inlay_hint(0, true)
+  end
+
   require("lsp_signature").on_attach()
 end
 
@@ -61,6 +65,7 @@ require("mason-lspconfig").setup_handlers({
         debuggables = { use_telescope = false },
         hover_with_actions = false,
         inlay_hints = {
+          auto = false,
           parameter_hints_prefix = "",
           other_hints_prefix = "-> ",
           show_variable_name = true,

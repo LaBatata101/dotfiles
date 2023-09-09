@@ -94,6 +94,6 @@ end, { silent = true })
 
 -- save all and quit
 -- map("n", "ZZ", function()
---   require("config.utils").ask_to_save_before_quitting()
+--   require("config.utils").ask_to_save_before_exit()
 -- end, { silent = true })
 map("n", "ZZ", "<cmd>conf qa<CR>", { silent = true })
