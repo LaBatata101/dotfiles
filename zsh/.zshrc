@@ -115,3 +115,7 @@ BULLETTRAIN_VIRTUALENV_PREFIX=🐍
 bindkey '^ ' autosuggest-accept
 
 . /opt/asdf-vm/asdf.sh
+
+export PATH="$HOME/.local/share/bob/nvim-bin:$PATH"
+
+source "$HOME/.rye/env"

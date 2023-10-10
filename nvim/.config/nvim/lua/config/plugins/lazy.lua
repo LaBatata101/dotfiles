@@ -50,7 +50,7 @@ require("lazy").setup({
 
   -- Formatting
   {
-    "jose-elias-alvarez/null-ls.nvim",
+    "nvimtools/none-ls.nvim",
     ft = "python",
     event = "BufRead",
     config = function()
@@ -189,6 +189,7 @@ require("lazy").setup({
   -- Show Identation Level Lines
   {
     "lukas-reineke/indent-blankline.nvim",
+    main = "ibl",
     ft = vim.g.supported_languages,
     config = function()
       require("config.plugins.indent_blankline")
@@ -316,7 +317,7 @@ require("lazy").setup({
         },
         renderer = {
           highlight_git = true,
-          highlight_opened_files = "2",
+          highlight_opened_files = "name",
         },
       })
     end,
@@ -436,6 +437,9 @@ require("lazy").setup({
   -- Better marks
   {
     "chentoast/marks.nvim",
+    config = function()
+      require("marks").setup()
+    end,
   },
 
   -- {

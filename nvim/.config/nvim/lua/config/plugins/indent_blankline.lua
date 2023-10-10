@@ -1,21 +1,19 @@
-require("indent_blankline").setup({
-  char = "▏",
-  context_char = "▏",
-  filetype_exclude = {
-    "text",
-    "help",
-    "lsp-installer",
-    "dapui_scopes",
-    "dapui_stacks",
-    "dapui_watches",
-    "dapui_breakpoints",
-    "packer",
-    "Trouble",
+require("ibl").setup({
+  indent = { char = "▏" },
+  exclude = {
+    filetypes = {
+      "text",
+      "lsp-installer",
+      "dapui_scopes",
+      "dapui_stacks",
+      "dapui_watches",
+      "dapui_breakpoints",
+      "Trouble",
+    },
+    buftypes = { "lsp-installer" },
   },
-  buftype_exclude = { "nofile", "terminal", "lsp-installer", "lspinfo" },
-  use_treesiter = true,
-  show_first_indent_level = false,
-  show_trailing_blankline_indent = false,
-  show_current_context = true,
-  show_current_context_start = false,
+  scope = {
+    show_start = false,
+    show_end = false,
+  },
 })
