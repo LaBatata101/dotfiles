@@ -23,6 +23,10 @@ telescope.setup({
       theme = "dropdown",
       previewer = false,
     },
+    buffers = {
+      theme = "dropdown",
+      previewer = false,
+    },
   },
   extensions = {
     ["ui-select"] = {

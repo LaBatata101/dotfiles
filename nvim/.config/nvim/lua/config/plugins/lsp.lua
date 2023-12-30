@@ -1,3 +1,5 @@
+-- vim.lsp.set_log_level("debug")
+
 local function custom_on_attach(client, bufnr)
   if client.server_capabilities.documentHighlightProvider then
     local lsp_document_highlight = vim.api.nvim_create_augroup("lsp_document_highlight", {})
@@ -43,9 +45,9 @@ require("mason-lspconfig").setup_handlers({
   ["rust_analyzer"] = function()
     opts.settings = {
       ["rust-analyzer"] = {
-        checkOnSave = {
-          command = "clippy",
-        },
+        -- checkOnSave = {
+        --   command = "clippy",
+        -- },
         rustfmt = {
           extraArgs = {
             "--config",
@@ -79,7 +81,7 @@ require("mason-lspconfig").setup_handlers({
   ["pyright"] = function()
     opts.on_init = function(client)
       local utils = require("config.utils")
-      client.config.settings.python.pythonPath = utils.get_python_bin_path(client.config.root_dir)
+      client.config.settings.pythonPath = utils.get_python_bin_path(client.config.root_dir)
     end
     lspconfig.pyright.setup(opts)
   end,
@@ -142,3 +144,68 @@ vim.api.nvim_create_autocmd("BufWritePre", {
     })
   end,
 })
+
+-- Issue: https://github.com/neovim/neovim/issues/23291
+local watch_type = require("vim._watch").FileChangeType
+
+local function handler(res, callback)
+  if not res.files or res.is_fresh_instance then
+    return
+  end
+
+  for _, file in ipairs(res.files) do
+    local path = res.root .. "/" .. file.name
+    local change = watch_type.Changed
+    if file.new then
+      change = watch_type.Created
+    end
+    if not file.exists then
+      change = watch_type.Deleted
+    end
+    callback(path, change)
+  end
+end
+
+function watchman(path, opts, callback)
+  vim.system({ "watchman", "watch", path }):wait()
+
+  local buf = {}
+  local sub = vim.system({
+    "watchman",
+    "-j",
+    "--server-encoding=json",
+    "-p",
+  }, {
+    stdin = vim.json.encode({
+      "subscribe",
+      path,
+      "nvim:" .. path,
+      {
+        expression = { "anyof", { "type", "f" }, { "type", "d" } },
+        fields = { "name", "exists", "new" },
+      },
+    }),
+    stdout = function(_, data)
+      if not data then
+        return
+      end
+      for line in vim.gsplit(data, "\n", { plain = true, trimempty = true }) do
+        table.insert(buf, line)
+        if line == "}" then
+          local res = vim.json.decode(table.concat(buf))
+          handler(res, callback)
+          buf = {}
+        end
+      end
+    end,
+    text = true,
+  })
+
+  return function()
+    sub:kill("sigint")
+  end
+end
+
+if vim.fn.executable("watchman") == 1 then
+  require("vim.lsp._watchfiles")._watchfunc = watchman
+end

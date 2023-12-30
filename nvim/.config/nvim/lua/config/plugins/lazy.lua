@@ -100,10 +100,11 @@ require("lazy").setup({
   {
     "j-hui/fidget.nvim",
     ft = vim.g.supported_languages,
-    taget = "legacy",
-    config = function()
-      require("config.plugins.fidget")
-    end,
+    opts = {
+      display = {
+        progress_icon = { pattern = "moon", period = 1 },
+      },
+    },
   },
 
   -- Show a 💡 when a code action is available
@@ -265,11 +266,16 @@ require("lazy").setup({
     keys = {
       {
         "s",
-        mode = { "n", "x", "o" },
         function()
-          -- default options: exact mode, multi window, all directions, with a backdrop
-          require("flash").jump()
+          require("flash").jump({
+            modes = {
+              search = {
+                enabled = false,
+              },
+            },
+          })
         end,
+        mode = { "n", "x", "o" },
       },
     },
   },
@@ -320,6 +326,16 @@ require("lazy").setup({
           highlight_opened_files = "name",
         },
       })
+    end,
+  },
+
+  {
+    "stevearc/oil.nvim",
+    opts = {},
+    -- Optional dependencies
+    dependencies = { "nvim-tree/nvim-web-devicons" },
+    config = function()
+      require("oil").setup()
     end,
   },
 

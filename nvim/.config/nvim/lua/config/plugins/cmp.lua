@@ -52,10 +52,14 @@ cmp.setup({
     { name = "nvim_lsp" },
     { name = "luasnip" },
     { name = "path" },
-    { name = "buffer", keyword_length = 4, entry_filter = function(_, ctx)
-      local prev_char = string.sub(ctx.cursor_line, ctx.cursor.col - 1, ctx.cursor.col - 1)
-      return string.match(prev_char, "%a")
-    end },
+    {
+      name = "buffer",
+      keyword_length = 4,
+      entry_filter = function(_, ctx)
+        local prev_char = string.sub(ctx.cursor_line, ctx.cursor.col - 1, ctx.cursor.col - 1)
+        return string.match(prev_char, "%a")
+      end,
+    },
   },
 
   sorting = {
