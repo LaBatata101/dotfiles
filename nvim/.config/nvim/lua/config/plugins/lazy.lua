@@ -45,8 +45,12 @@ require("lazy").setup({
     end,
   },
 
-  -- Adds extra functionality over rust analyzer
-  { "simrat39/rust-tools.nvim" },
+  -- Rust stuff
+  {
+    "mrcjkb/rustaceanvim",
+    version = "^3", -- Recommended
+    ft = { "rust" },
+  },
 
   -- Formatting
   {
@@ -101,8 +105,10 @@ require("lazy").setup({
     "j-hui/fidget.nvim",
     ft = vim.g.supported_languages,
     opts = {
-      display = {
-        progress_icon = { pattern = "moon", period = 1 },
+      progress = {
+        display = {
+          progress_icon = { pattern = "moon", period = 1 },
+        },
       },
     },
   },

@@ -37,46 +37,31 @@ local opts = {
 
 require("neodev").setup({ setup_jsonls = false })
 
+vim.g.rustaceanvim = {
+  server = {
+    on_attach = custom_on_attach,
+  },
+  settings = {
+    ["rust-analyzer"] = {
+      -- checkOnSave = {
+      --   command = "clippy",
+      -- },
+      rustfmt = {
+        extraArgs = {
+          "--config",
+          "max_width=120",
+        },
+      },
+    },
+  },
+}
+
 local lspconfig = require("lspconfig")
 require("mason-lspconfig").setup_handlers({
   function(server_name)
-    lspconfig[server_name].setup({})
-  end,
-  ["rust_analyzer"] = function()
-    opts.settings = {
-      ["rust-analyzer"] = {
-        -- checkOnSave = {
-        --   command = "clippy",
-        -- },
-        rustfmt = {
-          extraArgs = {
-            "--config",
-            "max_width=120",
-          },
-        },
-      },
-    }
-
-    local extension_path = vim.fn.stdpath("data") .. "/dapinstall/codelldb/extension/"
-    local codelldb_path = extension_path .. "adapter/codelldb"
-    local liblldb_path = extension_path .. "lldb/lib/liblldb.so"
-    require("rust-tools").setup({
-      server = opts,
-      tools = {
-        runnables = { use_telescope = false },
-        debuggables = { use_telescope = false },
-        hover_with_actions = false,
-        inlay_hints = {
-          auto = false,
-          parameter_hints_prefix = "",
-          other_hints_prefix = "-> ",
-          show_variable_name = true,
-        },
-      },
-      dap = {
-        adapter = require("rust-tools.dap").get_codelldb_adapter(codelldb_path, liblldb_path),
-      },
-    })
+    if server_name ~= "rust_analyzer" then
+      lspconfig[server_name].setup({})
+    end
   end,
   ["pyright"] = function()
     opts.on_init = function(client)
