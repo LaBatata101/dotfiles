@@ -19,9 +19,9 @@ local function custom_on_attach(client, bufnr)
     require("nvim-navic").attach(client, bufnr)
   end
 
-  if client.server_capabilities.inlayHintProvider then
-    vim.lsp.inlay_hint(0, true)
-  end
+  -- if client.server_capabilities.inlayHintProvider then
+  --   vim.lsp.inlay_hint(0, true)
+  -- end
 
   require("lsp_signature").on_attach()
 end
@@ -37,24 +37,35 @@ local opts = {
 
 require("neodev").setup({ setup_jsonls = false })
 
-vim.g.rustaceanvim = {
-  server = {
-    on_attach = custom_on_attach,
-  },
-  settings = {
-    ["rust-analyzer"] = {
-      -- checkOnSave = {
-      --   command = "clippy",
-      -- },
-      rustfmt = {
-        extraArgs = {
-          "--config",
-          "max_width=120",
+vim.g.rustaceanvim = function()
+  local codelldb = require("mason-registry").get_package("codelldb")
+  local extension_path = codelldb:get_install_path()
+  local codelldb_path = extension_path .. "/codelldb"
+  local liblldb_path = extension_path .. "/extension/lldb/lib/liblldb.so"
+
+  local cfg = require("rustaceanvim.config")
+  return {
+    server = {
+      on_attach = custom_on_attach,
+    },
+    settings = {
+      ["rust-analyzer"] = {
+        -- checkOnSave = {
+        --   command = "clippy",
+        -- },
+        rustfmt = {
+          extraArgs = {
+            "--config",
+            "max_width=120",
+          },
         },
       },
     },
-  },
-}
+    dap = {
+      adapter = cfg.get_codelldb_adapter(codelldb_path, liblldb_path),
+    },
+  }
+end
 
 local lspconfig = require("lspconfig")
 require("mason-lspconfig").setup_handlers({

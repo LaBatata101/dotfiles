@@ -94,7 +94,7 @@ require("lazy").setup({
       { "<leader>td", "<cmd>TroubleToggle document_diagnostics<CR>", noremap = true },
       { "gr", "<cmd>TroubleToggle lsp_references<CR>", noremap = true },
     },
-    dependencies = { "kyazdani42/nvim-web-devicons" },
+    dependencies = { "nvim-tree/nvim-web-devicons" },
     config = function()
       require("config.plugins.trouble")
     end,
@@ -246,7 +246,7 @@ require("lazy").setup({
   -- status line
   {
     "nvim-lualine/lualine.nvim",
-    dependencies = { "kyazdani42/nvim-web-devicons" },
+    dependencies = { "nvim-tree/nvim-web-devicons" },
     config = function()
       require("config.plugins.lualine")
     end,
@@ -255,7 +255,7 @@ require("lazy").setup({
   -- Show tabs for open files
   {
     "akinsho/bufferline.nvim",
-    dependencies = { "kyazdani42/nvim-web-devicons" },
+    dependencies = { "nvim-tree/nvim-web-devicons" },
     config = function()
       require("config.plugins.bufferline")
     end,
@@ -464,6 +464,107 @@ require("lazy").setup({
     end,
   },
 
+  -- DAP
+  {
+    "mfussenegger/nvim-dap",
+    ft = "rust",
+    keys = {
+      {
+        "<F5>",
+        function()
+          require("dap").continue()
+        end,
+        mode = { "n" },
+      },
+      {
+        "<F10>",
+        function()
+          require("dap").step_over()
+        end,
+        mode = { "n" },
+      },
+      {
+        "<F11>",
+        function()
+          require("dap").step_into()
+        end,
+        mode = { "n" },
+      },
+      {
+        "<F12>",
+        function()
+          require("dap").step_out()
+        end,
+        mode = { "n" },
+      },
+      {
+        "<leader>dbb",
+        function()
+          require("dap").toggle_breakpoint()
+        end,
+        mode = { "n" },
+      },
+      {
+        "<leader>dbt",
+        function()
+          require("dap").terminate()
+        end,
+        mode = { "n" },
+      },
+    },
+    dependencies = {
+      {
+        "rcarriga/nvim-dap-ui",
+        ft = "rust",
+        config = function()
+          local dap, dapui = require("dap"), require("dapui")
+          dapui.setup()
+          dap.listeners.before.attach.dapui_config = function()
+            dapui.open()
+          end
+          dap.listeners.before.launch.dapui_config = function()
+            dapui.open()
+          end
+          dap.listeners.before.event_terminated.dapui_config = function()
+            dapui.close()
+          end
+          dap.listeners.before.event_exited.dapui_config = function()
+            dapui.close()
+          end
+        end,
+        keys = {
+          {
+            "<leader>dbo",
+            function()
+              require("dapui").open()
+            end,
+            mode = { "n" },
+          },
+          {
+            "<leader>dbc",
+            function()
+              require("dapui").close()
+            end,
+            mode = { "n" },
+          },
+          {
+            "<leader>dbt",
+            function()
+              require("dapui").toggle()
+            end,
+            mode = { "n" },
+          },
+        },
+      },
+    },
+  },
+
+  {
+    "nvim-pack/nvim-spectre",
+    config = function()
+      require("spectre").setup()
+    end,
+  },
   -- {
   --   "luukvbaal/statuscol.nvim",
   --   config = function()
