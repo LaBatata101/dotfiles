@@ -113,15 +113,6 @@ require("lazy").setup({
     },
   },
 
-  -- Show a 💡 when a code action is available
-  {
-    "kosayoda/nvim-lightbulb",
-    ft = vim.g.supported_languages,
-    config = function()
-      require("config.plugins.lightbulb")
-    end,
-  },
-
   -- Completion
   {
     "hrsh7th/nvim-cmp",
