@@ -496,7 +496,7 @@ require("lazy").setup({
         mode = { "n" },
       },
       {
-        "<leader>dbt",
+        "<leader>dbT",
         function()
           require("dap").terminate()
         end,
@@ -506,6 +506,7 @@ require("lazy").setup({
     dependencies = {
       {
         "rcarriga/nvim-dap-ui",
+        dependencies = { "nvim-neotest/nvim-nio" },
         ft = "rust",
         config = function()
           local dap, dapui = require("dap"), require("dapui")
