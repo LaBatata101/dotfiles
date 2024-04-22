@@ -1,8 +1,7 @@
 # Set name of the theme to load. Optionally, if you set this to "random"
 # it'll load a random theme each time that oh-my-zsh is loaded.
 # See https://github.com/robbyrussell/oh-my-zsh/wiki/Themes
-#ZSH_THEME="spaceship"
-ZSH_THEME="bullet-train"
+ZSH_THEME="agnoster-custom" # https://gist.github.com/LaBatata101/86246d091f0d4f50e5f103205b7e9f96
 
 # Uncomment the following line to use case-sensitive completion.
 # CASE_SENSITIVE="true"
@@ -87,18 +86,7 @@ source $ZSH/oh-my-zsh.sh
 # hide user@hostname
 prompt_context () {  }
 
-BULLETTRAIN_PROMPT_ORDER=(
-  status
-  custom
-  dir
-  context
-  virtualenv
-  git
-  hg
-  cmd_exec_time
-)
-
-BULLETTRAIN_VIRTUALENV_PREFIX=🐍
+# BULLETTRAIN_VIRTUALENV_PREFIX=🐍
 
 # Pyenv config
 # export PYENV_ROOT="$HOME/.pyenv"
@@ -119,3 +107,4 @@ bindkey '^ ' autosuggest-accept
 export PATH="$HOME/.local/share/bob/nvim-bin:$PATH"
 
 source "$HOME/.rye/env"
+. "$HOME/.cargo/env"
