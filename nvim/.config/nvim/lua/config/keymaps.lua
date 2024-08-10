@@ -65,6 +65,10 @@ map("n", "gd", vim.lsp.buf.definition, { noremap = true, silent = true })
 map("n", "<leader>dn", vim.diagnostic.goto_next, { noremap = true, silent = true })
 map("n", "<leader>dp", vim.diagnostic.goto_prev, { noremap = true, silent = true })
 
+map("n", "<leader>it", function()
+  vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled({}))
+end, { noremap = true, silent = true })
+
 local diagnostics_active = true
 map("n", "<leader>dd", function()
   diagnostics_active = not diagnostics_active

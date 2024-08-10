@@ -45,11 +45,15 @@ List references           | gr
 Hop | <leader><leader>
 
 Continue/Start debugging | <F5>
-Toggle breakpoint        | <leader>b
-Stop debugging           | <leader>dc
 Step over                | <F10>
 Step into                | <F11>
 Step out                 | <F12>
+Toggle breakpoint        | <leader>dbb
+Stop debugging           | <leader>dc
+Teminate debugging session | <leader>dbT
+Open DAP-UI              | <leader>dbo
+Close DAP-UI             | <leader>dbc
+Toggle DAP-UI            | <leader>dbt
 
 
 Open lazygit             | <leader>g

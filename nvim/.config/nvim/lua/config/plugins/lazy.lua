@@ -48,7 +48,7 @@ require("lazy").setup({
   -- Rust stuff
   {
     "mrcjkb/rustaceanvim",
-    version = "^3", -- Recommended
+    version = "^4", -- Recommended
     ft = { "rust" },
   },
 
@@ -91,8 +91,8 @@ require("lazy").setup({
     "folke/trouble.nvim",
     cmd = { "TroubleToggle", "Trouble" },
     keys = {
-      { "<leader>td", "<cmd>TroubleToggle document_diagnostics<CR>", noremap = true },
-      { "gr", "<cmd>TroubleToggle lsp_references<CR>", noremap = true },
+      { "<leader>td", "<cmd>Trouble diagnostics toggle filter.buf=0<CR>", noremap = true },
+      { "gr", "<cmd>Trouble lsp_references toggle focus=true<CR>", noremap = true },
     },
     dependencies = { "nvim-tree/nvim-web-devicons" },
     config = function()
