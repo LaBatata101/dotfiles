@@ -35,8 +35,6 @@ local opts = {
   handlers = handlers,
 }
 
-require("neodev").setup({ setup_jsonls = false })
-
 vim.g.rustaceanvim = function()
   local codelldb = require("mason-registry").get_package("codelldb")
   local extension_path = codelldb:get_install_path()
@@ -81,22 +79,22 @@ require("mason-lspconfig").setup_handlers({
     end
     lspconfig.pyright.setup(opts)
   end,
-  ["lua_ls"] = function()
-    opts.settings = {
-      ["Lua"] = {
-        workspace = {
-          checkThirdParty = false,
-          completion = { callSnippet = "Disable" },
-          workspace = { maxPreload = 5000 },
-        },
-        format = {
-          enable = false,
-        },
-      },
-    }
-    lspconfig.lua_ls.setup(opts)
-  end,
-  ["tsserver"] = function()
+  -- ["lua_ls"] = function()
+  --   opts.settings = {
+  --     ["Lua"] = {
+  --       workspace = {
+  --         checkThirdParty = false,
+  --         completion = { callSnippet = "Disable" },
+  --         workspace = { maxPreload = 5000 },
+  --       },
+  --       format = {
+  --         enable = false,
+  --       },
+  --     },
+  --   }
+  --   lspconfig.lua_ls.setup(opts)
+  -- end,
+  ["ts_ls"] = function()
     opts.settings = {
       ["javascript"] = {
         format = {
@@ -110,7 +108,7 @@ require("mason-lspconfig").setup_handlers({
       },
     }
 
-    lspconfig.tsserver.setup(opts)
+    lspconfig.ts_ls.setup(opts)
   end,
 })
 

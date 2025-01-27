@@ -125,6 +125,13 @@ require("lazy").setup({
       -- Show pictograms for completion items
       "onsails/lspkind-nvim",
     },
+    opts = function(_, opts)
+      opts.sources = opts.sources or {}
+      table.insert(opts.sources, {
+        name = "lazydev",
+        group_index = 0, -- set group index to 0 to skip loading LuaLS completions
+      })
+    end,
     config = function()
       require("config.plugins.cmp")
     end,
@@ -375,14 +382,13 @@ require("lazy").setup({
   {
     "rmagatti/auto-session",
     config = function()
-      vim.o.sessionoptions = "blank,buffers,curdir,folds,help,tabpages,winsize,winpos,terminal"
+      vim.o.sessionoptions = "blank,buffers,curdir,folds,help,tabpages,winsize,winpos,terminal,localoptions"
       require("auto-session").setup({
         auto_session_use_git_branch = true,
       })
     end,
   },
 
-  -- Wait for https://github.com/neovim/neovim/pull/17446
   {
     "kevinhwang91/nvim-ufo",
     dependencies = { "kevinhwang91/promise-async" },
@@ -415,7 +421,17 @@ require("lazy").setup({
   { "Vimjas/vim-python-pep8-indent", ft = "python" },
 
   -- Lua configuration
-  { "folke/neodev.nvim", ft = "lua" },
+  {
+    "folke/lazydev.nvim",
+    ft = "lua",
+    opts = {
+      library = {
+        -- See the configuration section for more details
+        -- Load luvit types when the `vim.uv` word is found
+        { path = "${3rd}/luv/library", words = { "vim%.uv" } },
+      },
+    },
+  },
 
   -- Show which funtion I'm currently at in status line
   {
@@ -551,12 +567,25 @@ require("lazy").setup({
     },
   },
 
+  -- Search and replace accross files
   {
     "nvim-pack/nvim-spectre",
     config = function()
       require("spectre").setup()
     end,
   },
+
+  {
+    "folke/snacks.nvim",
+    priority = 1000,
+    lazy = false,
+    opts = {
+      -- your configuration comes here
+      -- or leave it empty to use the default settings
+      -- refer to the configuration section below
+    },
+  },
+
   -- {
   --   "luukvbaal/statuscol.nvim",
   --   config = function()

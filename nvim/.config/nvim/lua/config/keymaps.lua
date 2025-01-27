@@ -35,7 +35,8 @@ map("", "<leader>n", ":bn<CR>", { noremap = true, silent = true })
 
 -- close buffer
 map("", "<leader>k", function()
-  return require("config.utils").ask_to_save_before_closing()
+  Snacks.bufdelete()
+  -- return require("config.utils").ask_to_save_before_closing()
 end, { noremap = true, silent = true })
 
 -- split resizing

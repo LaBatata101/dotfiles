@@ -63,7 +63,7 @@ vim.wo.foldcolumn = "1"
 vim.wo.foldlevel = 99
 vim.wo.foldenable = true
 -- vim.wo.foldcolumndigits = false
-vim.o.fillchars = [[eob: ,fold: ,foldopen:,foldsep: ,foldclose:]]
+vim.o.fillchars = [[eob: ,fold: ,foldopen:,foldsep:│,foldclose:]]
 
 -- Splitting a new window below the current one
 vim.opt.splitbelow = true
@@ -130,10 +130,11 @@ vim.g.symbols_outline = {
   width = 35,
 }
 
-vim.api.nvim_create_autocmd("VimEnter", {
-  pattern = "*",
-  command = "silent !setxkbmap -option caps:escape_shifted_capslock",
-})
+-- vim.api.nvim_create_autocmd("VimEnter", {
+--   pattern = "*",
+--   command = "silent !setxkbmap -option caps:escape_shifted_capslock",
+-- })
 
 vim.api.nvim_create_user_command("LspCurrBuf", require("config.lsp_dev").PrintLSPClientInfo, {})
 vim.api.nvim_create_user_command("LspDevStart", require("config.lsp_dev").LspDevStart, { nargs = 1 })
+vim.api.nvim_create_user_command("LspLogs", require("config.lsp_dev").ShowLspLogs, {})
