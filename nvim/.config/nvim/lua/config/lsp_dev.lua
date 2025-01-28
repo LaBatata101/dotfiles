@@ -58,6 +58,7 @@ function M.start(opts)
     vim.lsp.stop_client(lsp_server_id)
   end
 
+  vim.lsp.set_log_level("TRACE")
   lsp_server_id = vim.lsp.start_client({
     name = "sith-language-server",
     cmd = opts.cmd,
@@ -139,6 +140,7 @@ function M.LspDevStart(opts)
   M.start({ cmd = { vim.fn.expand(opts.fargs[1]) } })
 end
 
+local log_buffers = {}
 -- Helper function to unescape special characters
 local function unescape_str(s)
   return s:gsub("\\(.)", function(x)
@@ -153,26 +155,132 @@ local function unescape_str(s)
   end)
 end
 
-function M.ShowLspLogs()
-  -- Create a new horizontally split buffer
-  vim.cmd("split")
-  local buf = vim.api.nvim_create_buf(false, true)
-  vim.api.nvim_set_current_buf(buf)
-  vim.api.nvim_buf_set_name(buf, "LSP LOGS")
-  vim.bo[buf].buftype = "nofile"
-  vim.bo[buf].bufhidden = "wipe"
-  vim.bo[buf].modifiable = true
+local function format_jsonlike_text(text)
+  local ok, parsed = pcall(load("return " .. text))
+  if not ok then
+    print("Error parsing text: " .. parsed)
+    return nil
+  end
 
-  -- Define highlight groups
-  vim.cmd([[
-        highlight default link LspLogError Error
-        highlight default link LspLogWarn WarningMsg
-        highlight default link LspLogInfo Identifier
-        highlight default link LspLogDebug Debug
-        highlight LspLogDateTime cterm=bold gui=bold
-        highlight LspLogServer cterm=italic gui=italic
-    ]])
+  return vim.inspect(parsed)
+end
 
+local function process_line(line, lines, highlights)
+  local parts = vim.split(line, "\t", { trimempty = true })
+  if #parts < 2 then
+    return
+  end
+
+  local header = parts[1]
+  local level, datetime = header:match("%[([^%]]*)%]%[([^%]]*)%]")
+  if not level or not datetime then
+    return
+  end
+
+  local log_date = datetime:sub(1, 10)
+  -- local current_day = os.date("%Y-%m-%d")
+  -- if log_date ~= current_day then
+  --   return
+  -- end
+
+  local formatted_level = level:sub(1, 1):upper() .. level:sub(2):lower()
+  local hl_group = "LspLog" .. formatted_level
+  local metadata_line = string.format("[%s] %s", level, datetime)
+
+  local line_num = #lines
+  -- Log Level highlight
+  local level_prefix = string.format("[%s]", level)
+  table.insert(highlights, {
+    hl_group,
+    line_num,
+    0,
+    #level_prefix + 1,
+  })
+
+  -- DateTime highlight (bold)
+  local datetime_start = #level_prefix + 2
+  local datetime_end = datetime_start + 19 -- Length of 'YYYY-MM-DD HH:MM:SS'
+  table.insert(highlights, {
+    "LspLogDateTime",
+    line_num,
+    datetime_start,
+    datetime_end,
+  })
+
+  if parts[2]:match('"rpc"') then
+    local server = parts[3]:gsub('^"(.*)"$', "%1")
+    local fd = parts[4]:gsub('^"(.*)"$', "%1")
+    local message = parts[5]:gsub('^"(.*)"$', "%1")
+    metadata_line = string.format("%s  %s (%s):", metadata_line, server, fd)
+
+    table.insert(lines, metadata_line)
+    -- Server highlight (italic)
+    local server_start = datetime_end + 1
+    local server_end = server_start + #server
+    table.insert(highlights, {
+      "LspLogServer",
+      line_num,
+      server_start,
+      server_end,
+    })
+
+    local msg_lines = vim.split(unescape_str(message), "\n", { trimempty = true })
+    for _, msg in ipairs(msg_lines) do
+      table.insert(lines, "  " .. msg)
+    end
+  elseif parts[2]:match("rpc%.[receive|send]") or parts[2]:match('"exit_handler"') then
+    local data = parts[3]
+    metadata_line = string.format("%s  (%s)", metadata_line, parts[2]:gsub('^"(.+)"$', "%1"))
+    table.insert(lines, metadata_line)
+
+    local data_lines = vim.split(data, "\n", { trimempty = true })
+    for _, l in ipairs(data_lines) do
+      table.insert(lines, "  " .. l)
+    end
+  elseif parts[2]:match('^"LSP%[') then
+    local server = parts[2]:gsub('"LSP%[(.+)%]"', "%1")
+    metadata_line = string.format("%s %s", metadata_line, server)
+
+    if parts[3]:match("client%.request") then
+      local lsp_method = parts[5]:gsub('^"(.+)"$', "%1")
+      local data = parts[6]
+
+      metadata_line = string.format("%s  %s", metadata_line, lsp_method)
+      table.insert(lines, metadata_line)
+
+      local data_lines = vim.split(data, "\n", { trimempty = true })
+      for _, l in ipairs(data_lines) do
+        table.insert(lines, "  " .. l)
+      end
+    elseif parts[3]:match('["initialize_params"|"server_capabilities"]') then
+      local lsp_method = parts[3]:gsub('^"(.+)"$', "%1")
+      local data = parts[4]
+
+      metadata_line = string.format("%s  %s", metadata_line, lsp_method)
+      table.insert(lines, metadata_line)
+
+      local data_lines = vim.split(data, "\n", { trimempty = true })
+      for _, l in ipairs(data_lines) do
+        table.insert(lines, "  " .. l)
+      end
+    end
+  elseif parts[2]:match('"default_handler"') then
+    local lsp_method = parts[3]:gsub('^"(.+)"$', "%1")
+    metadata_line = string.format("%s  (%s) %s", metadata_line, parts[2]:gsub('^"(.+)"$', "%1"), lsp_method)
+    table.insert(lines, metadata_line)
+
+    local data_lines = vim.split(parts[4], "\n", { trimempty = true })
+    for _, l in ipairs(data_lines) do
+      table.insert(lines, "  " .. l)
+    end
+  else
+    local message = parts[2]:gsub('^"(.+)"$', "%1")
+    metadata_line = string.format("%s  %s", metadata_line, message)
+    table.insert(lines, metadata_line)
+  end
+end
+
+local function update_log_buffer(buf)
   -- Get log file path
   local log_path = vim.lsp.get_log_path()
   local log_file = io.open(log_path, "r")
@@ -182,94 +290,106 @@ function M.ShowLspLogs()
     return
   end
 
-  local today = os.date("%Y-%m-%d")
+  -- local today = os.date("%Y-%m-%d")
   local lines = {}
   local highlights = {}
 
+  -- Store current cursor position
+  local current_win = vim.api.nvim_get_current_win()
+  local was_at_bottom = false
+  if vim.api.nvim_win_is_valid(current_win) then
+    local cursor_pos = vim.api.nvim_win_get_cursor(current_win)
+    local line_count = vim.api.nvim_buf_line_count(buf)
+    was_at_bottom = cursor_pos[1] == line_count
+  end
+
   -- Process each log line
   for line in log_file:lines() do
-    local parts = vim.split(line, "\t", { trimempty = true })
-    if #parts >= 5 then
-      local header = parts[1]
-      local level, datetime = header:match("%[([^%]]*)%]%[([^%]]*)%]")
-      if level and datetime then
-        -- Check if log is from today
-        local log_date = datetime:sub(1, 10)
-        if log_date == today then
-          -- Extract components
-          local server = parts[3]:gsub('^"(.*)"$', "%1")
-          local fd = parts[4]:gsub('^"(.*)"$', "%1")
-          local message = parts[5]:gsub('^"(.*)"$', "%1")
-
-          -- Split message and remove trailing newline
-          local message_lines = vim.split(unescape_str(message), "\n", { plain = true })
-          if #message_lines > 0 and message_lines[#message_lines] == "" then
-            table.remove(message_lines)
-          end
-
-          -- Set highlight
-          local formatted_level = level:sub(1, 1):upper() .. level:sub(2):lower()
-          local hl_group = "LspLog" .. formatted_level
-
-          -- Add metadata line
-          local metadata_line = string.format("[%s] %s %s (%s):", level, datetime, server, fd)
-          local line_num = #lines
-          table.insert(lines, metadata_line)
-
-          -- Level highlight
-          local level_prefix = string.format("[%s]", level)
-          table.insert(highlights, {
-            hl_group,
-            line_num,
-            0,
-            #level_prefix + 1,
-          })
-
-          -- DateTime highlight (bold)
-          local datetime_start = #level_prefix + 2
-          local datetime_end = datetime_start + 19 -- Length of 'YYYY-MM-DD HH:MM:SS'
-          table.insert(highlights, {
-            "LspLogDateTime",
-            line_num,
-            datetime_start,
-            datetime_end,
-          })
-
-          -- Server highlight (italic)
-          local server_start = datetime_end + 1
-          local server_end = server_start + #server
-          table.insert(highlights, {
-            "LspLogServer",
-            line_num,
-            server_start,
-            server_end,
-          })
-
-          -- Add message lines indented under metadata
-          for _, msg_line in ipairs(message_lines) do
-            table.insert(lines, "  " .. msg_line)
-          end
-        end
-      end
-    end
+    process_line(line, lines, highlights)
   end
 
   log_file:close()
 
+  -- Update buffer if needed
+  vim.bo[buf].modifiable = true
+
   -- Insert lines and apply highlights
   vim.api.nvim_buf_set_lines(buf, 0, -1, false, lines)
+  vim.api.nvim_buf_clear_namespace(buf, -1, 0, -1)
   for _, hl in ipairs(highlights) do
     vim.api.nvim_buf_add_highlight(buf, -1, hl[1], hl[2], hl[3], hl[4])
   end
+  vim.bo[buf].modifiable = false
 
-  -- Move cursor to last line (most recent entry)
-  if #lines > 0 then
-    vim.api.nvim_win_set_cursor(0, { #lines, 0 })
+  -- Move cursor to bottom if it was there before update
+  if was_at_bottom and #lines > 0 then
+    vim.api.nvim_win_set_cursor(current_win, { #lines, 0 })
+  end
+end
+
+function M.ShowLspLogs()
+  -- Create a new horizontally split buffer
+  vim.cmd("split")
+  local buf = vim.fn.bufnr("LSP LOGS", true)
+  vim.api.nvim_set_current_buf(buf)
+  vim.api.nvim_buf_set_name(buf, "LSP LOGS")
+  vim.bo[buf].buftype = "nofile"
+  vim.bo[buf].bufhidden = "wipe"
+  vim.bo[buf].modifiable = false
+
+  -- Define highlight groups
+  vim.api.nvim_set_hl(0, "LspLogError", { link = "Error" })
+  vim.api.nvim_set_hl(0, "LspLogWarn", { link = "WarningMsg" })
+  vim.api.nvim_set_hl(0, "LspLogDebug", { link = "Debug" })
+  vim.api.nvim_set_hl(0, "LspLogInfo", { fg = "#2ECC71" })
+  vim.api.nvim_set_hl(0, "LspLogTrace", { fg = "#9B59B6" })
+  vim.api.nvim_set_hl(0, "LspLogTrace", { fg = "#9B59B6" })
+  vim.api.nvim_set_hl(0, "LspLogDateTime", { bold = true })
+  vim.api.nvim_set_hl(0, "LspLogServer", { italic = true })
+
+  -- Setup buffer if not already initialized
+  if not log_buffers[buf] then
+    log_buffers[buf] = {
+      timer = vim.loop.new_timer(),
+      last_mtime = 0,
+    }
+
+    -- Set up auto-update timer
+    log_buffers[buf].timer:start(
+      0,
+      2000,
+      vim.schedule_wrap(function()
+        if not vim.api.nvim_buf_is_valid(buf) then
+          log_buffers[buf].timer:close()
+          log_buffers[buf] = nil
+          return
+        end
+
+        local log_path = vim.lsp.get_log_path()
+        local stat = vim.loop.fs_stat(log_path)
+        local current_mtime = stat and stat.mtime.sec or 0
+
+        if current_mtime > log_buffers[buf].last_mtime then
+          log_buffers[buf].last_mtime = current_mtime
+          update_log_buffer(buf)
+        end
+      end)
+    )
+
+    -- Clean up when buffer is closed
+    vim.api.nvim_create_autocmd("BufDelete", {
+      buffer = buf,
+      callback = function()
+        if log_buffers[buf] then
+          log_buffers[buf].timer:close()
+          log_buffers[buf] = nil
+        end
+      end,
+    })
   end
 
-  -- Final buffer settings
-  vim.bo[buf].modifiable = false
-  vim.bo[buf].readonly = true
+  -- Initial update
+  update_log_buffer(buf)
 end
 
 return M
