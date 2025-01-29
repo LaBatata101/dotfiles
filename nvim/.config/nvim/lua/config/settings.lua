@@ -137,4 +137,4 @@ vim.g.symbols_outline = {
 
 vim.api.nvim_create_user_command("LspCurrBuf", require("config.lsp_dev").PrintLSPClientInfo, {})
 vim.api.nvim_create_user_command("LspDevStart", require("config.lsp_dev").LspDevStart, { nargs = 1 })
-vim.api.nvim_create_user_command("LspLogs", require("config.lsp_dev").ShowLspLogs, {})
+vim.api.nvim_create_user_command("LspLogs", require("config.lsp_dev").ShowLspLogs, { nargs = "?" })

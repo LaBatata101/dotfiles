@@ -165,7 +165,7 @@ local function format_jsonlike_text(text)
   return vim.inspect(parsed)
 end
 
-local function process_line(line, lines, highlights)
+local function process_line(line, lines, highlights, args)
   local parts = vim.split(line, "\t", { trimempty = true })
   if #parts < 2 then
     return
@@ -178,10 +178,10 @@ local function process_line(line, lines, highlights)
   end
 
   local log_date = datetime:sub(1, 10)
-  -- local current_day = os.date("%Y-%m-%d")
-  -- if log_date ~= current_day then
-  --   return
-  -- end
+  local current_day = os.date("%Y-%m-%d")
+  if args == "today" and log_date ~= current_day then
+    return
+  end
 
   local formatted_level = level:sub(1, 1):upper() .. level:sub(2):lower()
   local hl_group = "LspLog" .. formatted_level
@@ -230,7 +230,14 @@ local function process_line(line, lines, highlights)
     end
   elseif parts[2]:match("rpc%.[receive|send]") or parts[2]:match('"exit_handler"') then
     local data = parts[3]
-    metadata_line = string.format("%s  (%s)", metadata_line, parts[2]:gsub('^"(.+)"$', "%1"))
+    local receive_or_send = parts[2]:gsub('^"(.+)"$', "%1")
+    if receive_or_send:match("receive$") then
+      metadata_line = string.format("%s Received response:", metadata_line, receive_or_send)
+    elseif receive_or_send:match("send$") then
+      metadata_line = string.format("%s Sending request:", metadata_line, receive_or_send)
+    else
+      metadata_line = string.format("%s (%s):", metadata_line, receive_or_send)
+    end
     table.insert(lines, metadata_line)
 
     local data_lines = vim.split(data, "\n", { trimempty = true })
@@ -273,6 +280,16 @@ local function process_line(line, lines, highlights)
     for _, l in ipairs(data_lines) do
       table.insert(lines, "  " .. l)
     end
+  elseif parts[2]:match('"server_request"') then
+    local lsp_method = parts[3]:gsub('^"(.+)"$', "%1")
+    local data = parts[4]
+    metadata_line = string.format("%s  %s %s", metadata_line, parts[2]:gsub('^"(.+)"$', "%1"), lsp_method)
+    table.insert(lines, metadata_line)
+    table.insert(lines, data)
+  elseif parts[2]:match('"server_request: (.+)"') then
+    metadata_line =
+      string.format('%s  %s "%s"', metadata_line, parts[2]:gsub('^"(.+)"$', "%1"), parts[3]:gsub('^"(.+)"$', "%1"))
+    table.insert(lines, metadata_line)
   else
     local message = parts[2]:gsub('^"(.+)"$', "%1")
     metadata_line = string.format("%s  %s", metadata_line, message)
@@ -280,7 +297,7 @@ local function process_line(line, lines, highlights)
   end
 end
 
-local function update_log_buffer(buf)
+local function update_log_buffer(buf, args)
   -- Get log file path
   local log_path = vim.lsp.get_log_path()
   local log_file = io.open(log_path, "r")
@@ -290,7 +307,6 @@ local function update_log_buffer(buf)
     return
   end
 
-  -- local today = os.date("%Y-%m-%d")
   local lines = {}
   local highlights = {}
 
@@ -305,7 +321,7 @@ local function update_log_buffer(buf)
 
   -- Process each log line
   for line in log_file:lines() do
-    process_line(line, lines, highlights)
+    process_line(line, lines, highlights, args)
   end
 
   log_file:close()
@@ -327,7 +343,12 @@ local function update_log_buffer(buf)
   end
 end
 
-function M.ShowLspLogs()
+function M.ShowLspLogs(opts)
+  local arg = opts.args:gsub("%s+", "")
+  if arg:len() > 0 and arg ~= "today" then
+    print(string.format("Invalid argument `%s`", opts.args))
+  end
+
   -- Create a new horizontally split buffer
   vim.cmd("split")
   local buf = vim.fn.bufnr("LSP LOGS", true)
@@ -371,7 +392,7 @@ function M.ShowLspLogs()
 
         if current_mtime > log_buffers[buf].last_mtime then
           log_buffers[buf].last_mtime = current_mtime
-          update_log_buffer(buf)
+          update_log_buffer(buf, arg)
         end
       end)
     )
