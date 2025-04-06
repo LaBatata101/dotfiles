@@ -26,13 +26,13 @@ local function custom_on_attach(client, bufnr)
   require("lsp_signature").on_attach()
 end
 
-local handlers = {
-  ["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, { border = "rounded" }),
-}
+-- local handlers = {
+--   ["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, { border = "rounded" }),
+-- }
 
 local opts = {
   on_attach = custom_on_attach,
-  handlers = handlers,
+  -- handlers = handlers,
 }
 
 vim.g.rustaceanvim = function()
@@ -112,18 +112,25 @@ require("mason-lspconfig").setup_handlers({
   end,
 })
 
-vim.diagnostic.config({ severiy_sort = true, update_in_insert = true })
-
-vim.fn.sign_define("DiagnosticSignError", { text = " ", texthl = "DiagnosticSignError" })
-vim.fn.sign_define("DiagnosticSignWarn", { text = " ", texthl = "DiagnosticSignWarn" })
-vim.fn.sign_define("DiagnosticSignInfo", { text = " ", texthl = "DiagnosticSignInfo" })
-vim.fn.sign_define("DiagnosticSignHint", { text = " ", texthl = "DiagnosticSignHint" })
+vim.diagnostic.config({
+  severiy_sort = true,
+  update_in_insert = true,
+  virtual_text = { current_line = true },
+  signs = {
+    text = {
+      [vim.diagnostic.severity.ERROR] = " ",
+      [vim.diagnostic.severity.WARN] = " ",
+      [vim.diagnostic.severity.INFO] = " ",
+      [vim.diagnostic.severity.HINT] = " ",
+    },
+  },
+})
 
 -- Show diagnostic popup on cursor hold
 vim.api.nvim_create_autocmd("CursorHold", {
   pattern = "*",
   callback = function()
-    vim.diagnostic.open_float({ focus = false, source = "always", border = "rounded" })
+    vim.diagnostic.open_float({ focus = false, source = true, border = "rounded" })
   end,
 })
 

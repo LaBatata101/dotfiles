@@ -53,7 +53,7 @@ vim.opt.linebreak = true
 -- emoji is true by default but makes (n)vim treat all emoji as double width
 -- which breaks rendering so we turn this off.
 -- CREDIT: https://www.youtube.com/watch?v=F91VWOelFNE
-vim.opt.emoji = false
+-- vim.opt.emoji = false
 
 -- Spell check
 -- vim.opt.spelllang = "en_us"
@@ -129,6 +129,8 @@ vim.g.symbols_outline = {
   auto_preview = false,
   width = 35,
 }
+
+-- vim.opt.winborder = "rounded"
 
 -- vim.api.nvim_create_autocmd("VimEnter", {
 --   pattern = "*",

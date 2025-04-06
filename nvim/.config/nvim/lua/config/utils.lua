@@ -121,14 +121,14 @@ local function get_python_path(workspace)
   for _, pattern in ipairs({ "*", ".*" }) do
     local match = glob(path.join(workspace, pattern, "pyvenv.cfg"))
     if not vim.fn.empty(match) then
-      return path.dirname(match)
+      return vim.fs.dirname(match)
     end
   end
 
   -- 3. Find and use virtualenv managed by Poetry.
   if vim.fn.executable("poetry") and path.is_file(path.join(workspace, "poetry.lock")) then
     local output = trim(system("poetry env info -p"))
-    if path.is_dir(output) then
+    if vim.fn.isdirectory(output) == 1 then
       return output
     end
   end
@@ -136,7 +136,7 @@ local function get_python_path(workspace)
   -- 4. Find and use virtualenv managed by Pipenv.
   if vim.fn.executable("pipenv") and path.is_file(path.join(workspace, "Pipfile")) then
     local output = trim(system("cd " .. workspace .. "; pipenv --py"))
-    if path.is_dir(output) then
+    if vim.fn.isdirectory(output) == 1 then
       return output
     end
   end
@@ -147,7 +147,7 @@ local function get_python_path(workspace)
     local pyenv_dir = path.join(vim.env.HOME, ".pyenv")
     local virtualenv_dir = path.join(pyenv_dir, "versions", venv_name)
 
-    if path.is_dir(virtualenv_dir) then
+    if vim.fn.isdirectory(output) == 1 then
       return virtualenv_dir
     end
   end
