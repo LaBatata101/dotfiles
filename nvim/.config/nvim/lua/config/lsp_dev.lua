@@ -140,6 +140,7 @@ function M.PrintLSPClientInfo()
 end
 
 function M.LspDevStart(opts)
+  vim.diagnostic.reset()
   stopLsps({ names = { "pyright" } })
   -- M.start({ cmd = { "heaptrack", vim.fn.expand(opts.args) } })
   M.start({ cmd = { vim.fn.expand(opts.args) } })
@@ -386,7 +387,7 @@ local function process_line(line, lines, highlights, filter_date)
 end
 
 -- Batch update buffer
-local function update_log_buffer(buf, arg, log_content, logger_win)
+local function update_log_buffer(buf, arg, log_content, logger_win, ns)
   local lines = {}
   local highlights = {}
   local filter_date = arg == "today" and get_today_date() or nil
@@ -405,7 +406,8 @@ local function update_log_buffer(buf, arg, log_content, logger_win)
   vim.api.nvim_buf_set_lines(buf, start_line_num, start_line_num, false, lines)
 
   for _, hl in ipairs(highlights) do
-    vim.api.nvim_buf_add_highlight(buf, -1, hl[1], hl[2] + start_line_num, hl[3], hl[4])
+    local line = hl[2] + start_line_num
+    vim.hl.range(buf, ns, hl[1], { line, hl[3] }, { line, hl[4] })
   end
 
   vim.bo[buf].modifiable = false
@@ -456,6 +458,8 @@ function M.ShowLspLogs(opts)
     return
   end
 
+  local ns = vim.api.nvim_create_namespace("LspLogs")
+
   -- Define highlight groups
   vim.api.nvim_set_hl(0, "LspLogError", { link = "Error" })
   vim.api.nvim_set_hl(0, "LspLogWarn", { link = "WarningMsg" })
@@ -498,7 +502,7 @@ function M.ShowLspLogs(opts)
           end
           local log_content = vim.uv.fs_read(log_file, read_size, read_offset)
           log_file_size = updated_log_file_size
-          update_log_buffer(buf, arg, log_content, logger_win)
+          update_log_buffer(buf, arg, log_content, logger_win, ns)
         end
       end)
     )
