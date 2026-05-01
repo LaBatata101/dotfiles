@@ -1,3 +1,4 @@
+---@diagnostic disable: missing-fields
 require("lazy").setup({
   {
     "stevearc/dressing.nvim",
@@ -24,15 +25,25 @@ require("lazy").setup({
     "williamboman/mason.nvim",
     cmd = "Mason",
     config = function()
-      require("mason").setup()
+      require("mason").setup({
+        -- registries = {
+        --   "file:/home/labatata/Downloads/mason-registry/",
+        -- },
+      })
     end,
   },
 
   {
     "williamboman/mason-lspconfig.nvim",
+    -- dir = "~/Downloads/mason-lspconfig.nvim",
     config = function()
       require("mason-lspconfig").setup({
-        ensure_installed = { "lua_ls", "rust_analyzer", "pyright" },
+        ensure_installed = { "lua_ls", "rust_analyzer", "ts_ls" },
+        automatic_enable = {
+          exclude = {
+            "rust_analyzer",
+          },
+        },
       })
     end,
   },
@@ -48,7 +59,8 @@ require("lazy").setup({
   -- Rust stuff
   {
     "mrcjkb/rustaceanvim",
-    version = "^4", -- Recommended
+    version = "^9",
+    lazy = false,
     ft = { "rust" },
   },
 
@@ -65,6 +77,7 @@ require("lazy").setup({
   {
     "nvim-treesitter/nvim-treesitter",
     -- run = ":TSUpdate",
+    commit = "4916d65",
     event = "BufRead",
     cmd = {
       "TSInstall",
@@ -91,8 +104,8 @@ require("lazy").setup({
     "folke/trouble.nvim",
     cmd = { "TroubleToggle", "Trouble" },
     keys = {
-      { "<leader>td", "<cmd>Trouble diagnostics toggle filter.buf=0<CR>", noremap = true },
-      { "gr", "<cmd>Trouble lsp_references toggle focus=true<CR>", noremap = true },
+      { "<leader>td", "<cmd>Trouble diagnostics toggle filter.buf=0<CR>",  noremap = true },
+      { "gr",         "<cmd>Trouble lsp_references toggle focus=true<CR>", noremap = true },
     },
     dependencies = { "nvim-tree/nvim-web-devicons" },
     config = function()
@@ -224,12 +237,12 @@ require("lazy").setup({
     "nvim-telescope/telescope.nvim",
     cmd = "Telescope",
     keys = {
-      { "<leader>ff", "<cmd>Telescope find_files<CR>", noremap = true },
-      { "<leader>fg", "<cmd>Telescope live_grep<CR>", noremap = true },
-      { "<leader>fb", "<cmd>Telescope buffers<CR>", noremap = true },
-      { "<leader>fs", "<cmd>Telescope current_buffer_fuzzy_find<CR>", noremap = true },
-      { "<leader>ft", "<cmd>Telescope lsp_document_symbols<CR>", noremap = true },
-      { "<leader>fw", "<cmd>Telescope lsp_workspace_symbols<CR>", noremap = true },
+      { "<leader>ff", "<cmd>Telescope find_files<CR>",                    noremap = true },
+      { "<leader>fg", "<cmd>Telescope live_grep<CR>",                     noremap = true },
+      { "<leader>fb", "<cmd>Telescope buffers<CR>",                       noremap = true },
+      { "<leader>fs", "<cmd>Telescope current_buffer_fuzzy_find<CR>",     noremap = true },
+      { "<leader>ft", "<cmd>Telescope lsp_document_symbols<CR>",          noremap = true },
+      { "<leader>fw", "<cmd>Telescope lsp_workspace_symbols<CR>",         noremap = true },
       { "<leader>fW", "<cmd>Telescope lsp_dynamic_workspace_symbols<CR>", noremap = true },
     },
     dependencies = {
@@ -260,7 +273,7 @@ require("lazy").setup({
   },
 
   -- Surround text with (), [], "", '' etc
-  { "kylechui/nvim-surround", event = "VeryLazy", config = true },
+  { "kylechui/nvim-surround",        event = "VeryLazy", config = true },
 
   -- Easily jump to far text
   {
@@ -395,7 +408,7 @@ require("lazy").setup({
     config = function()
       require("ufo").setup({
         fold_virt_text_handler = require("config.utils").text_handler,
-        provider_selector = function(bufnr, filetype, buftype)
+        provider_selector = function(_, _, _)
           return { "treesitter", "indent" }
         end,
       })
@@ -453,6 +466,22 @@ require("lazy").setup({
     config = function()
       require("flutter-tools").setup({
         flutter_lookup_cmd = "asdf where flutter",
+        lsp = {
+          color = {
+            enabled = true,
+          },
+        },
+        dev_log = {
+          filter = function(log_line)
+            return log_line
+                and not (
+                  log_line:match("^D/EGL_emulation")
+                  or log_line:match("^E/libEGL")
+                  or log_line:match("^W/FrameTracker")
+                )
+          end,
+          focus_on_open = false,
+        },
       })
     end,
   },

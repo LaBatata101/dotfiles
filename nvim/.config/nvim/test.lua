@@ -1,0 +1,6 @@
+vim.cmd("vsplit")
+local win = vim.api.nvim_get_current_win()
+local buf = vim.fn.bufnr("LSP LOGS", true)
+vim.api.nvim_set_current_buf(buf)
+vim.api.nvim_buf_set_lines(buf, 0, -1, false, { "No LSP log file found: ", "", "Another line 2" })
+-- vim.api.nvim_buf_set_lines(buf, 2, 2, false, { "Another line 3" })

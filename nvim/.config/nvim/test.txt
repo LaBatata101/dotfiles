@@ -1,0 +1,6 @@
+This is the most straightforward way to “read a file” in Neovim. Alternatively, if you need more control (for example, binary mode or asynchronous I/O), you might use Lua’s standard I/O library or Neovim’s built-in vim.loop (libuv) functions.
+
+For most cases, though, using readfile() is sufficient.
+
+
+The quick brown fox jumps over the lazy dog!

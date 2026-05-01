@@ -39,6 +39,9 @@ map("", "<leader>k", function()
   -- return require("config.utils").ask_to_save_before_closing()
 end, { noremap = true, silent = true })
 
+-- close other buffers
+map("", "<leader>K", require("config.utils").close_other_buffers, { noremap = true, silent = true })
+
 -- split resizing
 map("", "<left>", "<C-w>2>", { silent = true })
 map("", "<up>", "<C-w>2-", { silent = true })
@@ -55,7 +58,11 @@ end, { silent = true })
 map("n", "K", function()
   local winid = require("ufo").peekFoldedLinesUnderCursor()
   if not winid then
-    vim.lsp.buf.hover()
+    if vim.bo.filetype == "rust" and vim.fn.exists(":RustLsp") then
+      vim.cmd.RustLsp({ "hover", "actions" })
+    else
+      vim.lsp.buf.hover()
+    end
   end
 end, { noremap = true, silent = true })
 map("n", "gi", vim.lsp.buf.implementation, { noremap = true, silent = true })
@@ -63,10 +70,14 @@ map("n", "ga", function()
   vim.lsp.buf.code_action()
 end, { noremap = true, silent = true })
 map("n", "gd", vim.lsp.buf.definition, { noremap = true, silent = true })
-map("n", "<leader>dn", vim.diagnostic.goto_next, { noremap = true, silent = true })
-map("n", "<leader>dp", vim.diagnostic.goto_prev, { noremap = true, silent = true })
+map("n", "<leader>dn", function()
+  vim.diagnostic.jump({ count = 1, float = true })
+end, { noremap = true, silent = true })
+map("n", "<leader>dp", function()
+  vim.diagnostic.jump({ count = -1, float = true })
+end, { noremap = true, silent = true })
 
-map("n", "<leader>it", function()
+map("n", "<leader>ih", function()
   vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled({}))
 end, { noremap = true, silent = true })
 

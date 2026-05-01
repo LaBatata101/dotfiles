@@ -1,56 +1,43 @@
 -- vim.lsp.set_log_level("debug")
 
-local function custom_on_attach(client, bufnr)
-  if client.server_capabilities.documentHighlightProvider then
-    local lsp_document_highlight = vim.api.nvim_create_augroup("lsp_document_highlight", {})
-    vim.api.nvim_create_autocmd({ "CursorHold", "CursorHoldI" }, {
-      group = lsp_document_highlight,
-      pattern = "<buffer>",
-      callback = vim.lsp.buf.document_highlight,
-    })
-    vim.api.nvim_create_autocmd("CursorMoved", {
-      group = lsp_document_highlight,
-      pattern = "<buffer>",
-      callback = vim.lsp.buf.clear_references,
-    })
-  end
+vim.api.nvim_create_autocmd("LspAttach", {
+  callback = function(args)
+    local client = assert(vim.lsp.get_client_by_id(args.data.client_id))
 
-  if client.server_capabilities.inlayHintProvider then
-    vim.lsp.inlay_hint.enable(true)
-  end
+    if client.server_capabilities.documentHighlightProvider then
+      local lsp_document_highlight = vim.api.nvim_create_augroup("lsp_document_highlight", {})
+      vim.api.nvim_create_autocmd({ "CursorHold", "CursorHoldI" }, {
+        group = lsp_document_highlight,
+        pattern = "<buffer>",
+        callback = vim.lsp.buf.document_highlight,
+      })
+      vim.api.nvim_create_autocmd("CursorMoved", {
+        group = lsp_document_highlight,
+        pattern = "<buffer>",
+        callback = vim.lsp.buf.clear_references,
+      })
+    end
 
-  if client.server_capabilities.documentSymbolProvider then
-    require("nvim-navic").attach(client, bufnr)
-  end
+    if client.server_capabilities.inlayHintProvider then
+      vim.lsp.inlay_hint.enable(true)
+    end
 
-  require("lsp_signature").on_attach()
-end
-
--- local handlers = {
---   ["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, { border = "rounded" }),
--- }
-
-local opts = {
-  on_attach = custom_on_attach,
-  -- handlers = handlers,
-}
+    if client.server_capabilities.documentSymbolProvider then
+      require("nvim-navic").attach(client, args.buf)
+    end
+  end,
+})
 
 vim.g.rustaceanvim = function()
-  local codelldb = require("mason-registry").get_package("codelldb")
-  local extension_path = codelldb:get_install_path()
-  local codelldb_path = extension_path .. "/codelldb"
-  local liblldb_path = extension_path .. "/extension/lldb/lib/liblldb.so"
-
-  local cfg = require("rustaceanvim.config")
   return {
-    server = {
-      on_attach = custom_on_attach,
-    },
     settings = {
       ["rust-analyzer"] = {
         -- checkOnSave = {
         --   command = "clippy",
         -- },
+        cargo = {
+          allFeatures = true,
+        },
         rustfmt = {
           extraArgs = {
             "--config",
@@ -60,42 +47,57 @@ vim.g.rustaceanvim = function()
       },
     },
     dap = {
-      adapter = cfg.get_codelldb_adapter(codelldb_path, liblldb_path),
+      adapter = "",
     },
   }
 end
 
-local lspconfig = require("lspconfig")
-require("mason-lspconfig").setup_handlers({
-  function(server_name)
-    if server_name ~= "rust_analyzer" then
-      lspconfig[server_name].setup({})
-    end
-  end,
-  ["pyright"] = function()
-    opts.on_init = function(client)
-      local utils = require("config.utils")
-      client.config.settings.pythonPath = utils.get_python_bin_path(client.config.root_dir)
-    end
-    lspconfig.pyright.setup(opts)
-  end,
-  -- ["lua_ls"] = function()
-  --   opts.settings = {
-  --     ["Lua"] = {
-  --       workspace = {
-  --         checkThirdParty = false,
-  --         completion = { callSnippet = "Disable" },
-  --         workspace = { maxPreload = 5000 },
-  --       },
-  --       format = {
-  --         enable = false,
-  --       },
-  --     },
-  --   }
-  --   lspconfig.lua_ls.setup(opts)
-  -- end,
-  ["ts_ls"] = function()
-    opts.settings = {
+-- local utils = require("config.utils")
+
+-- local pwd = vim.loop.cwd()
+-- vim.api.nvim_create_autocmd("FileType", {
+--   pattern = "python",
+--   callback = function()
+--     vim.lsp.start({
+--       name = "SithLSP",
+--       filetypes = { "python" },
+--       root_dir = pwd,
+--       cmd = { vim.fn.expand("~/Code/Rust/python-lsp/target/debug/sith-lsp") },
+--       init_options = {
+--         settings = {
+--           interpreter = utils.get_python_bin_path(pwd),
+--         },
+--       },
+--     })
+--   end,
+-- })
+
+-- local lspconfig = require("lspconfig")
+-- local configs = require("lspconfig.configs")
+--
+-- if not configs.sith_lsp then
+--   local root_files = {
+--     "pyproject.toml",
+--     "setup.py",
+--     "requirements.txt",
+--     "Pipfile",
+--     "pyrightconfig.json",
+--     ".git",
+--   }
+--   configs.sith_lsp = {
+--     default_config = {
+--       cmd = { "sith-lsp" },
+--       root_dir = function(fname)
+--         return lspconfig.util.root_pattern(unpack(root_files))(fname)
+--       end,
+--       filetypes = { "python" },
+--     },
+--   }
+-- end
+
+vim.lsp.config("ts_ls", {
+  init_options = {
+    settings = {
       ["javascript"] = {
         format = {
           enable = false,
@@ -106,10 +108,17 @@ require("mason-lspconfig").setup_handlers({
           enable = false,
         },
       },
-    }
+    },
+  },
+})
 
-    lspconfig.ts_ls.setup(opts)
-  end,
+vim.lsp.config("zls", {
+  init_options = {
+    settings = {
+      enable_build_on_save = true,
+      build_on_save_args = { "check" },
+    },
+  },
 })
 
 vim.diagnostic.config({
@@ -120,7 +129,7 @@ vim.diagnostic.config({
     text = {
       [vim.diagnostic.severity.ERROR] = " ",
       [vim.diagnostic.severity.WARN] = " ",
-      [vim.diagnostic.severity.INFO] = " ",
+      [vim.diagnostic.severity.INFO] = "󰋼 ",
       [vim.diagnostic.severity.HINT] = " ",
     },
   },

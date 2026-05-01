@@ -1,0 +1,1 @@
+/home/labatata/Code/tree-sitter-bend/queries/highlights.scm

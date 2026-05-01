@@ -1,3 +1,5 @@
+vim.o.winborder = "rounded"
+
 vim.g.mapleader = " "
 
 vim.g.loaded_node_provider = 0
@@ -5,7 +7,6 @@ vim.g.loaded_perl_provider = 0
 vim.g.loaded_ruby_provider = 0
 vim.g.loaded_python_provider = 0
 vim.g.loaded_python3_provider = 0
--- vim.g.python3_host_prog = "/usr/bin/python"
 
 vim.g.python_host_skip_check = 1
 
@@ -140,3 +141,5 @@ vim.g.symbols_outline = {
 vim.api.nvim_create_user_command("LspCurrBuf", require("config.lsp_dev").PrintLSPClientInfo, {})
 vim.api.nvim_create_user_command("LspDevStart", require("config.lsp_dev").LspDevStart, { nargs = 1 })
 vim.api.nvim_create_user_command("LspLogs", require("config.lsp_dev").ShowLspLogs, { nargs = "?" })
+vim.api.nvim_create_user_command("LspFireNotification", require("config.lsp_dev").FireNotification, {})
+vim.api.nvim_create_user_command("PrintLSPClientInfo", require("config.lsp_dev").PrintLSPClientInfo, {})

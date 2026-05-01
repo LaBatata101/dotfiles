@@ -3,7 +3,7 @@ local M = {}
 local glob = vim.fn.glob
 local system = vim.fn.system
 local trim = vim.fn.trim
-local path = require("lspconfig.util").path
+-- local path = require("lspconfig.util").path
 
 local function create_input_dialog(prompt, opts)
   local Input = require("nui.input")
@@ -119,8 +119,10 @@ local function get_python_path(workspace)
 
   -- 2. Find and use virtualenv in workspace directory.
   for _, pattern in ipairs({ "*", ".*" }) do
+    print(path.join(workspace, pattern, "pyvenv.cfg"))
     local match = glob(path.join(workspace, pattern, "pyvenv.cfg"))
-    if not vim.fn.empty(match) then
+    print("MATCH: ", match)
+    if match ~= "" then
       return vim.fs.dirname(match)
     end
   end
@@ -216,6 +218,44 @@ function M.text_handler(virtText, lnum, endLnum, width, truncate)
 
   table.insert(newVirtText, { suffix, "MoreMsg" })
   return newVirtText
+end
+
+function M.close_other_buffers()
+  local current_buf = vim.api.nvim_get_current_buf()
+  local buffers = vim.api.nvim_list_bufs()
+
+  for _, buf in ipairs(buffers) do
+    -- Only close buffers that are:
+    -- 1. Not the current buffer
+    -- 2. Listed (normal buffers, not special ones)
+    if buf ~= current_buf and vim.bo[buf].buflisted then
+      -- Check if buffer has unsaved changes
+      if vim.bo[buf].modified then
+        local bufname = vim.api.nvim_buf_get_name(buf)
+        local filename = bufname ~= "" and vim.fn.fnamemodify(bufname, ":t") or "[No Name]"
+
+        local choice = vim.fn.confirm(
+          string.format("Buffer '%s' has unsaved changes. Save it?", filename),
+          "&Save\n&Discard\n&Cancel",
+          1
+        )
+
+        if choice == 1 then -- Save
+          vim.api.nvim_buf_call(buf, function()
+            vim.cmd.write()
+          end)
+          vim.api.nvim_buf_delete(buf, { force = false })
+        elseif choice == 2 then -- Discard
+          vim.api.nvim_buf_delete(buf, { force = true })
+        else -- Cancel
+          return
+        end
+      else
+        -- Buffer has no unsaved changes, safe to close
+        vim.api.nvim_buf_delete(buf, { force = false })
+      end
+    end
+  end
 end
 
 return M

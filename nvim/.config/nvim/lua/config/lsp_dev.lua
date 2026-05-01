@@ -74,6 +74,17 @@ function M.start(opts)
       },
     },
   })
+  -- lsp_server_id = vim.lsp.start_client({
+  --   name = "ruff",
+  --   cmd = { "/home/labatata/Code/Rust/ruff/target/debug/ruff", "server" },
+  --   root_dir = vim.loop.cwd(),
+  --   trace = "verbose",
+  --   init_options = {
+  --     settings = {
+  --       organizeImports = false,
+  --     },
+  --   },
+  -- })
 
   filter = filter_by({ "python" })
 
@@ -146,6 +157,22 @@ function M.LspDevStart(opts)
   M.start({ cmd = { vim.fn.expand(opts.args) } })
 end
 
+function M.FireNotification()
+  vim.lsp.buf_notify(0, "workspace/didChangeConfiguration", {
+    settings = {
+      ["sith-lsp"] = {
+        organizeImports = true,
+      },
+      -- ruff = {
+      --   lint = {
+      --     enable = false,
+      --   },
+      --   format = {
+      --     enable = false,
+      --   },
+      -- },
+    },
+  })
 end
 
 local log_buffers = {}
