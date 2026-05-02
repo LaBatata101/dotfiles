@@ -4,7 +4,7 @@ require("nvim-treesitter").setup({
     additional_vim_regex_highlighting = { "markdown" },
   },
 
-  ensure_installed = { "rust", "python", "lua", "c", "vim", "comment" },
+  ensure_installed = { "rust", "python", "lua", "c", "vim", "comment", "zig" },
 
   indent = {
     enable = true,
