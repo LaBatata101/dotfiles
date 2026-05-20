@@ -95,9 +95,6 @@ end)
 -- Rename
 map("", "<leader>rn", vim.lsp.buf.rename, { noremap = true, silent = true })
 
--- Hop
-map("n", "<leader><leader>", "<cmd>HopWord<CR>", { noremap = true })
-
 -- Terminal
 map("t", "<Esc>", "<C-\\><C-n>", { noremap = true })
 map("t", "<C-j>", "<C-\\><C-n><C-w>j", { noremap = true })
